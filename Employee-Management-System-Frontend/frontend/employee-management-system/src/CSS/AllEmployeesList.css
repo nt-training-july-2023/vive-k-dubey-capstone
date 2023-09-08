@@ -1,0 +1,97 @@
+.content {
+    width: 70%;
+    margin: 3% 15%;
+  }
+  
+  .card-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-content: flex-start;
+  }
+  
+  .card {
+    width: calc(45% - 10px);
+    border: 1px solid #ccc;
+    padding: 20px;
+    margin: 10px 0;
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .left-section,
+  .right-section {
+    flex: 1;
+    padding: 0 10px;
+  }
+  .right-section{
+    margin-top: 40px;
+  }
+  
+  .field {
+    margin: 5px 0;
+    font-size: 14px;
+  }
+  
+  .larger {
+    font-size: 22px;
+    font-weight: bold;
+  }
+ .smaller{
+    font-size: 12px;
+ }
+
+ .assign-button {
+    background-color:grey;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    margin-top: 10px; /* Add some top margin to separate it from other fields */
+    transition: background-color 0.3s;
+  }
+  
+  .assign-button:hover {
+    background-color: darkgray;
+  }
+
+ @media screen and (max-width: 768px) {
+    .card {
+      width: 100%;
+      flex-direction: column;
+    }
+  
+    .right-section {
+      margin-top: 20px;
+    }
+    .content {
+        width: 90%;
+        margin: 3% auto;
+      }
+      
+      .card-container {
+        display: flex;
+        flex-wrap: wrap;
+        align-content: flex-start;
+      }
+
+      .field {
+        margin: 5px 0;
+        font-size: 14px;
+      }
+
+  .left-section,
+  .right-section {
+    flex: 1;
+    padding: 0 10px;
+  }
+      
+      .larger {
+        font-size: 20px;
+        font-weight: bold;
+      }
+      
+      .smaller {
+        font-size: 12px;
+      }
+  }

@@ -1,0 +1,91 @@
+/* AddProjectForm.css */
+.add-project-container {
+    width: 40%;
+    margin: 6% 30%;
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    background-color: #f0f0f0;
+}
+  
+  .add-project-heading {
+    font-size: 24px;
+    text-align: right;
+    position: absolute;
+    top: 18%;
+    right: 7%;
+    font-weight: bold;
+    color: blue;
+  }
+
+  .popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999; 
+  }
+  
+  .popup-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  .add-project-group {
+    margin-bottom: 20px;
+  }
+  
+  
+  /* label {
+    display: block;
+    font-size: 16px;
+  } */
+  
+ 
+  .add-project-select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    position: relative; 
+    z-index: 1;
+  }
+  
+  .add-project-input,
+  .add-project-textarea{
+    width: 96%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+  }
+
+  
+  .add-project-textarea {
+    resize: vertical;
+  }
+  
+  .add-project-button {
+    background-color: blue;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+    width: 100%;
+  }
+  
+  .error-message {
+    color: red;
+    font-size: 14px;
+    margin-top: 5px;
+  }

@@ -1,0 +1,29 @@
+package com.backend.employee.controller;
+
+import com.backend.employee.dto.RegisterDto;
+import com.backend.employee.dto.ResponseDto;
+import com.backend.employee.service.AddEmployeeService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/employee")
+public class AddEmployeeController {
+
+    private final AddEmployeeService addEmployeeService;
+
+    @Autowired
+    public AddEmployeeController(AddEmployeeService addEmployeeService) {
+        this.addEmployeeService = addEmployeeService;
+    }
+
+    @PostMapping("/add")
+    public ResponseDto addEmployee(@RequestBody RegisterDto registerDto) {
+        return addEmployeeService.addEmployee(registerDto);
+    }
+}
+

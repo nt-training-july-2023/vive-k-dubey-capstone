@@ -1,0 +1,14 @@
+package com.backend.employee.service;
+
+import java.util.List;
+
+import com.backend.employee.dto.RegisterDto;
+import com.backend.employee.dto.ResponseDto;
+
+public interface AddEmployeeService {
+    ResponseDto<RegisterDto> addEmployee(RegisterDto registerDto);
+    
+    //testing code
+    ResponseDto<RegisterDto> getAllEmployees();
+}
+

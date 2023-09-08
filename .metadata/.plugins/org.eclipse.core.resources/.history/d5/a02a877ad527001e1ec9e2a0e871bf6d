@@ -1,0 +1,19 @@
+package task1;
+import java.util.Scanner;
+
+public class ArmstrongNumber {
+
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Enter the value of a positive number");
+		int number = sc.nextInt();
+		int noOfDigits= 0;
+		
+		// finding number of digits in the number
+		while(number!=0) {
+			noOfDigits += 1;
+			number = number/10;
+			
+	}
+	}
+}

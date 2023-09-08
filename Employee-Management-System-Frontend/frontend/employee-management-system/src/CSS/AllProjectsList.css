@@ -1,0 +1,55 @@
+.projects-container {
+    width: 70%;
+    margin: 3% 15%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-content: flex-start;
+  }
+  
+  .project-card {
+    width: calc(45% - 10px); 
+    border: 1px solid #ccc;
+    padding: 20px;
+    margin: 10px 0;
+    position: relative;
+  }
+  
+  .project-name.larger {
+    font-size: 22px;
+    font-weight: bold;
+  }
+  
+  .project-head.smaller
+   {
+    font-size: 12px;
+  }
+  
+  .project-id.larger {
+    font-size: 16px;
+  }
+  
+  .project-description,
+  .project-team,
+  .project-skills {
+    width: 100%; 
+    margin-top: 10px;
+    font-size: 14px;
+  }
+
+  .project-id.larger {
+    font-size: 12px;
+    position: absolute;
+    top: 30px; 
+    right: 10px; 
+  }
+
+  .start-date.smaller{
+    font-size: 12px;
+    position: absolute; 
+    top: 50px; 
+    right: 10px; 
+
+  }
+  
+  
