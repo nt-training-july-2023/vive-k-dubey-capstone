@@ -31,6 +31,9 @@
   .tab-button.selected {
     background-color: blue;
     color: white;
+
+    /* testing code */
+    
   }
   
   .add-button {
@@ -61,42 +64,49 @@
   }
   
  
-  @media screen and (max-width: 768px) {
-    .navbar-section {
-      flex-direction: column;
-      align-items: flex-start;
-    }
-  
-    .tab-button,
-    .add-button {
-      width: 100%;
-      text-align: center;
-    }
+  @media (max-width: 768px) {
 
-    .admin-dashboard {
-      padding: 20px;
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: white;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      width: 80%;
+      margin-left: 5%;
+      margin-right: 5%;
     }
     
-    .navbar {
+  
+    .navbar-section {
+      
       display: flex;
       flex-wrap: wrap;
       justify-content: space-between;
       align-items: center;
-      background-color: white;
-      padding: 10px 20px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      width: 90%;
-      margin: 0 auto;
     }
-    .tab-button.selected {
-      background-color: blue;
-      color: white;
+  
+    
+    .tab-button {
+      
+      font-size: 8px;
+      padding: 6px 6px; 
     }
-    .add-button:hover {
-      background-color: darkblue;
+  
+   
+    .add-button {
+      
+      font-size: 8px;
+      padding: 6px 6px; 
+    }
+  
+    
+    .logout-button {
+      
+      font-size: 8px;
+      padding: 6px 6px; 
     }
   }
-  
   
   
   

@@ -1,6 +1,7 @@
 import React, { useState, useEffect} from 'react';
 import '../CSS/Register.css'; 
 import { useNavigate } from 'react-router-dom';
+import bcrypt from 'bcryptjs';
 
 function RegisterForm() {
   const [name, setName] = useState('');
@@ -50,6 +51,8 @@ function RegisterForm() {
   validateContactNo();
   const isPasswordValid = validatePassword();
 
+  const hashedPassword = await bcrypt.hash(password, 10);
+
   if (!nameError && !emailError && !employeeIdError && !dobError && !dojError   && !contactNoError && isPasswordValid) {
  
 
@@ -62,9 +65,11 @@ function RegisterForm() {
       empLocation: location,
       empDesignation: designation,
       empContactNo: contactNo,
-      empPassword: password,
+      empPassword: hashedPassword,
       // empRole: role,
     };
+
+    console.log(hashedPassword);
 
     try {
       
@@ -74,6 +79,7 @@ function RegisterForm() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(userFormData),
+        
       });
       
       console.log("message of status",response.status);
@@ -127,7 +133,7 @@ function RegisterForm() {
   const validateEmployeeId = () => {
     const employeeIdPattern = /^N\d{4}$/;
     if (!employeeId.match(employeeIdPattern)) {
-      setEmployeeIdError('Employee ID should be in the pattern NXXXX (X should be numbers)');
+      setEmployeeIdError('Should be like NXXXX - X->Digit )');
     } else {
       setEmployeeIdError('');
     }
@@ -137,7 +143,7 @@ function RegisterForm() {
     const pattern = /^[0-9]+$/;
   
     if (contactNo.length !== 10 || !pattern.test(contactNo)) {
-      setContactNoError('Contact No should have 10 digits and only contain digits.');
+      setContactNoError('Contact No should have 10 digits.');
     } else {
       setContactNoError('');
     }
@@ -259,7 +265,10 @@ function RegisterForm() {
               onBlur={validateName}
               required
             />
-            {nameError && <div className="error-message">{nameError}</div>}
+            {/* {nameError && <div className="error-message">{nameError}</div>} */}
+            <div className="error-message-container-addemployee">
+              {nameError && <div className="error-message">{nameError}</div>}
+           </div>
           </div>
           <div className="grid-item">
             <label htmlFor="email">Email</label>
@@ -274,7 +283,10 @@ function RegisterForm() {
               onBlur={validateEmail}
               required
             />
-            {emailError && <div className="error-message">{emailError}</div>}
+            {/* {emailError && <div className="error-message">{emailError}</div>} */}
+            <div className="error-message-container-addemployee">
+              {emailError && <div className="error-message">{emailError}</div>}
+            </div>
           </div>
           <div className="grid-item">
             <label htmlFor="employeeId">Employee ID</label>
@@ -288,7 +300,10 @@ function RegisterForm() {
               onBlur={validateEmployeeId}
               required
             />
-            {employeeIdError && <div className="error-message">{employeeIdError}</div>}
+            {/* {employeeIdError && <div className="error-message">{employeeIdError}</div>} */}
+            <div className="error-message-container-addemployee">
+              {employeeIdError && <div className="error-message">{employeeIdError}</div>}
+          </div>
           </div>
           <div className="grid-item">
             <label htmlFor="dob">DOB (DD/MM/YYYY)</label>
@@ -302,7 +317,10 @@ function RegisterForm() {
               onBlur={validateDob}
               required
             />
-            {dobError && <div className="error-message">{dobError}</div>}
+            {/* {dobError && <div className="error-message">{dobError}</div>} */}
+            <div className="error-message-container-addemployee">
+              {dobError && <div className="error-message">{dobError}</div>}
+            </div>
           </div>
           <div className="grid-item">
             <label htmlFor="doj">DOJ (DD/MM/YYYY)</label>
@@ -314,7 +332,10 @@ function RegisterForm() {
               onBlur={validateDoj}
               required
             />
-            {dojError && <div className="error-message">{dojError}</div>}
+            {/* {dojError && <div className="error-message">{dojError}</div>} */}
+            <div className="error-message-container-addemployee">
+              {dojError && <div className="error-message">{dojError}</div>}
+            </div>
           </div>
           <div className="grid-item">
             <label htmlFor="location">Location</label>
@@ -375,7 +396,11 @@ function RegisterForm() {
               onBlur={validateContactNo}
               required
             />
-            {contactNoError && <div className="error-message">{contactNoError}</div>}
+            {/* {contactNoError && <div className="error-message">{contactNoError}</div>} */}
+            <div className="error-message-container-addemployee">
+              {contactNoError && <div className="error-message">{contactNoError}</div>}
+            </div>
+            
           </div>
           <div className="grid-item">
             <label htmlFor="password">Password</label>
@@ -387,7 +412,10 @@ function RegisterForm() {
               onBlur={validatePassword}
               required
             />
-            {passwordError && <div className="error-message">{passwordError}</div>}
+            {/* {passwordError && <div className="error-message">{passwordError}</div>} */}
+            <div className="error-message-container-addemployee">
+              {passwordError && <div className="error-message">{passwordError}</div>}
+            </div>
           </div>
           <div className="grid-item">
             <label htmlFor="confirmPassword">Confirm Password</label>

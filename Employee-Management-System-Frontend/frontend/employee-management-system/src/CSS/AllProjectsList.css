@@ -53,3 +53,54 @@
   }
   
   
+  @media (max-width: 768px) {
+    .projects-container {
+      width: 90%; /* Adjust container width for smaller screens */
+      margin: 3% 5%; /* Adjust margins for smaller screens */
+    }
+  
+    .project-card {
+      width: 100%; /* Cards take up full width on smaller screens */
+      margin: 10px 0;
+    }
+  
+    .project-name.larger {
+      font-size: 18px; /* Decrease font size for project name */
+    }
+  
+    .project-head.smaller {
+      font-size: 10px; /* Decrease font size for project head */
+    }
+  
+    .project-id.larger {
+      font-size: 14px; /* Decrease font size for project ID */
+    }
+  
+    .project-description,
+    .project-team,
+    .project-skills {
+      font-size: 12px; /* Decrease font size for description, team, and skills */
+    }
+  
+    .project-id.larger {
+      font-size: 10px; /* Decrease font size for project ID */
+      top: 20px; /* Adjust position for project ID */
+    }
+  
+    .start-date.smaller {
+      font-size: 10px; /* Decrease font size for start date */
+      top: 40px; /* Adjust position for start date */
+    }
+    
+    /* Adjust the font size and layout for your navbar buttons here */
+    .navbar-button {
+      font-size: 12px; /* Decrease font size for navbar buttons */
+      /* Add any other necessary styles for navbar buttons */
+    }
+  }
+  
+  
+  
+  
+  
+  

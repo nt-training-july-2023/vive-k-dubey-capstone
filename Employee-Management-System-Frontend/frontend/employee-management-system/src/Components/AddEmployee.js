@@ -2,6 +2,7 @@ import React, { useState, useEffect} from 'react';
 import '../CSS/AddEmployee.css'; 
 import { useNavigate } from 'react-router-dom';
 import Select from 'react-select';
+import bcrypt from 'bcryptjs';
 
 function AddEmployee() {
   const [name, setName] = useState('');
@@ -66,6 +67,7 @@ function AddEmployee() {
   };
 
   const generateDefaultPassword = () => {
+    
     return `${employeeId}@${dob.replace(/\//g, '')}`;
   };
 
@@ -85,6 +87,10 @@ function AddEmployee() {
   validateDoj();
   validateContactNo();
   //validateSkills();
+
+  const hashedPassword =  bcrypt.hashSync(defaultPassword, 10);
+  console.log(hashedPassword);
+  console.log(   "generated one",`${employeeId}@${dob.replace(/\//g, '')}`);
 
   if (!nameError && !emailError && !employeeIdError && !dobError && !dojError   && !contactNoError ) {
  
@@ -107,7 +113,7 @@ function AddEmployee() {
       empContactNo: contactNo,
       empRole: role,
       empSkills: selectedSkills.map(skill => skill.value),
-      empPassword: defaultPassword,
+      empPassword: hashedPassword,
     };
 
     try {
@@ -118,6 +124,8 @@ function AddEmployee() {
         },
         body: JSON.stringify(userFormData),
       });
+
+      console.log(hashedPassword);
     
       if (response.ok) {
         const responseData = await response.json();
@@ -160,10 +168,10 @@ function AddEmployee() {
   };
 
   const validateEmail = () => {
-    const emailPattern = /@nucleusteq\.com$/; // Regex pattern for emails ending with @nucleusteq.com
+    const emailPattern = /@nucleusteq\.com$/; 
   
     if (!emailPattern.test(email)) {
-      setEmailError('Email must end with @nucleusteq.com');
+      setEmailError('Must end with @nucleusteq.com');
     } else {
       setEmailError('');
     }
@@ -176,7 +184,7 @@ function AddEmployee() {
   const validateEmployeeId = () => {
     const employeeIdPattern = /^N\d{4}$/;
     if (!employeeId.match(employeeIdPattern)) {
-      setEmployeeIdError('Employee ID should be in the pattern NXXXX (X should be numbers)');
+      setEmployeeIdError('Allowed pattern NXXXX, X is number');
     } else {
       setEmployeeIdError('');
     }
@@ -186,7 +194,7 @@ function AddEmployee() {
     const pattern = /^[0-9]+$/;
   
     if (contactNo.length !== 10 || !pattern.test(contactNo)) {
-      setContactNoError('Contact No should have 10 digits and only contain digits.');
+      setContactNoError('Exactly 10 digits allowed');
     } else {
       setContactNoError('');
     }
@@ -210,7 +218,7 @@ function AddEmployee() {
 
     const currentYear = new Date().getFullYear();
   if (year > 2003 || year <= 1980) {
-    setDobError('Year should be between 1981 and the 2003');
+    setDobError('Should be between 1981 and the 2003');
     return;
   }
     if (month < 1 || month > 12) {
@@ -246,7 +254,7 @@ function AddEmployee() {
     
         const currentYear = new Date().getFullYear();
       if (year <= 2018 || year > currentYear) {
-        setDojError('Year should be between 2018 and the current year');
+        setDojError('Must be between 2018 and current year');
         return;
       }
         if (month < 1 || month > 12) {
@@ -257,7 +265,7 @@ function AddEmployee() {
           
           const daysInMonth = new Date(year, month, 0).getDate();
           if (day < 1 || day > daysInMonth) {
-            setDojError(`Day should be between 1 and ${daysInMonth}`);
+            setDojError(`Should be between 1 and ${daysInMonth}`);
             return;
           }
       
@@ -290,7 +298,10 @@ function AddEmployee() {
               onBlur={validateName}
               required
             />
-            {nameError && <div className="error-message">{nameError}</div>}
+            {/* {nameError && <div className="error-message">{nameError}</div>} */}
+            <div className="error-message-container-addemployee">
+              {nameError && <div className="error-message">{nameError}</div>}
+           </div>
           </div>
           <div className="grid-item">
             <label htmlFor="email">Email</label>
@@ -305,7 +316,10 @@ function AddEmployee() {
               onBlur={validateEmail}
               required
             />
-            {emailError && <div className="error-message">{emailError}</div>}
+            {/* {emailError && <div className="error-message">{emailError}</div>} */}
+            <div className="error-message-container-addemployee">
+              {emailError && <div className="error-message">{emailError}</div>}
+            </div>
           </div>
           <div className="grid-item">
             <label htmlFor="employeeId">Employee ID</label>
@@ -319,7 +333,11 @@ function AddEmployee() {
               onBlur={validateEmployeeId}
               required
             />
-            {employeeIdError && <div className="error-message">{employeeIdError}</div>}
+            {/* {employeeIdError && <div className="error-message">{employeeIdError}</div>} */}
+            <div className="error-message-container-addemployee">
+              {employeeIdError && <div className="error-message">{employeeIdError}</div>}
+          </div>
+
           </div>
           <div className="grid-item">
             <label htmlFor="dob">DOB (DD/MM/YYYY)</label>
@@ -333,7 +351,10 @@ function AddEmployee() {
               onBlur={validateDob}
               required
             />
-            {dobError && <div className="error-message">{dobError}</div>}
+            {/* {dobError && <div className="error-message">{dobError}</div>} */}
+            <div className="error-message-container-addemployee">
+              {dobError && <div className="error-message">{dobError}</div>}
+            </div>
           </div>
           <div className="grid-item">
             <label htmlFor="doj">DOJ (DD/MM/YYYY)</label>
@@ -345,7 +366,10 @@ function AddEmployee() {
               onBlur={validateDoj}
               required
             />
-            {dojError && <div className="error-message">{dojError}</div>}
+            {/* {dojError && <div className="error-message">{dojError}</div>} */}
+            <div className="error-message-container-addemployee">
+              {dojError && <div className="error-message">{dojError}</div>}
+            </div>
           </div>
           <div className="grid-item">
             <label htmlFor="location">Location</label>
@@ -368,6 +392,7 @@ function AddEmployee() {
             <select
               id="designation"
               value={designation}
+              className = "designation"
               onChange={(e) => setDesignation(e.target.value)}
               required
             >
@@ -381,6 +406,9 @@ function AddEmployee() {
               <option value="Recruiter">Recruiter</option>
               <option value="Operation Analyst">Operation Analyst</option>
             </select>
+            <div className="error-message-container-addemployee">
+              {false && <div className="error-message">{emailError}</div>}
+            </div>
           </div>
            <div className="grid-item">
             <label htmlFor="role">Role</label>
@@ -405,7 +433,10 @@ function AddEmployee() {
               onBlur={validateContactNo}
               required
             />
-            {contactNoError && <div className="error-message">{contactNoError}</div>}
+            {/* {contactNoError && <div className="error-message">{contactNoError}</div>} */}
+            <div className="error-message-container-addemployee">
+              {contactNoError && <div className="error-message">{contactNoError}</div>}
+            </div>
           </div>
           <div className="grid-item">
           <label htmlFor="skills">Skills</label>
@@ -420,9 +451,12 @@ function AddEmployee() {
             onChange={handleSkillChange}
             placeholder="Select skills..."
           />
-          {skillsError && (
+          {/* {skillsError && (
             <div className="error-message">{skillsError}</div>
-          )}
+          )} */}
+          <div className="error-message-container-addemployee">
+              {skillsError && <div className="error-message">{skillsError}</div>}
+            </div>
         </div>
         </div>
         <div className="form-group">

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import '../CSS/Login.css';
 import { useNavigate } from 'react-router-dom';
+import {Base64} from 'js-base64';
 
 function Login({ setIsLoggedIn }) {
   const [email, setEmail] = useState('');
@@ -16,7 +17,7 @@ function Login({ setIsLoggedIn }) {
   const validateEmail = () => {
     const emailPattern = /^[A-Za-z0-9._%+-]+@nucleusteq\.com$/;
     if (!emailPattern.test(email)) {
-      setEmailError('Email should be in valid format ending with @nucleusteq.com');
+      setEmailError('Email should end with @nucleusteq.com');
       return false;
     }
     setEmailError('');
@@ -30,7 +31,7 @@ function Login({ setIsLoggedIn }) {
 
   const validatePassword = () => {
     if (password.length < 8) {
-      setPasswordError('Password should be at least 8 characters long');
+      setPasswordError('Atleast 8 characters needed');
       return false;
     }
     setPasswordError('');
@@ -42,12 +43,15 @@ function Login({ setIsLoggedIn }) {
     const isEmailValid = validateEmail();
     const isPasswordValid = validatePassword();
 
+    const encodedPassword = Base64.encode(password);
+    console.log(encodedPassword);
+
     const requestBody = {
       empEmail: email,
-      empPassword: password,
+      empPassword: encodedPassword,
     };
 
-    if (isEmailValid && isPasswordValid) {
+     if (isEmailValid && isPasswordValid) {
 
       try {
         const response = await fetch('http://localhost:8081/login', {
@@ -57,33 +61,85 @@ function Login({ setIsLoggedIn }) {
           },
           body: JSON.stringify(requestBody),
         });
-  
+        console.log("api call");
         if (response.ok) {
-          setPopupMessage('Login successful!');
-          setShowPopup(true);
+          const responseData = await response.json();
+          localStorage.setItem('isLoggedIn','true');
+          localStorage.setItem('role',responseData.empRole);
+          // console.log("message", responseData.message);
+          // console.log("role",responseData.empRole);
+          // setPopupMessage('Login successful!');
+          // setShowPopup(true);
           setIsLoggedIn(true);
-          setTimeout(() => {
-          navigate('/admin-dashboard');
-        }, 800);
-        }else if(response.status === 401){
-          const errorMessage = await response.text();
-          setPopupMessage(errorMessage);
-          setShowPopup(true);
-        } else if(response.status === 404){
-          const errorMessage = await response.text();
-          setPopupMessage(errorMessage);
-          setShowPopup(true);
-        } else {
-          console.log(response.status);
-          setPopupMessage('Login failed. Please try again.');
-          setShowPopup(true);
+          if(localStorage.getItem('role')==='admin'){
+            setTimeout(() => {
+              navigate('/admin-dashboard');
+             
+            }, 800);
+          }
+          if(localStorage.getItem('role')==='employee'){
+            setTimeout(() => {
+              navigate('/employee-dashboard');
+             
+            }, 800);
+          }
+          
         }
+         else {
+          const errorMessage = await response.json();
+          setPopupMessage(errorMessage.message);
+          setShowPopup(true);
+         }
+        // } else if(response.status === 404){
+        //   const errorMessage = await response.text();
+        //   setPopupMessage(errorMessage);
+        //   setShowPopup(true);
+        // } else {
+        //   console.log(response.status);
+        //   setPopupMessage('Login failed. Please try again.');
+        //   setShowPopup(true);
+        // }
       } catch (error) {
+        //console.log(errormessage);
         setPopupMessage('An error occurred. Please try again later.');
         setShowPopup(true);
       }
       
     }
+
+    // else{
+    //   console.log("Erroorororroororr");
+    //   try {
+    //     const response = await fetch('http://localhost:8081/login', {
+    //       method: 'POST',
+    //       headers: {
+    //         'Content-Type': 'application/json',
+    //       },
+    //       body: JSON.stringify(requestBody),
+    //     });
+  
+    //     if (!response.ok) {
+    //       const responseData = await response.json();
+    //       setPopupMessage(responseData.message);
+          
+    //     }
+    //     // } else if(response.status === 404){
+    //     //   const errorMessage = await response.text();
+    //     //   setPopupMessage(errorMessage);
+    //     //   setShowPopup(true);
+    //     // } else {
+    //     //   console.log(response.status);
+    //     //   setPopupMessage('Login failed. Please try again.');
+    //     //   setShowPopup(true);
+    //     // }
+    //   } catch (error) {
+    //     setPopupMessage('An error occurred. Please try again later.');
+    //     setShowPopup(true);
+    //   }
+
+      
+
+    // }
   };
   const closePopup = () => {
     setShowPopup(false);
@@ -120,7 +176,10 @@ function Login({ setIsLoggedIn }) {
             onBlur={validateEmail}
             required
           />
-          {emailError && <div className="error-message">{emailError}</div>}
+          {/* {emailError && <div className="error-message">{emailError}</div>} */}
+          <div className="error-message-container">
+              {emailError && <div className="error-message">{emailError}</div>}
+          </div>
         </div>
         <div className="form-group">
         <label htmlFor="password" className="label">Password</label>
@@ -134,10 +193,13 @@ function Login({ setIsLoggedIn }) {
             onBlur={validatePassword}
             required
           />
-          {passwordError && <div className="error-message">{passwordError}</div>}
+          {/* {passwordError && <div className="error-message">{passwordError}</div>} */}
+          <div className="error-message-container">
+              {passwordError && <div className="error-message">{passwordError}</div>}
+          </div>
         </div>
         <div className="button-group">
-          <button type="submit" className="primary-button">Sign In</button>
+          <button type="submit" className="primary-button">Log In</button>
           
         </div>
         <h4>Not a registered user ?</h4>{" "}

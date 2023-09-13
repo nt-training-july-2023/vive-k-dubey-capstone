@@ -9,7 +9,7 @@ function ProjectsPage() {
     // Make an API request to fetch project data
     axios.get('http://localhost:8081/employee/getAllProjects')
       .then((response) => {
-        const responseData = response.data.data; // Assuming the project data is in response.data.data
+        const responseData = response.data; // Assuming the project data is in response.data.data
         setProjects(responseData); // Update the projects state with the fetched data
       })
       .catch((error) => {
@@ -22,17 +22,17 @@ function ProjectsPage() {
       {projects.map((project) => (
         <div key={project.managerEmployeeId} className="project-card">
           <div className="project-name larger">{project.name}</div>
-          <div className="project-head smaller">Head: {project.head}</div>
+          <div className="project-head smaller"><span style={{ fontWeight: 600 }}>Head:</span> {project.head}</div>
           <div className="project-id larger">Project ID: {project.projectId}</div>
-          <div className="start-date smaller">Start Date: {project.startDate}</div>
+          <div className="start-date smaller"><span style={{ fontWeight: 600 }}>Start Date:</span> {project.startDate}</div>
           <div className="project-description">
               <span style={{ fontWeight: 600 }}>Project Description:</span> {project.description}
         </div>
           <div className="project-team">
-            Team Members: Abhay, Ashish, Praveen
+          <span style={{ fontWeight: 600 }}>Team Members:</span> Abhay, Ashish, Praveen
           </div>
           <div className="project-skills">
-            Skills: {project.skills.join(', ')}
+          <span style={{ fontWeight: 600 }}>Skills: </span>{project.skills.join(', ')}
           </div>
         </div>
       ))}

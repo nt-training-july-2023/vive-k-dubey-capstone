@@ -10,7 +10,10 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CommonResponseDto {
-  
-  private String message;
+
+	/*
+	 * field for storing message.
+	 */
+	private String message;
 
 }

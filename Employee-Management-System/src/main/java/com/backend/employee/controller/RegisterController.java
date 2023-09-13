@@ -10,7 +10,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.backend.employee.dto.LoginDto;
+import com.backend.employee.dto.LoginOutDto;
 import com.backend.employee.dto.RegisterDto;
+import com.backend.employee.exception.DataNotFoundException;
+import com.backend.employee.exception.WrongInputException;
 import com.backend.employee.service.RegisterService;
 
 import lombok.AllArgsConstructor;
@@ -55,7 +58,7 @@ public class RegisterController {
    *         operation.
    */
   @PostMapping("/login")
-  public ResponseEntity<String> login(@RequestBody final LoginDto loginDto) {
+  public LoginOutDto login(@RequestBody final LoginDto loginDto) throws WrongInputException, DataNotFoundException {
     return registerService.authenticate(loginDto);
   }
 }

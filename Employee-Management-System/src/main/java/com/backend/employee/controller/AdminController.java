@@ -23,62 +23,101 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@CrossOrigin(origins = "http://localhost:3000")
+/**
+ * The controller class for managing employee-related operations.
+ */
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/employee")
 public class AdminController {
 
-    private final AdminService adminService;
+	private final AdminService adminService;
 
-    @Autowired
-    public AdminController(AdminService adminService) {
-        this.adminService = adminService;
-    }
+	@Autowired
+	public AdminController(AdminService adminService) {
+		this.adminService = adminService;
+	}
 
-    @PostMapping("/add")
-    public CommonResponseDto addEmployee(@RequestBody RegisterDto registerDto) throws DataAlreadyExistsException, WrongInputException {
-        return adminService.addEmployee(registerDto);
-    }
-    
-     
-    @GetMapping("/getAllEmployees")
-    public List<RegisterDto> getAllEmployees() throws DataNotFoundException {
-        return adminService.getAllEmployees();
-    }
-    
-    
-    @GetMapping("/getAllManagers")
-    public List<ManagerDto> getAllManagers() throws DataNotFoundException {
-        return adminService.getAllManagers();
-    }
-    
-    
-    // testing code 
-    @GetMapping("/getAllManagersInfo")
-    public List<ManagerInfoDto> getAllManagersInfo() throws DataNotFoundException {
-        // Retrieve manager information from your database
-        List<ManagerInfoDto> managerInfoList = adminService.getAllManagersInfo();
-        return managerInfoList;
-    }
-    
-    
- // Add a new endpoint to add a project
-    @PostMapping("/addProject")
-    public CommonResponseDto addProject(@RequestBody ProjectDto projectDto) throws WrongInputException  {
-        return adminService.addProject(projectDto);
-    }
-    
-    // Add a new endpoint to get all projects
-    @GetMapping("/getAllProjects")
-    public ResponseDto<ProjectDto> getAllProjects() {
-        return adminService.getAllProjects();
-    }
-    
-    @GetMapping("/getAll/project/{managerId}")
-    public List<ProjectOutDto> getAllByManagerId(@PathVariable Long managerId){
-        return adminService.getAllByManagerId(managerId);
-        
-    }
-    
+	/**
+	 * Endpoint to add an employee.
+	 *
+	 * @param registerDto The employee information to add.
+	 * @return A response indicating the success or failure of the operation.
+	 * @throws DataAlreadyExistsException If the employee data already exists.
+	 * @throws WrongInputException        If the input data is incorrect.
+	 */
+	@PostMapping("/add")
+	public CommonResponseDto addEmployee(@RequestBody RegisterDto registerDto)
+			throws DataAlreadyExistsException, WrongInputException {
+		return adminService.addEmployee(registerDto);
+	}
+
+	/**
+	 * Endpoint to retrieve all employees.
+	 *
+	 * @return A list of employee data.
+	 * @throws DataNotFoundException If no employee data is found.
+	 */
+	@GetMapping("/getAllEmployees")
+	public List<RegisterDto> getAllEmployees() throws DataNotFoundException {
+		return adminService.getAllEmployees();
+	}
+
+	/**
+	 * Endpoint to retrieve all managers.
+	 *
+	 * @return A list of manager data.
+	 * @throws DataNotFoundException If no manager data is found.
+	 */
+	@GetMapping("/getAllManagers")
+	public List<ManagerDto> getAllManagers() throws DataNotFoundException {
+		return adminService.getAllManagers();
+	}
+
+	/**
+	 * Endpoint to retrieve all manager information.
+	 *
+	 * @return A list of manager information data.
+	 * @throws DataNotFoundException If no manager information data is found.
+	 */
+	@GetMapping("/getAllManagersInfo")
+	public List<ManagerInfoDto> getAllManagersInfo() throws DataNotFoundException {
+		// Retrieve manager information from your database
+		List<ManagerInfoDto> managerInfoList = adminService.getAllManagersInfo();
+		return managerInfoList;
+	}
+
+	/**
+	 * Endpoint to add a project.
+	 *
+	 * @param projectDto The project information to add.
+	 * @return A response indicating the success or failure of the operation.
+	 * @throws WrongInputException If the input data is incorrect.
+	 */
+	@PostMapping("/addProject")
+	public CommonResponseDto addProject(@RequestBody ProjectDto projectDto) throws WrongInputException {
+		return adminService.addProject(projectDto);
+	}
+
+	/**
+	 * Endpoint to retrieve all projects.
+	 *
+	 * @return A response containing a list of project data.
+	 */
+	@GetMapping("/getAllProjects")
+	public List<ProjectDto> getAllProjects() throws DataNotFoundException {
+		return adminService.getAllProjects();
+	}
+
+	/**
+	 * Endpoint to retrieve all projects by manager ID.
+	 *
+	 * @param managerId The ID of the manager.
+	 * @return A list of project data associated with the manager.
+	 */
+	@CrossOrigin(origins = "http://localhost:3000")
+	@GetMapping("/getAll/project/{managerId}")
+	public List<ProjectOutDto> getAllByManagerId(@PathVariable Long managerId) {
+		return adminService.getAllByManagerId(managerId);
+	}
 }
-

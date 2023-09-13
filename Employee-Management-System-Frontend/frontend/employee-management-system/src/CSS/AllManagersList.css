@@ -17,12 +17,14 @@
     margin: 10px 0;
     display: flex;
     justify-content: space-between;
+    
   }
   
   .left-section,
-  .right-section {
+  .right-section-manager {
     flex: 1;
     padding: 0 10px;
+     
   }
   
   .field {
@@ -38,10 +40,13 @@
     font-size: 12px;
  }
 
- .right-section .employee-id {
-    margin-top: 0%;
-    font-weight: bold;
+ .right-section-manager {
+    margin-top: 2%;
  }
+
+ .right-section-manager .employee-id  {
+  margin-bottom: 10%;
+}
 
  #projectName{
     width: 100%;

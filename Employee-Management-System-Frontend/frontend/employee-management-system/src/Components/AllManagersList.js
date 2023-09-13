@@ -1,60 +1,40 @@
 import React, { useState, useEffect } from 'react';
 import '../CSS/AllManagersList.css';
+import ManagerCard from "./ManagerCard.js";
+import axios from 'axios';
 
 function AllManagersList() {
-  const [managers, setManagers] = useState([]);
+  const [managerList, setmanagerList] = useState([]);
+    async function apicall() {
 
-  useEffect(() => {
-    
-    fetch('http://localhost:8081/employee/getAllManagers')
-      .then((response) => response.json())
-      .then((data) => {
-        
-        setManagers(data);
-      })
-      .catch((error) => {
-        console.error('Error fetching managers:', error);
-      });
+        try {
+
+            const res = await axios.get("http://localhost:8081/employee/getAllManagers");
+            console.log("Manager list", res.data);
+            setmanagerList(res.data);
+            console.log("employee data", managerList);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    useEffect(() => {
+      
+      apicall();
   }, []);
+
+  console.log("Manager List outside useEffect:", managerList);
 
   return (
     <div className="content">
       <div className="card-container">
-        {managers.map((manager, index) => (
-          <div className="card" key={index}>
-            {console.log(index)}
-            <div className="left-section">
-              <div className="employee-name larger">{manager.empName}</div>
-              <div className="field smaller">{manager.empDesignation}</div>
-              <div className="field">
-                <select id="projectName">
-                    <option value="Actual Project"> Project</option>
-                    <option value="Project 1">Project 1</option>
-                    <option value="Project 2">Project 2</option>
-                </select>
-            </div>
-            {/* <div className="field">
-                <select id="projectName">
-                  <option value="Actual Project">Project</option>
-                  {manager.projectNames.map((projectName, projectIndex) => (
-                    <option key={projectIndex} value={projectName}>
-                      {projectName}
-                    </option>
-                  ))}
-                </select>
-              </div> */}
-              <div className="field">Contact: {manager.empContactNo}</div>
-              <div className="field">Email: {manager.empEmail}</div>
-              <div className="field">Location: {manager.empLocation}</div>
-            </div>
-            <div className="right-section">
-              <div className="employee-id ">Employee ID: {manager.empId}</div>
-              {/* <div className="field">Skills: {manager.empSkills.join(', ')}</div> */}
-              <div className="field">Skills: React, Java</div>
-              <div className="field">Team: {manager.managerName}</div>
-            </div>
-          </div>
-        ))}
+        {managerList.length > 0 ? (
+          managerList.map((manager) => (
+            <ManagerCard key={manager.id} manager={manager} />
+          ))
+        ) : (
+          <p>No managers available.</p>
+        )}
       </div>
     </div>
   );

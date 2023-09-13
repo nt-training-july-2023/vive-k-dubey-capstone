@@ -17,21 +17,47 @@ function AdminDashboard({ setIsLoggedIn, isLoggedIn }) {
   const [showAddProject, setShowAddProject] = useState(false);
   const navigate = useNavigate();
 
+  const userRole = localStorage.getItem('role');
+  
+  // useEffect(() => {
+  //   // Check if the user is an employee and disable the back button
+  //   if (userRole === 'admin') {
+  //     disableBackButton();
+  //   }
+
+  //   // Cleanup the effect when the component unmounts
+  //   return () => {
+  //     // Re-enable the back button when the component is unmounted
+  //     enableBackButton();
+  //   };
+  // }, [userRole]);
+
+  // const disableBackButton = () => {
+  //   window.history.pushState(null, '', window.location.href);
+  //   window.onpopstate = function () {
+  //     window.history.pushState(null, '', window.location.href);
+  //   };
+  // };
+
+  // const enableBackButton = () => {
+  //   window.onpopstate = null;
+  // };
+
   /* testing code 
   */
 
 
   
 
-   useEffect(() => {
-     // If the user is not logged in, navigate them to the login page
-     if (!isLoggedIn) {
-      navigate('/');
-     } else {
-       // Replace the current history state with the admin dashboard route
-       window.history.replaceState(null, null, '/admin-dashboard');
-     }
-   }, [isLoggedIn, navigate]);
+  //  useEffect(() => {
+  //    // If the user is not logged in, navigate them to the login page
+  //    if (!isLoggedIn) {
+  //     navigate('/');
+  //    } else {
+  //      // Replace the current history state with the admin dashboard route
+  //      window.history.replaceState(null, null, '/admin-dashboard');
+  //    }
+  //  }, [isLoggedIn, navigate]);
 
    
 
@@ -46,7 +72,6 @@ function AdminDashboard({ setIsLoggedIn, isLoggedIn }) {
       setAddAction('Add Project');
     }
 
-    // Reset showAddEmployee when changing tabs
     setShowAddEmployee(false);
     setShowAddManager(false);
     setShowAddProject(false);
@@ -54,7 +79,7 @@ function AdminDashboard({ setIsLoggedIn, isLoggedIn }) {
   };
 
   const handleAddActionClick = () => {
-    // Determine the action based on the selected tab
+   
     if (selectedTab === 'employee') {
       setShowAddEmployee(true);
     } else if (selectedTab === 'manager') {
@@ -65,10 +90,18 @@ function AdminDashboard({ setIsLoggedIn, isLoggedIn }) {
   };
 
    const handleLogout = () => {
-     // Clear the isLoggedIn state and navigate to the login page
-     setIsLoggedIn(false);
+   
+     localStorage.removeItem('isLoggedIn');
+     localStorage.removeItem('role');
+  
      navigate('/');
    };
+
+   if (userRole !== 'admin') {
+    return (     
+       <h1>unauthrized access</h1>
+    );
+  }
 
   return (
     <div className="admin-dashboard">
@@ -94,9 +127,11 @@ function AdminDashboard({ setIsLoggedIn, isLoggedIn }) {
           </button>
         </div>
         <div className="navbar-section">
-            <button className="add-button" onClick={handleAddActionClick}>
-              {addAction}
-            </button>
+        {selectedTab !== 'manager' && (
+          <button className="add-button" onClick={handleAddActionClick}>
+            {addAction}
+        </button>
+  )}
             <button className="logout-button" onClick={handleLogout}>
             Logout
             </button>
@@ -104,9 +139,9 @@ function AdminDashboard({ setIsLoggedIn, isLoggedIn }) {
         </div>
       </nav>
       {selectedTab === 'employee' && !showAddEmployee && <AllEmployeesList />}
-      {showAddEmployee && <AddEmployee />} {/* Render AddEmployee when showAddEmployee is true */}
+      {showAddEmployee && <AddEmployee />} 
       {selectedTab === 'manager' && !showAddManager && <AllManagersList />}
-      {showAddManager && <AddManager />} {/* Render AddEmployee when showAddEmployee is true */}
+      {showAddManager && <AddManager />} 
       {selectedTab === 'project' && !showAddProject && <AllProjectsList />}
       {showAddProject && <AddProject />}
     </div>

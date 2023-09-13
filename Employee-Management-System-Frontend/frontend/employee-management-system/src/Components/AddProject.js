@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import '../CSS/AddProjectForm.css';
 import Select from 'react-select';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 function AddProject() {
   const [projectName, setProjectName] = useState('');
@@ -17,6 +18,8 @@ function AddProject() {
   const [selectedManagerId, setSelectedManagerId] = useState(null);
   const [popupMessage, setPopupMessage] = useState('');
   const [showPopup, setShowPopup] = useState(false);
+  const [projectAdded, setProjectAdded] = useState(false);
+
 
   const [predefinedSkills]= useState([
     'JavaScript',
@@ -45,6 +48,14 @@ function AddProject() {
     skills: [],
     description: ""
 })
+
+  const navigate = useNavigate(); 
+
+
+  const handleCancel = () => {
+    
+    navigate('/admin-dashboard/allProjects'); 
+  };
   const handleChangeManager = (selectedOption) => {
     // Step 2: Update selectedManagerId with the selected manager's ID as a number
     setSelectedManagerId(parseInt(selectedOption.value));
@@ -88,6 +99,13 @@ async function apiCall() {
       setShowPopup(true); // Show the popup
       //resMessage.message = res.data.message;
       //navigate("/project/all");
+
+      setProjectAdded(true);
+
+      // Automatically navigate to AllProjectList after 800 milliseconds
+      // setTimeout(() => {
+      //   navigate('/admin-dashboard/allProjects');
+      // }, 800);
   }catch(error){
     console.log(error);
     setPopupMessage(error.response.data.message); // Set the popup message from the API error response
@@ -283,7 +301,7 @@ async function apiCall() {
             id="skills"
             name='skills'
             isMulti
-            className="add-project-input"
+            className="react-select__control"
             options={predefinedSkills.map((skill) => ({
               value: skill,
               label: skill,
@@ -306,6 +324,9 @@ async function apiCall() {
           ></textarea>
         </div>
         <button type="submit" className="add-project-button">Add Project</button>
+        <button type="button" className="add-project-cancel-button" onClick={handleCancel}>
+            Cancel
+          </button>
       </form>
     </div>
     </>
