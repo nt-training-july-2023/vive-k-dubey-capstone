@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import '../CSS/Login.css';
 import { useNavigate } from 'react-router-dom';
 import {Base64} from 'js-base64';
+import bcrypt from 'bcryptjs';
 
 function Login({ setIsLoggedIn }) {
   const [email, setEmail] = useState('');
@@ -10,6 +11,8 @@ function Login({ setIsLoggedIn }) {
   const [passwordError, setPasswordError] = useState('');
   const [popupMessage, setPopupMessage] = useState('');
   const [showPopup, setShowPopup] = useState(false);
+  const [emailBlurred, setEmailBlurred] = useState(false);
+  const [passwordBlurred, setPasswordBlurred] = useState(false);
   const navigate = useNavigate();
 
   
@@ -44,6 +47,7 @@ function Login({ setIsLoggedIn }) {
     const isPasswordValid = validatePassword();
 
     const encodedPassword = Base64.encode(password);
+    
     console.log(encodedPassword);
 
     const requestBody = {
@@ -66,10 +70,8 @@ function Login({ setIsLoggedIn }) {
           const responseData = await response.json();
           localStorage.setItem('isLoggedIn','true');
           localStorage.setItem('role',responseData.empRole);
-          // console.log("message", responseData.message);
-          // console.log("role",responseData.empRole);
-          // setPopupMessage('Login successful!');
-          // setShowPopup(true);
+          localStorage.setItem('userEmail', email);
+          localStorage.setItem('userName',responseData.empName);
           setIsLoggedIn(true);
           if(localStorage.getItem('role')==='admin'){
             setTimeout(() => {
@@ -77,9 +79,15 @@ function Login({ setIsLoggedIn }) {
              
             }, 800);
           }
+          if(localStorage.getItem('role')==='manager'){
+            setTimeout(() => {
+              navigate('/managerdashboard');
+             
+            }, 800);
+          }
           if(localStorage.getItem('role')==='employee'){
             setTimeout(() => {
-              navigate('/employee-dashboard');
+              navigate('/userdashboard');
              
             }, 800);
           }
@@ -90,56 +98,13 @@ function Login({ setIsLoggedIn }) {
           setPopupMessage(errorMessage.message);
           setShowPopup(true);
          }
-        // } else if(response.status === 404){
-        //   const errorMessage = await response.text();
-        //   setPopupMessage(errorMessage);
-        //   setShowPopup(true);
-        // } else {
-        //   console.log(response.status);
-        //   setPopupMessage('Login failed. Please try again.');
-        //   setShowPopup(true);
-        // }
+        
       } catch (error) {
-        //console.log(errormessage);
         setPopupMessage('An error occurred. Please try again later.');
         setShowPopup(true);
       }
       
     }
-
-    // else{
-    //   console.log("Erroorororroororr");
-    //   try {
-    //     const response = await fetch('http://localhost:8081/login', {
-    //       method: 'POST',
-    //       headers: {
-    //         'Content-Type': 'application/json',
-    //       },
-    //       body: JSON.stringify(requestBody),
-    //     });
-  
-    //     if (!response.ok) {
-    //       const responseData = await response.json();
-    //       setPopupMessage(responseData.message);
-          
-    //     }
-    //     // } else if(response.status === 404){
-    //     //   const errorMessage = await response.text();
-    //     //   setPopupMessage(errorMessage);
-    //     //   setShowPopup(true);
-    //     // } else {
-    //     //   console.log(response.status);
-    //     //   setPopupMessage('Login failed. Please try again.');
-    //     //   setShowPopup(true);
-    //     // }
-    //   } catch (error) {
-    //     setPopupMessage('An error occurred. Please try again later.');
-    //     setShowPopup(true);
-    //   }
-
-      
-
-    // }
   };
   const closePopup = () => {
     setShowPopup(false);
@@ -172,13 +137,18 @@ function Login({ setIsLoggedIn }) {
             className="input-field"
             placeholder="Example@nucleusteq.com"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            onBlur={validateEmail}
+            onChange={(e) => {
+              setEmail(e.target.value)
+              setEmailError(false);
+            }}
+            onBlur={() => {
+              setEmailBlurred(true); 
+              validateEmail(); 
+            }}
             required
           />
-          {/* {emailError && <div className="error-message">{emailError}</div>} */}
           <div className="error-message-container">
-              {emailError && <div className="error-message">{emailError}</div>}
+              {emailBlurred && emailError && <div className="error-message">{emailError}</div>}
           </div>
         </div>
         <div className="form-group">
@@ -189,13 +159,19 @@ function Login({ setIsLoggedIn }) {
             className="input-field"
             placeholder="Password"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            onBlur={validatePassword}
+            onChange={(e) =>{
+              setPassword(e.target.value);
+              setPasswordError(false); 
+
+              }}
+            onBlur={() => {
+              setPasswordBlurred(true); 
+              validatePassword(); 
+            }}
             required
           />
-          {/* {passwordError && <div className="error-message">{passwordError}</div>} */}
           <div className="error-message-container">
-              {passwordError && <div className="error-message">{passwordError}</div>}
+              {passwordBlurred && passwordError && <div className="error-message">{passwordError}</div>}
           </div>
         </div>
         <div className="button-group">

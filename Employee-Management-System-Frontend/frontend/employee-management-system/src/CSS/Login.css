@@ -48,11 +48,11 @@
 }
 
 .error-message-container {
-  width: 300px; /* Set your desired fixed width */
-  height: 20px; /* Set your desired fixed height */
-  overflow: hidden; /* Hide overflow content if the error message is longer */
-  margin-top: 10px; /* Adjust the top margin as needed */
-  position: relative; /* Ensure child elements can be positioned relative to this container */
+  width: 300px; 
+  height: 22px; 
+  overflow: hidden; 
+  margin-top: 10px; 
+  position: relative; 
   margin-bottom: 8px;
 }
 

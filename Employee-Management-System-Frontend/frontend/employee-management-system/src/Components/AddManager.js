@@ -1,11 +1,11 @@
-import React from 'react';
+import React from 'react'
 
 function AddManager() {
   return (
-    <div className="add-manager">
-      <h2>Add Manager</h2>
+    <div>
+      Hi
     </div>
-  );
+  )
 }
 
-export default AddManager;
+export default AddManager

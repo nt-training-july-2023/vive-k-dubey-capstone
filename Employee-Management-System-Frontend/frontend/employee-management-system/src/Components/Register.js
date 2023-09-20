@@ -283,7 +283,6 @@ function RegisterForm() {
               onBlur={validateEmail}
               required
             />
-            {/* {emailError && <div className="error-message">{emailError}</div>} */}
             <div className="error-message-container-addemployee">
               {emailError && <div className="error-message">{emailError}</div>}
             </div>
@@ -300,7 +299,6 @@ function RegisterForm() {
               onBlur={validateEmployeeId}
               required
             />
-            {/* {employeeIdError && <div className="error-message">{employeeIdError}</div>} */}
             <div className="error-message-container-addemployee">
               {employeeIdError && <div className="error-message">{employeeIdError}</div>}
           </div>
@@ -317,7 +315,6 @@ function RegisterForm() {
               onBlur={validateDob}
               required
             />
-            {/* {dobError && <div className="error-message">{dobError}</div>} */}
             <div className="error-message-container-addemployee">
               {dobError && <div className="error-message">{dobError}</div>}
             </div>
@@ -332,7 +329,6 @@ function RegisterForm() {
               onBlur={validateDoj}
               required
             />
-            {/* {dojError && <div className="error-message">{dojError}</div>} */}
             <div className="error-message-container-addemployee">
               {dojError && <div className="error-message">{dojError}</div>}
             </div>
@@ -372,20 +368,6 @@ function RegisterForm() {
               <option value="operationAnalyst">Operation Analyst</option>
             </select>
           </div>
-          {/* <div className="grid-item">
-            <label htmlFor="role">Role</label>
-            <select
-              id="role"
-              value={role}
-              onChange={(e) => setRole(e.target.value)}
-              required
-            >
-              <option value="">Select Role</option>
-              <option value="admin">Admin</option>
-              <option value="manager">Manager</option>
-              <option value="employee">Employee</option>
-            </select>
-          </div> */}
           <div className="grid-item">
             <label htmlFor="contactNo">Contact No</label>
             <input
@@ -396,7 +378,6 @@ function RegisterForm() {
               onBlur={validateContactNo}
               required
             />
-            {/* {contactNoError && <div className="error-message">{contactNoError}</div>} */}
             <div className="error-message-container-addemployee">
               {contactNoError && <div className="error-message">{contactNoError}</div>}
             </div>
@@ -412,7 +393,6 @@ function RegisterForm() {
               onBlur={validatePassword}
               required
             />
-            {/* {passwordError && <div className="error-message">{passwordError}</div>} */}
             <div className="error-message-container-addemployee">
               {passwordError && <div className="error-message">{passwordError}</div>}
             </div>

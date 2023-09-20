@@ -4,7 +4,7 @@ import Select from 'react-select';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-function AddProject() {
+function AddProject({handleTabChange}) {
   const [projectName, setProjectName] = useState('');
   const [managerId, setManagerId] = useState('');
   const [startDate, setStartDate] = useState('');
@@ -54,29 +54,12 @@ function AddProject() {
 
   const handleCancel = () => {
     
-    navigate('/admin-dashboard/allProjects'); 
+    handleTabChange('project');
   };
   const handleChangeManager = (selectedOption) => {
-    // Step 2: Update selectedManagerId with the selected manager's ID as a number
     setSelectedManagerId(parseInt(selectedOption.value));
-    setManagerId(selectedOption.value); // Also update managerId if needed
+    setManagerId(selectedOption.value);
   };
-
-  // useEffect(() => {
-  //   // Fetch the list of managers when the component mounts
-  //   async function fetchManagers() {
-  //     try {
-  //       const response = await axios.get('http://localhost:8081/employee/getAllManagersInfo');
-  //       // Assuming the response data is an array of manager objects
-  //       setManagerList(response.data);
-  //       console.log(response.data);
-  //     } catch (error) {
-  //       console.error('Error fetching managers:', error);
-  //     }
-  //   }
-
-  //   fetchManagers();
-  // }, []);
 
   async function getManagerList() {
     try{
@@ -95,17 +78,14 @@ async function apiCall() {
       const res = await axios.post("http://localhost:8081/employee/addProject",projectData);
       console.log(res.data);
       console.log(res.data);
-      setPopupMessage(res.data.message); // Set the popup message from the API response
-      setShowPopup(true); // Show the popup
-      //resMessage.message = res.data.message;
-      //navigate("/project/all");
+      setPopupMessage(res.data.message); 
+      setShowPopup(true);
 
       setProjectAdded(true);
 
-      // Automatically navigate to AllProjectList after 800 milliseconds
-      // setTimeout(() => {
-      //   navigate('/admin-dashboard/allProjects');
-      // }, 800);
+      setTimeout(() => {
+        handleTabChange('project');
+      }, 800);
   }catch(error){
     console.log(error);
     setPopupMessage(error.response.data.message); // Set the popup message from the API error response
@@ -266,10 +246,9 @@ async function apiCall() {
             <select
               id="add-project-manager"
               name = 'managerEmployeeId'
-              type='text'
+              type='select'
               className="add-project-select"
               onChange={handleChange}
-              isSearchable={true}
               required
             >
               <option value="">Select Manager</option>

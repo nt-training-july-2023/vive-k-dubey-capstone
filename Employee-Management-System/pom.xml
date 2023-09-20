@@ -107,12 +107,10 @@
                 </execution>
             </executions>
             <configuration>
-        		<excludeFilterFile>spotbugs-filter.xml</excludeFilterFile>
+        		
       		</configuration>
         </plugin>
 		</plugins>
 	</build>
-	
-	 
-
 </project>
+

@@ -16,49 +16,48 @@ import com.backend.employee.exception.DataNotFoundException;
 import com.backend.employee.exception.WrongInputException;
 import com.backend.employee.service.RegisterService;
 
-import lombok.AllArgsConstructor;
-
 /**
  * Controller class for handling registration and login operations.
  */
 @CrossOrigin
 @RestController
-@AllArgsConstructor
 public class RegisterController {
 
-  /**
-   * Logger for logging purposes.
-   */
-  static final Logger logger = LoggerFactory 
-      .getLogger(RegisterController.class);
+ /**
+  * Logger for logging purposes.
+  */
+ static final Logger LOGGER = LoggerFactory
+  .getLogger(RegisterController.class);
 
-  /**
-   * registerService instance.
-   */
-  @Autowired
-  private RegisterService registerService;
+ /**
+  * registerService instance.
+  */
+ @Autowired
+ private RegisterService registerService;
 
-  /**
-   * Handles the registration of a new admin.
-   *
-   * @param registerDto The DTO containing the registration information.
-   * @return ResponseEntity indicating the status of the registration operation.
-   */
-  @PostMapping("/admin")
-  public ResponseEntity<String> addAdmin(
-      @RequestBody final RegisterDto registerDto) {
-    return registerService.addAdmin(registerDto);
-  }
+ /**
+  * Handles the registration of a new admin.
+  *
+  * @param registerDto The DTO containing the registration information.
+  * @return ResponseEntity indicating the status of the registration operation.
+  */
+ @PostMapping("/admin")
+ public final ResponseEntity<String> addAdmin(
+  @RequestBody final RegisterDto registerDto) {
+  return registerService.addAdmin(registerDto);
+ }
 
-  /**
-   * Handles the authentication of a user during login.
-   *
-   * @param loginDto The DTO containing the login credentials.
-   * @return ResponseEntity indicating the status of the authentication
-   *         operation.
-   */
-  @PostMapping("/login")
-  public LoginOutDto login(@RequestBody final LoginDto loginDto) throws WrongInputException, DataNotFoundException {
-    return registerService.authenticate(loginDto);
-  }
+ /**
+  * Handles the authentication of a user during login.
+  *
+  * @param loginDto The DTO containing the login credentials.
+  * @return ResponseEntity indicating status of the authentication operation.
+  * @throws WrongInputException   WrongInputException.
+  * @throws DataNotFoundException DataNotFoundException.
+  */
+ @PostMapping("/login")
+ public final LoginOutDto login(@RequestBody final LoginDto loginDto)
+  throws WrongInputException, DataNotFoundException {
+  return registerService.authenticate(loginDto);
+ }
 }

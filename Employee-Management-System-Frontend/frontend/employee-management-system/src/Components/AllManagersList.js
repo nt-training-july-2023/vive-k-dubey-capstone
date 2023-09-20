@@ -26,7 +26,7 @@ function AllManagersList() {
   console.log("Manager List outside useEffect:", managerList);
 
   return (
-    <div className="content">
+    <div className="content-all-managers">
       <div className="card-container">
         {managerList.length > 0 ? (
           managerList.map((manager) => (

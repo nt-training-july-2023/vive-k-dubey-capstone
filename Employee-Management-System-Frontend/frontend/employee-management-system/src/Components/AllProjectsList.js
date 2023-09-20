@@ -1,21 +1,34 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios'; // Import Axios for making API requests
+import axios from 'axios'; 
 import '../CSS/AllProjectsList.css';
 
 function ProjectsPage() {
-  const [projects, setProjects] = useState([]); // Initialize projects state as an empty array
+  const [projects, setProjects] = useState([]); 
 
   useEffect(() => {
-    // Make an API request to fetch project data
+
     axios.get('http://localhost:8081/employee/getAllProjects')
       .then((response) => {
-        const responseData = response.data; // Assuming the project data is in response.data.data
-        setProjects(responseData); // Update the projects state with the fetched data
+        const responseData = response.data; 
+        setProjects(responseData); 
       })
       .catch((error) => {
         console.error('Error fetching project data:', error);
       });
-  }, []); // Empty dependency array means this effect runs once on component mount
+  }, []); 
+
+  const [showPopup, setShowPopup] = useState(false);
+  const [selectedProject, setSelectedProject] = useState(null);
+
+  const handleReadMoreClick = (project) => {
+    setSelectedProject(project);
+    setShowPopup(true);
+  };
+
+  const handleClosePopup = () => {
+    setShowPopup(false);
+    setSelectedProject(null);
+  };
 
   return (
     <div className="projects-container">
@@ -26,16 +39,39 @@ function ProjectsPage() {
           <div className="project-id larger">Project ID: {project.projectId}</div>
           <div className="start-date smaller"><span style={{ fontWeight: 600 }}>Start Date:</span> {project.startDate}</div>
           <div className="project-description">
-              <span style={{ fontWeight: 600 }}>Project Description:</span> {project.description}
+          <span style={{ fontWeight: 600 }}>Project Description:</span>
+            {project.description.length > 50 ? (
+              <>
+                {project.description.substring(0, 50)}{' '}
+                <span className="read-more-link" onClick={() => handleReadMoreClick(project)}>
+                  Read More
+                </span>
+              </>
+            ) : (
+              project.description
+            )}
         </div>
           <div className="project-team">
-          <span style={{ fontWeight: 600 }}>Team Members:</span> Abhay, Ashish, Praveen
+          <span style={{ fontWeight: 600 }}>Team Members:</span> {project.teamMembers.join(', ')}
           </div>
           <div className="project-skills">
           <span style={{ fontWeight: 600 }}>Skills: </span>{project.skills.join(', ')}
           </div>
         </div>
       ))}
+
+          {showPopup && selectedProject && (
+        <div className="popup-allproject">
+          <div className="popup-content-allproject">
+            <span className="popup-close-allproject" onClick={handleClosePopup}>
+              &times;
+            </span>
+            <h2>Project Description</h2>
+            <p>{selectedProject.description}</p>
+            <button onClick={handleClosePopup}>Close</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

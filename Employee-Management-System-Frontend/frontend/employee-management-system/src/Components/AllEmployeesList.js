@@ -33,7 +33,7 @@ function AllEmployeesList() {
     setShowPopup(false);
   };
 
-  if (userRole !== 'admin') {
+  if (userRole === 'employee') {
     return (     
        <h1>unauthrized access</h1>
     );
@@ -49,11 +49,11 @@ function AllEmployeesList() {
           </div>
         </div>
       )}
-      <div className="content">
+      <div className="content-allemployees">
         <div className="card-container">
           {Array.isArray(employees) && employees.length > 0 ? (
             employees.map((employee) => (
-              <EmployeeCard employee={employee} key={employee.empId} /> 
+              <EmployeeCard employee={employee} key={employee.empId} userRole = {userRole} /> 
             ))
           ) : (
             <p>Loading...</p>

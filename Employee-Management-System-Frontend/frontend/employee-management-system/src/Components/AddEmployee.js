@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import Select from 'react-select';
 import bcrypt from 'bcryptjs';
 
-function AddEmployee() {
+function AddEmployee({handleTabChange, handleAddActionClick} ) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [employeeId, setEmployeeId] = useState('');
@@ -20,12 +20,16 @@ function AddEmployee() {
   const [defaultPassword, setDefaultPassword] = useState('');
   const [selectedSkills, setSelectedSkills] = useState([]);
 
+
   const [emailError, setEmailError] = useState('');
   const [employeeIdError, setEmployeeIdError] = useState('');
   const [contactNoError, setContactNoError] = useState('');
   const [dobError, setDobError] = useState('');
   const [dojError, setDojError] = useState('');
   const [skillsError, setSkillsError] = useState('');
+  const [showAddEmployee, setShowAddEmployee] = useState(false);
+  const [showAddManager, setShowAddManager] = useState(false);
+  const [showAddProject, setShowAddProject] = useState(false);
   const navigate = useNavigate();
 
   const [predefinedSkills]= useState([
@@ -49,7 +53,6 @@ function AddEmployee() {
 
   const handleSkillChange = (selectedOptions) => {
     setSelectedSkills(selectedOptions);
-    // Clear the skills error message when a skill is selected.
     setSkillsError('');
   };
 
@@ -66,14 +69,16 @@ function AddEmployee() {
     empSkills: selectedSkills.map(skill => skill.value),
   };
 
-  const generateDefaultPassword = () => {
-    
-    return `${employeeId}@${dob.replace(/\//g, '')}`;
-  };
+  function createPassword() {
+    const [day, month, year] = dob.split('/');
+    const genPassword = employeeId + "@" + day + month + year;
+    console.log("password", genPassword);
+    return genPassword;
+}
 
   // Default password generation function
   useEffect(() => {
-    const defaultPassword = generateDefaultPassword();
+    setDefaultPassword(createPassword());
     console.log('Default Password:', defaultPassword);
   }, [employeeId, dob]);
 
@@ -86,20 +91,18 @@ function AddEmployee() {
   validateDob();
   validateDoj();
   validateContactNo();
-  //validateSkills();
-
-  const hashedPassword =  bcrypt.hashSync(defaultPassword, 10);
-  console.log(hashedPassword);
-  console.log(   "generated one",`${employeeId}@${dob.replace(/\//g, '')}`);
+  const pass = "N1235678";
+  console.log("Inside", defaultPassword);
 
   if (!nameError && !emailError && !employeeIdError && !dobError && !dojError   && !contactNoError ) {
- 
-
-    const defaultPassword = generateDefaultPassword();
     if (selectedSkills.length === 0) {
       setSkillsError('Please select at least one skill.');
       return;
     }
+
+    const hashedPassword =  await bcrypt.hash(defaultPassword, 10);
+    console.log("hashed",hashedPassword);
+
 
 
     const userFormData = {
@@ -124,6 +127,7 @@ function AddEmployee() {
         },
         body: JSON.stringify(userFormData),
       });
+      
 
       console.log(hashedPassword);
     
@@ -131,6 +135,10 @@ function AddEmployee() {
         const responseData = await response.json();
         setPopupMessage(responseData.message);
         setShowPopup(true);
+        setTimeout(() => {
+          handleTabChange('employee');
+        }, 800);
+        
       } else {
         const errorMessage = await response.json();
         setPopupMessage(errorMessage.message);
@@ -154,15 +162,6 @@ function AddEmployee() {
     }
   };
 
-  //const validateSkills = () =>{
-  //   if (skills.trim() === '') {
-  //       setSkillsError('Skills cannot be empty');
-   //   }
-    // if(selectedSkills.length === 0){
-    //   setSkillsError('Skills cannot be empty');
-    // }
- // }
-
   const closePopup = () => {
     setShowPopup(false);
   };
@@ -177,8 +176,8 @@ function AddEmployee() {
     }
   };
 
-  const handleLoginClick = () => {
-    navigate('/');
+  const handleCancelClick = () => {
+    handleTabChange('employee');
   };
 
   const validateEmployeeId = () => {
@@ -294,11 +293,12 @@ function AddEmployee() {
               value={name}
               onChange={(e) => {
                 setName(e.target.value);
-                validateName(e.target.value);}}
+                setNameError(false);
+              
+              }}
               onBlur={validateName}
               required
             />
-            {/* {nameError && <div className="error-message">{nameError}</div>} */}
             <div className="error-message-container-addemployee">
               {nameError && <div className="error-message">{nameError}</div>}
            </div>
@@ -311,12 +311,11 @@ function AddEmployee() {
               value={email}
               onChange={(e) => {
                 setEmail(e.target.value);
-                validateEmail(e.target.value); 
+                setEmailError(false); 
               }}
               onBlur={validateEmail}
               required
             />
-            {/* {emailError && <div className="error-message">{emailError}</div>} */}
             <div className="error-message-container-addemployee">
               {emailError && <div className="error-message">{emailError}</div>}
             </div>
@@ -329,11 +328,11 @@ function AddEmployee() {
               value={employeeId}
               onChange={(e) => {
                 setEmployeeId(e.target.value);
-                validateEmployeeId(e.target.value);}}
+                setEmployeeIdError(false);
+              }}
               onBlur={validateEmployeeId}
               required
             />
-            {/* {employeeIdError && <div className="error-message">{employeeIdError}</div>} */}
             <div className="error-message-container-addemployee">
               {employeeIdError && <div className="error-message">{employeeIdError}</div>}
           </div>
@@ -347,11 +346,11 @@ function AddEmployee() {
               value={dob}
               onChange={(e) => {
                 setDob(e.target.value);
-                validateDob(e.target.value);}}
+                setDobError(false);
+              }}
               onBlur={validateDob}
               required
             />
-            {/* {dobError && <div className="error-message">{dobError}</div>} */}
             <div className="error-message-container-addemployee">
               {dobError && <div className="error-message">{dobError}</div>}
             </div>
@@ -362,11 +361,12 @@ function AddEmployee() {
               type="text"
               id="doj"
               value={doj}
-              onChange={(e) => setDoj(e.target.value)}
+              onChange={(e) => {setDoj(e.target.value);
+              setDojError(false);
+              }}
               onBlur={validateDoj}
               required
             />
-            {/* {dojError && <div className="error-message">{dojError}</div>} */}
             <div className="error-message-container-addemployee">
               {dojError && <div className="error-message">{dojError}</div>}
             </div>
@@ -429,11 +429,12 @@ function AddEmployee() {
               type="text"
               id="contactNo"
               value={contactNo}
-              onChange={(e) => setContactNo(e.target.value)}
+              onChange={(e) => {setContactNo(e.target.value);
+              setContactNoError(false);
+              }}
               onBlur={validateContactNo}
               required
             />
-            {/* {contactNoError && <div className="error-message">{contactNoError}</div>} */}
             <div className="error-message-container-addemployee">
               {contactNoError && <div className="error-message">{contactNoError}</div>}
             </div>
@@ -450,10 +451,8 @@ function AddEmployee() {
             value={selectedSkills}
             onChange={handleSkillChange}
             placeholder="Select skills..."
+            className="select-container-addemployee"
           />
-          {/* {skillsError && (
-            <div className="error-message">{skillsError}</div>
-          )} */}
           <div className="error-message-container-addemployee">
               {skillsError && <div className="error-message">{skillsError}</div>}
             </div>
@@ -462,6 +461,9 @@ function AddEmployee() {
         <div className="form-group">
           <button type="submit" className="login-button" onClick={handleSubmit} >
               Add Employee
+            </button>
+            <button type="button" className="cancel-button-addemployee" onClick={handleCancelClick}>
+            Cancel
             </button>
         </div>
       </form>

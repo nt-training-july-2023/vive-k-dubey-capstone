@@ -18,6 +18,8 @@ function AdminDashboard({ setIsLoggedIn, isLoggedIn }) {
   const navigate = useNavigate();
 
   const userRole = localStorage.getItem('role');
+  const userName = localStorage.getItem('userName');
+  const firstName = userName ? userName.split(' ')[0] : '';
   
   // useEffect(() => {
   //   // Check if the user is an employee and disable the back button
@@ -97,7 +99,7 @@ function AdminDashboard({ setIsLoggedIn, isLoggedIn }) {
      navigate('/');
    };
 
-   if (userRole !== 'admin') {
+   if (userRole === 'employee') {
     return (     
        <h1>unauthrized access</h1>
     );
@@ -106,6 +108,10 @@ function AdminDashboard({ setIsLoggedIn, isLoggedIn }) {
   return (
     <div className="admin-dashboard">
       <nav className="navbar">
+      <div className="navbar-section">
+          <span className="welcome-message">Welcome, {firstName}!</span>
+          {/* Rest of the code for tabs */}
+        </div>
         <div className="navbar-section">
           <button
             className={`tab-button ${selectedTab === 'employee' ? 'selected' : ''}`}
@@ -126,11 +132,12 @@ function AdminDashboard({ setIsLoggedIn, isLoggedIn }) {
             Project
           </button>
         </div>
-        <div className="navbar-section">
-        {selectedTab !== 'manager' && (
+        <div className="navbar-section ">
+        {selectedTab !== 'manager' && userRole !== 'manager' &&  !showAddEmployee && !showAddProject &&  (
           <button className="add-button" onClick={handleAddActionClick}>
             {addAction}
         </button>
+       
   )}
             <button className="logout-button" onClick={handleLogout}>
             Logout
@@ -139,11 +146,11 @@ function AdminDashboard({ setIsLoggedIn, isLoggedIn }) {
         </div>
       </nav>
       {selectedTab === 'employee' && !showAddEmployee && <AllEmployeesList />}
-      {showAddEmployee && <AddEmployee />} 
+      {showAddEmployee && <AddEmployee handleTabChange={handleTabChange} />} 
       {selectedTab === 'manager' && !showAddManager && <AllManagersList />}
-      {showAddManager && <AddManager />} 
+      {showAddManager && <AddManager handleTabChange={handleTabChange}/>} 
       {selectedTab === 'project' && !showAddProject && <AllProjectsList />}
-      {showAddProject && <AddProject />}
+      {showAddProject && <AddProject handleTabChange={handleTabChange}/>}
     </div>
   );
 }

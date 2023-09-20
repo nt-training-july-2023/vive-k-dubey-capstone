@@ -1,17 +1,14 @@
-.admin-dashboard {
-    padding: 20px;
-  }
+
   
   .navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: white;
+    background-color: #337CCF;
     padding: 10px 20px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    width: 90%;
-    margin-left: 5%;
-    margin-right: 5%;
+    width: 97%;
+    height: 60px;
   }
   
    .navbar-section {
@@ -21,33 +18,42 @@
   
   .tab-button {
     border: none;
-    background-color: white;
-    color: #333;
-    padding: 10px 20px;
+    background-color: #337CCF;
+    color: white;
+    padding: 10px 40px;
+    font-size: 15px;
     cursor: pointer;
     transition: background-color 0.3s;
   }
   
   .tab-button.selected {
-    background-color: blue;
+    background-color: #337CCF;
     color: white;
+    border: 1px solid white;
 
     /* testing code */
     
   }
+
+  .welcome-message {
+    font-size: 24px;
+    color: white;
+  }
   
   .add-button {
     border: none;
-    background-color:blue;
+    background-color: #337CCF;
+    border: 1px solid white;
     color: white;
     padding: 10px 20px;
     margin-right: 20px;
     cursor: pointer;
     transition: background-color 0.3s;
+    font-size: 15px;
   }
   
   .add-button:hover {
-    background-color: darkblue;
+    background-color: #337CCF;
   }
 
   .logout-button {
@@ -57,6 +63,7 @@
     padding: 10px 20px;
     cursor: pointer;
     transition: background-color 0.3s;
+    font-size: 15px;
   }
   
   .logout-button:hover {
@@ -70,11 +77,9 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background-color: white;
+      background-color: #337CCF;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      width: 80%;
-      margin-left: 5%;
-      margin-right: 5%;
+      width: 97%;
     }
     
   
@@ -89,21 +94,21 @@
     
     .tab-button {
       
-      font-size: 8px;
+      font-size: 12px;
       padding: 6px 6px; 
     }
   
    
     .add-button {
       
-      font-size: 8px;
+      font-size: 12px;
       padding: 6px 6px; 
     }
   
     
     .logout-button {
       
-      font-size: 8px;
+      font-size: 12px;
       padding: 6px 6px; 
     }
   }
