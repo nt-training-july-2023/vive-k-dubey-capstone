@@ -15,6 +15,7 @@ import com.backend.employee.dto.RegisterDto;
 import com.backend.employee.exception.DataNotFoundException;
 import com.backend.employee.exception.WrongInputException;
 import com.backend.employee.service.RegisterService;
+import com.backend.employee.validations.ValidationService;
 
 /**
  * Controller class for handling registration and login operations.
@@ -22,11 +23,12 @@ import com.backend.employee.service.RegisterService;
 @CrossOrigin
 @RestController
 public class RegisterController {
-
+ @Autowired
+ private ValidationService validationService;
  /**
   * Logger for logging purposes.
   */
- static final Logger LOGGER = LoggerFactory
+ private static Logger LOGGER = LoggerFactory
   .getLogger(RegisterController.class);
 
  /**
@@ -42,7 +44,7 @@ public class RegisterController {
   * @return ResponseEntity indicating the status of the registration operation.
   */
  @PostMapping("/admin")
- public final ResponseEntity<String> addAdmin(
+ public ResponseEntity<String> addAdmin(
   @RequestBody final RegisterDto registerDto) {
   return registerService.addAdmin(registerDto);
  }
@@ -56,8 +58,9 @@ public class RegisterController {
   * @throws DataNotFoundException DataNotFoundException.
   */
  @PostMapping("/login")
- public final LoginOutDto login(@RequestBody final LoginDto loginDto)
+ public LoginOutDto login(@RequestBody final LoginDto loginDto)
   throws WrongInputException, DataNotFoundException {
+  validationService.loginValidation(loginDto);
   return registerService.authenticate(loginDto);
  }
 }

@@ -29,7 +29,9 @@ function AllManagersList() {
     <div className="content-all-managers">
       <div className="card-container">
         {managerList.length > 0 ? (
-          managerList.map((manager) => (
+          managerList.sort(function (a, b) {
+            return a.empName.localeCompare(b.empName);
+          }).map((manager) => (
             <ManagerCard key={manager.id} manager={manager} />
           ))
         ) : (

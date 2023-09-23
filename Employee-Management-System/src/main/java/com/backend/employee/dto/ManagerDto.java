@@ -12,7 +12,7 @@ import java.util.Objects;
 public class ManagerDto {
 
  @Override
- public final String toString() {
+ public String toString() {
   return "ManagerDto [id=" + id + ", empName=" + empName
    + ", empDesignation=" + empDesignation + ", empContactNo=" + empContactNo
    + ", empEmail=" + empEmail + ", empLocation=" + empLocation + ", empId="
@@ -32,7 +32,7 @@ public class ManagerDto {
   *
   * @return id of this class.
   */
- public final Long getId() {
+ public Long getId() {
   return id;
  }
 
@@ -41,7 +41,7 @@ public class ManagerDto {
   * @param idLocal idLocal.
   */
 
- public final void setId(final Long idLocal) {
+ public void setId(final Long idLocal) {
   this.id = idLocal;
  }
 
@@ -51,7 +51,7 @@ public class ManagerDto {
   * @return empName.
   */
 
- public final String getEmpName() {
+ public String getEmpName() {
   return empName;
  }
 
@@ -60,7 +60,7 @@ public class ManagerDto {
   *
   * @param empNameLocal empNameLocal.
   */
- public final void setEmpName(final String empNameLocal) {
+ public void setEmpName(final String empNameLocal) {
   this.empName = empNameLocal;
  }
 
@@ -69,7 +69,7 @@ public class ManagerDto {
   *
   * @return empDesignation.
   */
- public final String getEmpDesignation() {
+ public String getEmpDesignation() {
   return empDesignation;
  }
 
@@ -78,7 +78,7 @@ public class ManagerDto {
   *
   * @param empDesignationLocal empDesignationLocal.
   */
- public final void setEmpDesignation(final String empDesignationLocal) {
+ public void setEmpDesignation(final String empDesignationLocal) {
   this.empDesignation = empDesignationLocal;
  }
 
@@ -87,7 +87,7 @@ public class ManagerDto {
   *
   * @return empContactNo.
   */
- public final String getEmpContactNo() {
+ public String getEmpContactNo() {
   return empContactNo;
  }
 
@@ -96,7 +96,7 @@ public class ManagerDto {
   *
   * @param empContactNoLocal empContactNoLocal.
   */
- public final void setEmpContactNo(final String empContactNoLocal) {
+ public void setEmpContactNo(final String empContactNoLocal) {
   this.empContactNo = empContactNoLocal;
  }
 
@@ -105,7 +105,7 @@ public class ManagerDto {
   *
   * @return empEmail.
   */
- public final String getEmpEmail() {
+ public String getEmpEmail() {
   return empEmail;
  }
 
@@ -114,7 +114,7 @@ public class ManagerDto {
   *
   * @param empEmailLocal empEmailLocal.
   */
- public final void setEmpEmail(final String empEmailLocal) {
+ public void setEmpEmail(final String empEmailLocal) {
   this.empEmail = empEmailLocal;
  }
 
@@ -123,7 +123,7 @@ public class ManagerDto {
   *
   * @return empLocation.
   */
- public final String getEmpLocation() {
+ public String getEmpLocation() {
   return empLocation;
  }
 
@@ -132,7 +132,7 @@ public class ManagerDto {
   *
   * @param empLocationLocal empLocationLocal.
   */
- public final void setEmpLocation(final String empLocationLocal) {
+ public void setEmpLocation(final String empLocationLocal) {
   this.empLocation = empLocationLocal;
  }
 
@@ -141,7 +141,7 @@ public class ManagerDto {
   *
   * @return empId.
   */
- public final String getEmpId() {
+ public String getEmpId() {
   return empId;
  }
 
@@ -150,7 +150,7 @@ public class ManagerDto {
   *
   * @param empIdLocal empIdLocal.
   */
- public final void setEmpId(final String empIdLocal) {
+ public void setEmpId(final String empIdLocal) {
   this.empId = empIdLocal;
  }
 
@@ -159,7 +159,7 @@ public class ManagerDto {
   *
   * @return empSkills.
   */
- public final List<String> getEmpSkills() {
+ public List<String> getEmpSkills() {
   if (empSkills != null) {
    return new ArrayList<>(empSkills);
   } else {
@@ -172,7 +172,7 @@ public class ManagerDto {
   *
   * @param empSkillsLocal empSkillsLocal.
   */
- public final void setEmpSkills(final List<String> empSkillsLocal) {
+ public void setEmpSkills(final List<String> empSkillsLocal) {
   this.empSkills = new ArrayList<>(empSkillsLocal);
  }
 
@@ -181,7 +181,7 @@ public class ManagerDto {
   *
   * @return managerName.
   */
- public final String getManagerName() {
+ public String getManagerName() {
   return managerName;
  }
 
@@ -190,7 +190,7 @@ public class ManagerDto {
   *
   * @param managerNameLocal managerNameLocal.
   */
- public final void setManagerName(final String managerNameLocal) {
+ public void setManagerName(final String managerNameLocal) {
   this.managerName = managerNameLocal;
  }
 
@@ -199,7 +199,7 @@ public class ManagerDto {
   *
   * @return projectNames.
   */
- public final List<String> getProjectNames() {
+ public List<String> getProjectNames() {
   if (projectNames != null) {
    return new ArrayList<>(projectNames);
   } else {
@@ -212,7 +212,7 @@ public class ManagerDto {
   *
   * @param projectNamesLocal projectNamesLocal.
   */
- public final void setProjectNames(final List<String> projectNamesLocal) {
+ public void setProjectNames(final List<String> projectNamesLocal) {
   this.projectNames = new ArrayList<>(projectNamesLocal);
  }
 
@@ -272,7 +272,7 @@ public class ManagerDto {
   * @return The hash code value for this object.
   */
  @Override
- public final int hashCode() {
+ public int hashCode() {
   return Objects.hash(empContactNo, empDesignation, empEmail, empId, id,
    empLocation, empName);
  }

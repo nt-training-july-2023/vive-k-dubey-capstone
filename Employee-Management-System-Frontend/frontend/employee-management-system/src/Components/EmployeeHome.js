@@ -7,14 +7,13 @@ function EmployeeHome() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        // Check if the user is an employee and disable the back button
+       
         if (userRole === 'employee') {
           disableBackButton();
         }
     
-        // Cleanup the effect when the component unmounts
+        
         return () => {
-          // Re-enable the back button when the component is unmounted
           enableBackButton();
         };
       }, [userRole]);

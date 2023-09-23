@@ -12,6 +12,7 @@
     flex-direction: column;
     align-items: center;
     min-height: 100vh;
+    background-color: #337CCF;
   }
   
   .grid-container {
@@ -34,9 +35,6 @@
 .grid-container select {
   width: 100%; 
 }
-
-
-  
   .grid-item {
     display: flex;
     flex-direction: column;

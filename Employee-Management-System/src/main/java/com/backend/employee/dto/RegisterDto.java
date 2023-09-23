@@ -88,7 +88,7 @@ public class RegisterDto {
   *
   * @return projectName Project name.
   */
- public final String getProjectName() {
+ public String getProjectName() {
   return projectName;
  }
 
@@ -96,7 +96,7 @@ public class RegisterDto {
   *
   * @param projectNameLocal projectNameLocal.
   */
- public final void setProjectName(final String projectNameLocal) {
+ public void setProjectName(final String projectNameLocal) {
   this.projectName = projectNameLocal;
  }
 
@@ -112,7 +112,7 @@ public class RegisterDto {
   *
   * @return The unique identifier for the employee.
   */
- public final Long getId() {
+ public Long getId() {
   return id;
  }
 
@@ -121,7 +121,7 @@ public class RegisterDto {
   *
   * @param idLocal The unique identifier for the employee.
   */
- public final void setId(final Long idLocal) {
+ public void setId(final Long idLocal) {
   this.id = idLocal;
  }
 
@@ -130,7 +130,7 @@ public class RegisterDto {
   *
   * @return The employee ID.
   */
- public final String getEmpId() {
+ public String getEmpId() {
   return empId;
  }
 
@@ -139,7 +139,7 @@ public class RegisterDto {
   *
   * @param empIdLocal The employee ID.
   */
- public final void setEmpId(final String empIdLocal) {
+ public void setEmpId(final String empIdLocal) {
   this.empId = empIdLocal;
  }
 
@@ -148,7 +148,7 @@ public class RegisterDto {
   *
   * @return The name of the employee.
   */
- public final String getEmpName() {
+ public String getEmpName() {
   return empName;
  }
 
@@ -157,7 +157,7 @@ public class RegisterDto {
   *
   * @param empNameLocal The name of the employee.
   */
- public final void setEmpName(final String empNameLocal) {
+ public void setEmpName(final String empNameLocal) {
   this.empName = empNameLocal;
  }
 
@@ -166,7 +166,7 @@ public class RegisterDto {
   *
   * @return The email address of the employee.
   */
- public final String getEmpEmail() {
+ public String getEmpEmail() {
   return empEmail;
  }
 
@@ -175,7 +175,7 @@ public class RegisterDto {
   *
   * @param empEmailLocal The email address of the employee.
   */
- public final void setEmpEmail(final String empEmailLocal) {
+ public void setEmpEmail(final String empEmailLocal) {
   this.empEmail = empEmailLocal;
  }
 
@@ -193,7 +193,7 @@ public class RegisterDto {
   *
   * @param empDOBLocal The date of birth of the employee.
   */
- public final void setEmpDOB(final String empDOBLocal) {
+ public void setEmpDOB(final String empDOBLocal) {
   this.empDOB = empDOBLocal;
  }
 
@@ -202,7 +202,7 @@ public class RegisterDto {
   *
   * @return The date of joining of the employee.
   */
- public final String getEmpDOJ() {
+ public String getEmpDOJ() {
   return empDOJ;
  }
 
@@ -211,7 +211,7 @@ public class RegisterDto {
   *
   * @param empDOJLocal The date of joining of the employee.
   */
- public final void setEmpDOJ(final String empDOJLocal) {
+ public void setEmpDOJ(final String empDOJLocal) {
   this.empDOJ = empDOJLocal;
  }
 
@@ -220,7 +220,7 @@ public class RegisterDto {
   *
   * @return The location of the employee.
   */
- public final String getEmpLocation() {
+ public String getEmpLocation() {
   return empLocation;
  }
 
@@ -229,7 +229,7 @@ public class RegisterDto {
   *
   * @param empLocationLocal The location of the employee.
   */
- public final void setEmpLocation(final String empLocationLocal) {
+ public void setEmpLocation(final String empLocationLocal) {
   this.empLocation = empLocationLocal;
  }
 
@@ -238,7 +238,7 @@ public class RegisterDto {
   *
   * @return The designation of the employee.
   */
- public final String getEmpDesignation() {
+ public String getEmpDesignation() {
   return empDesignation;
  }
 
@@ -247,7 +247,7 @@ public class RegisterDto {
   *
   * @param empDesignationLocal The designation of the employee.
   */
- public final void setEmpDesignation(final String empDesignationLocal) {
+ public void setEmpDesignation(final String empDesignationLocal) {
   this.empDesignation = empDesignationLocal;
  }
 
@@ -256,7 +256,7 @@ public class RegisterDto {
   *
   * @return The contact number of the employee.
   */
- public final String getEmpContactNo() {
+ public String getEmpContactNo() {
   return empContactNo;
  }
 
@@ -265,7 +265,7 @@ public class RegisterDto {
   *
   * @param empContactNoLocal The contact number of the employee.
   */
- public final void setEmpContactNo(final String empContactNoLocal) {
+ public void setEmpContactNo(final String empContactNoLocal) {
   this.empContactNo = empContactNoLocal;
  }
 
@@ -274,7 +274,7 @@ public class RegisterDto {
   *
   * @return The password of the employee.
   */
- public final String getEmpPassword() {
+ public String getEmpPassword() {
   return empPassword;
  }
 
@@ -283,7 +283,7 @@ public class RegisterDto {
   *
   * @param empPasswordLocal The password of the employee.
   */
- public final void setEmpPassword(final String empPasswordLocal) {
+ public void setEmpPassword(final String empPasswordLocal) {
   this.empPassword = empPasswordLocal;
  }
 
@@ -292,7 +292,7 @@ public class RegisterDto {
   *
   * @return The role of the employee.
   */
- public final String getEmpRole() {
+ public String getEmpRole() {
   return empRole;
  }
 
@@ -301,7 +301,7 @@ public class RegisterDto {
   *
   * @param empRoleLocal The role of the employee.
   */
- public final void setEmpRole(final String empRoleLocal) {
+ public void setEmpRole(final String empRoleLocal) {
   this.empRole = empRoleLocal;
  }
 
@@ -310,7 +310,7 @@ public class RegisterDto {
   *
   * @return The list of skills possessed by the employee.
   */
- public final List<String> getEmpSkills() {
+ public List<String> getEmpSkills() {
   if (empSkills != null) {
    return new ArrayList<>(empSkills);
   } else {
@@ -323,7 +323,7 @@ public class RegisterDto {
   *
   * @param empSkillsLocal The list of skills possessed by the employee.
   */
- public final void setEmpSkills(final List<String> empSkillsLocal) {
+ public void setEmpSkills(final List<String> empSkillsLocal) {
   this.empSkills = new ArrayList<>(empSkillsLocal);
  }
 
@@ -332,7 +332,7 @@ public class RegisterDto {
   *
   * @return The name of the manager associated with the employee.
   */
- public final String getManagerName() {
+ public String getManagerName() {
   return managerName;
  }
 
@@ -341,7 +341,7 @@ public class RegisterDto {
   *
   * @param managerNameLocal The name of manager associated with the employee.
   */
- public final void setManagerName(final String managerNameLocal) {
+ public void setManagerName(final String managerNameLocal) {
   this.managerName = managerNameLocal;
  }
 
@@ -350,7 +350,7 @@ public class RegisterDto {
   *
   * @return The unique identifier of the project associated with the employee.
   */
- public final Long getProjectId() {
+ public Long getProjectId() {
   return projectId;
  }
 
@@ -360,7 +360,7 @@ public class RegisterDto {
   * @param projectIdLocal The unique identifier of the project associated with
   *                       the employee.
   */
- public final void setProjectId(final Long projectIdLocal) {
+ public void setProjectId(final Long projectIdLocal) {
   this.projectId = projectIdLocal;
  }
 
@@ -370,7 +370,7 @@ public class RegisterDto {
   * @return A string containing information about the employee.
   */
  @Override
- public final String toString() {
+ public String toString() {
   return "RegisterDto [id=" + id + ", empId=" + empId + ", empName="
    + empName + ", empEmail=" + empEmail + ", empDOB=" + empDOB + ", empDOJ="
    + empDOJ + ", empLocation=" + empLocation + ", empDesignation="

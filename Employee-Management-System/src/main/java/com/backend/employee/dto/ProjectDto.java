@@ -51,7 +51,7 @@ public class ProjectDto {
   *
   * @return Team members.
   */
- public final List<String> getTeamMembers() {
+ public List<String> getTeamMembers() {
   if (teamMembers != null) {
    return new ArrayList<>(teamMembers);
   } else {
@@ -64,7 +64,7 @@ public class ProjectDto {
   *
   * @param teamMembersLocal team members.
   */
- public final void setTeamMembers(final List<String> teamMembersLocal) {
+ public void setTeamMembers(final List<String> teamMembersLocal) {
   this.teamMembers = new ArrayList<>(teamMembersLocal);
  }
 
@@ -82,7 +82,7 @@ public class ProjectDto {
   *
   * @return The unique identifier of the project.
   */
- public final Long getProjectId() {
+ public Long getProjectId() {
   return projectId;
  }
 
@@ -91,7 +91,7 @@ public class ProjectDto {
   *
   * @param projectIdLocal The unique identifier of the project.
   */
- public final void setProjectId(final Long projectIdLocal) {
+ public void setProjectId(final Long projectIdLocal) {
   this.projectId = projectIdLocal;
  }
 
@@ -100,7 +100,7 @@ public class ProjectDto {
   *
   * @return The name of the project.
   */
- public final String getName() {
+ public String getName() {
   return name;
  }
 
@@ -109,7 +109,7 @@ public class ProjectDto {
   *
   * @param nameLocal The name of the project.
   */
- public final void setName(final String nameLocal) {
+ public void setName(final String nameLocal) {
   this.name = nameLocal;
  }
 
@@ -118,7 +118,7 @@ public class ProjectDto {
   *
   * @return The description of the project.
   */
- public final String getDescription() {
+ public String getDescription() {
   return description;
  }
 
@@ -127,7 +127,7 @@ public class ProjectDto {
   *
   * @param descriptionLocal The description of the project.
   */
- public final void setDescription(final String descriptionLocal) {
+ public void setDescription(final String descriptionLocal) {
   this.description = descriptionLocal;
  }
 
@@ -136,7 +136,7 @@ public class ProjectDto {
   *
   * @return The start date of the project.
   */
- public final String getStartDate() {
+ public String getStartDate() {
   return startDate;
  }
 
@@ -145,7 +145,7 @@ public class ProjectDto {
   *
   * @param startDateLocal The start date of the project.
   */
- public final void setStartDate(final String startDateLocal) {
+ public void setStartDate(final String startDateLocal) {
   this.startDate = startDateLocal;
  }
 
@@ -154,7 +154,7 @@ public class ProjectDto {
   *
   * @return The employee ID of the manager responsible for the project.
   */
- public final Long getManagerEmployeeId() {
+ public Long getManagerEmployeeId() {
   return managerEmployeeId;
  }
 
@@ -164,7 +164,7 @@ public class ProjectDto {
   * @param managerEmployeeIdLocal The employee ID of the manager responsible for
   *                               the project.
   */
- public final void setManagerEmployeeId(final Long managerEmployeeIdLocal) {
+ public void setManagerEmployeeId(final Long managerEmployeeIdLocal) {
   this.managerEmployeeId = managerEmployeeIdLocal;
  }
 
@@ -173,7 +173,7 @@ public class ProjectDto {
   *
   * @return The skills required for the project.
   */
- public final List<String> getSkills() {
+ public List<String> getSkills() {
   if (skills != null) {
    return new ArrayList<>(skills);
   } else {
@@ -186,7 +186,7 @@ public class ProjectDto {
   *
   * @param skillsLocal The skills required for the project.
   */
- public final void setSkills(final List<String> skillsLocal) {
+ public void setSkills(final List<String> skillsLocal) {
   this.skills = new ArrayList<>(skillsLocal);
  }
 
@@ -195,7 +195,7 @@ public class ProjectDto {
   *
   * @return The head or leader of the project.
   */
- public final String getHead() {
+ public String getHead() {
   return head;
  }
 
@@ -204,7 +204,7 @@ public class ProjectDto {
   *
   * @param headLocal The head or leader of the project.
   */
- public final void setHead(final String headLocal) {
+ public void setHead(final String headLocal) {
   this.head = headLocal;
  }
 
@@ -214,7 +214,7 @@ public class ProjectDto {
   * @return A string containing information about the project.
   */
  @Override
- public final String toString() {
+ public String toString() {
   return "ProjectDto [projectId=" + projectId + ", name=" + name
    + ", description=" + description + ", startDate=" + startDate
    + ", managerEmployeeId=" + managerEmployeeId + ", skills=" + skills

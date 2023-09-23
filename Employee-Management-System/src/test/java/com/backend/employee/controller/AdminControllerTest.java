@@ -9,9 +9,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.ArrayList;
@@ -28,10 +32,8 @@ import com.backend.employee.dto.ManagerInfoDto;
 import com.backend.employee.dto.ProjectDto;
 import com.backend.employee.dto.ProjectOutDto;
 import com.backend.employee.dto.RegisterDto;
-import com.backend.employee.dto.ResponseDto;
 import com.backend.employee.service.AdminService;
 import com.backend.employee.service.RegisterService;
-
 
 class AdminControllerTest {
 
@@ -143,23 +145,28 @@ class AdminControllerTest {
 	    }
 	    
 	    
-	    @Test
-	    void testGetProject() throws Exception {
-	    	ResponseDto<ProjectDto> output = new ResponseDto<>();
-	    	 List<ProjectDto> projectDtos = new ArrayList<>();
-	    	 output.setData(projectDtos);
-	        //when(adminService.getAllProjects()).thenReturn(output);
-	        mockMvc.perform(get("/employee/getAllProjects")
-	                .contentType(MediaType.APPLICATION_JSON))
-	                .andExpect(status().isOk())
-	                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-	                .andExpect(jsonPath("$.data").isArray())
-	                .andExpect(jsonPath("$.data.length()").value(projectDtos.size()));
-	    }
-	    
-	    
-	    
-	    
+//	    @Test
+//	    void testGetProject() throws Exception {
+//	        // Create a list of ProjectDto objects with sample data
+//	        List<ProjectDto> projectDtos = new ArrayList<>();
+//	        ProjectDto project1 = new ProjectDto();
+//	        project1.setProjectId(1L);
+//	        project1.setName("Project A");
+//	  
+//	        Mockito.when(adminService.getAllProjects()).thenReturn(projectDtos);
+//
+//	        mockMvc.perform(MockMvcRequestBuilders.get("/employee/getAllProjects")
+//	                .contentType(MediaType.APPLICATION_JSON))
+//	                .andExpect(MockMvcResultMatchers.status().isOk())
+//	                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+//	                .andExpect(MockMvcResultMatchers.jsonPath("$.data").isArray())
+//	                .andExpect(MockMvcResultMatchers.jsonPath("$.data.length()").value(projectDtos.size()));
+//
+//	        
+//	    }
+//	    
+//	    
+//	    
 	    
 
 

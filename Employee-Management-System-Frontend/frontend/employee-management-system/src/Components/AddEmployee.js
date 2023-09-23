@@ -3,6 +3,7 @@ import '../CSS/AddEmployee.css';
 import { useNavigate } from 'react-router-dom';
 import Select from 'react-select';
 import bcrypt from 'bcryptjs';
+import InputField from './InputField';
 
 function AddEmployee({handleTabChange, handleAddActionClick} ) {
   const [name, setName] = useState('');
@@ -184,7 +185,10 @@ function AddEmployee({handleTabChange, handleAddActionClick} ) {
     const employeeIdPattern = /^N\d{4}$/;
     if (!employeeId.match(employeeIdPattern)) {
       setEmployeeIdError('Allowed pattern NXXXX, X is number');
-    } else {
+    }
+     else if(employeeId === "N0000"){
+      setEmployeeIdError('Invalid employee id');
+     } else{
       setEmployeeIdError('');
     }
   };

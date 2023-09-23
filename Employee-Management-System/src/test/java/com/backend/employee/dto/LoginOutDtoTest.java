@@ -52,10 +52,11 @@ public class LoginOutDtoTest {
     @Test
     public void testAllArgsConstructor() {
         // Create a LoginOutDto object using the all-args constructor
-        LoginOutDto loginOutDto = new LoginOutDto("admin", "Test Message");
+        LoginOutDto loginOutDto = new LoginOutDto("admin", "Test Message","Ankita Sharma");
 
         // Get the values using the getters and assert their correctness
         assertEquals("admin", loginOutDto.getEmpRole());
         assertEquals("Test Message", loginOutDto.getMessage());
+        assertEquals("Ankita Sharma", loginOutDto.getEmpName());
     }
 }

@@ -1,4 +1,4 @@
- 
+
 package com.backend.employee.service;
 
 import java.util.List;
@@ -20,257 +20,234 @@ import com.backend.employee.exception.WrongInputException;
 import com.backend.employee.repo.RegisterRepo;
 import com.backend.employee.validations.InputFieldChecks;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-
 /**
  * Service class that directly contains the implementation of service methods.
  */
 @Service
-@Getter
-@Setter
 public class RegisterService {
-    @Autowired
-    private RegisterRepo registerRepo;
+ /**
+  * Object of the register repo.
+  */
+ @Autowired
+ private RegisterRepo registerRepo;
+ /**
+  * Object of the below field.
+  */
+ @Autowired
+ private BCryptPasswordEncoder passwordEncoder;
+ /**
+  * Object of the below field.
+  */
+ @Autowired
+ private PasswordEncoder passwordEncoder1;
+ /**
+  * Object of the below class.
+  */
+ @Autowired
+ private InputFieldChecks inputFieldChecks;
+ /**
+  * Number of allowed registrations.
+  */
+ private static final int REGISTRATIONS = 500;
 
-    @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
-    
-    @Autowired
-    private PasswordEncoder passwordEncoder1;
+ /**
+  * Add admin method.
+  *
+  * @param registerDto registerDto.
+  * @return ResponseEntity.
+  */
+ public  ResponseEntity<String> addAdmin(
+  final RegisterDto registerDto) {
 
-    @Autowired
-    private InputFieldChecks inputFieldChecks;
+  /**
+   * Check if the provided date is valid.
+   */
+  if (!inputFieldChecks.checkDate(registerDto.getEmpDOB())) {
+   return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+    .body("Invalid date of birth");
+  }
 
-    private static final int REGISTRATIONS = 50;
+  /**
+   * Check if the provided employee ID is valid.
+   */
+  if (!inputFieldChecks.checkEmpId(registerDto.getEmpId())) {
+   return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+    .body("Invalid employee ID");
+  }
 
-    
-        // Your implementation for adding an admin user here...
-    	
-    	public ResponseEntity<String> addAdmin(final RegisterDto registerDto) {
+  if (registerDto.getEmpEmail().equals("ankita.sharma@nucleusteq.com")) {
+   registerDto.setEmpRole("admin"); // Set the role to "admin"
+  }
 
-    	    
+  /**
+   * Check if the provided email is valid.
+   */
+  if (!inputFieldChecks.checkEmpEmail(registerDto.getEmpEmail())) {
+   return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+    .body("Invalid email");
+  }
+  /**
+   * setting the role as admin.
+   */
+  if (registerDto.getEmpEmail().equals("ankita.sharma@nucleusteq.com")) {
+   registerDto.setEmpRole("admin");
+  }
 
-    	    /**
-    	     * Check if the provided date is valid.
-    	     */
-    	    if (!inputFieldChecks.checkDate(registerDto.getEmpDOB())) {
-    	      return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-    	          .body("Invalid date of birth");
-    	    }
-    	    
-    	    /**
-    	     * Check if the provided employee ID is valid.
-    	     */
-    	    if (!inputFieldChecks.checkEmpId(registerDto.getEmpId())) {
-    	      return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-    	          .body("Invalid employee ID");
-    	    }
-    	    
-    	    if (registerDto.getEmpEmail().equals("ankita.sharma@nucleusteq.com")) {
-    	      registerDto.setEmpRole("admin"); // Set the role to "admin"
-    	    }
+  /**
+   * Check if the provided contact number is valid.
+   */
+  if (!inputFieldChecks.checkEmpContactNo(registerDto.getEmpContactNo())) {
+   return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+    .body("Invalid contact number");
+  }
 
-    	    /**
-    	     * Check if the provided email is valid.
-    	     */
-    	    if (!inputFieldChecks.checkEmpEmail(registerDto.getEmpEmail())) {
-    	      return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-    	          .body("Invalid email");
-    	    }
-    	    /**
-    	     * setting the role as admin.
-    	     */
-    	    if (registerDto.getEmpEmail().equals("ankita.sharma@nucleusteq.com")) {
-    	      registerDto.setEmpRole("admin");
-    	    }
+  /**
+   * Check if the provided password is valid.
+   */
+  if (!inputFieldChecks.checkEmpPassword(registerDto.getEmpPassword())) {
+   return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+    .body("Invalid password");
+  }
 
-    	    /**
-    	     * Check if the provided contact number is valid.
-    	     */
-    	    if (!inputFieldChecks.checkEmpContactNo(registerDto.getEmpContactNo())) {
-    	      return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-    	          .body("Invalid contact number");
-    	    }
+  // Check if the provided name is valid
+  if (!inputFieldChecks.checkValidName(registerDto.getEmpName())) {
+   return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+    .body("Invalid name");
+  }
+  /**
+   * Check if the email is already registered.
+   */
+  Optional<RegisterEntity> existingUser = registerRepo
+   .findByEmpEmail(registerDto.getEmpEmail());
 
-    	    /**
-    	     * Check if the provided password is valid.
-    	     */
-    	    if (!inputFieldChecks.checkEmpPassword(registerDto.getEmpPassword())) {
-    	      return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-    	          .body("Invalid password");
-    	    }
+  if (existingUser.isPresent()) {
+   return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+    .body("Email already registered");
+  }
 
-    	    // Check if the provided name is valid
-    	    if (!inputFieldChecks.checkValidName(registerDto.getEmpName())) {
-    	      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid name");
-    	    }
-    	    /**
-    	     * Check if the email is already registered.
-    	     */
-    	    Optional<RegisterEntity> existingUser = registerRepo
-    	        .findByEmpEmail(registerDto.getEmpEmail());
+  /**
+   * Check if the contact number is already registered.
+   */
+  Optional<RegisterEntity> existingContactNoUser = registerRepo
+   .findByEmpContactNo(registerDto.getEmpContactNo());
+  if (existingContactNoUser.isPresent()) {
+   return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+    .body("Contact number already registered");
+  }
 
-    	    if (existingUser.isPresent()) {
-    	      return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-    	          .body("Email already registered");
-    	    }
+  /**
+   * Check if the employee ID is already registered.
+   */
+  Optional<RegisterEntity> existingEmpIdUser = registerRepo
+   .findByEmpId(registerDto.getEmpId());
+  if (existingEmpIdUser.isPresent()) {
+   return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+    .body("Employee ID already registered");
+  }
 
-    	    /**
-    	     * Check if the contact number is already registered.
-    	     */
-    	    Optional<RegisterEntity> existingContactNoUser = registerRepo
-    	        .findByEmpContactNo(registerDto.getEmpContactNo());
-    	    if (existingContactNoUser.isPresent()) {
-    	      return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-    	          .body("Contact number already registered");
-    	    }
+  String password = registerDto.getEmpPassword();
 
-    	    /**
-    	     * Check if the employee ID is already registered.
-    	     */
-    	    Optional<RegisterEntity> existingEmpIdUser = registerRepo
-    	        .findByEmpId(registerDto.getEmpId());
-    	    if (existingEmpIdUser.isPresent()) {
-    	      return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-    	          .body("Employee ID already registered");
-    	    }
-    	    
-    	    String password = registerDto.getEmpPassword();
-    	    
-    	    /**
-    	     * Create a new RegisterEntity instance.
-    	     */
-    	    RegisterEntity registerEntity = new RegisterEntity();
+  /**
+   * Create a new RegisterEntity instance.
+   */
+  RegisterEntity registerEntity = new RegisterEntity();
 
-    	    /**
-    	     * Fetch all registered entities.
-    	     */
-    	    List<RegisterEntity> allRegisterEntity = registerRepo.findAll();
+  /**
+   * Fetch all registered entities.
+   */
+  List<RegisterEntity> allRegisterEntity = registerRepo.findAll();
 
-    	    /**
-    	     * Limit the number of registered entities to 5
-    	     */
-    	    if (allRegisterEntity.size() <= REGISTRATIONS) {
-    	      /**
-    	       * setting the empId
-    	       */
-    	      registerEntity.setEmpId(registerDto.getEmpId());
-    	      /**
-    	       * setting the empName
-    	       */
-    	      registerEntity.setEmpName(registerDto.getEmpName());
-    	      /**
-    	       * setting the empDob
-    	       */
-    	      registerEntity.setEmpDOB(registerDto.getEmpDOB());
-    	      /**
-    	       * setting the empDOJ
-    	       */
-    	      registerEntity.setEmpDOJ(registerDto.getEmpDOJ());
-    	      /**
-    	       * setting the empEmail
-    	       */
-    	      registerEntity.setEmpEmail(registerDto.getEmpEmail());
-    	      /**
-    	       * setting the empLocation
-    	       */
-    	      registerEntity.setEmpLocation(registerDto.getEmpLocation());
-    	      /**
-    	       * setting the empDesignation
-    	       */
-    	      registerEntity.setEmpDesignation(registerDto.getEmpDesignation());
-    	      /**
-    	       * setting the empContactNo
-    	       */
-    	      registerEntity.setEmpContactNo(registerDto.getEmpContactNo());
+  /**
+   * Limit the number of registered entities to 5
+   */
+  if (allRegisterEntity.size() <= REGISTRATIONS) {
+   /**
+    * setting the empId
+    */
+   registerEntity.setEmpId(registerDto.getEmpId());
+   /**
+    * setting the empName
+    */
+   registerEntity.setEmpName(registerDto.getEmpName());
+   /**
+    * setting the empDob
+    */
+   registerEntity.setEmpDOB(registerDto.getEmpDOB());
+   /**
+    * setting the empDOJ
+    */
+   registerEntity.setEmpDOJ(registerDto.getEmpDOJ());
+   /**
+    * setting the empEmail
+    */
+   registerEntity.setEmpEmail(registerDto.getEmpEmail());
+   /**
+    * setting the empLocation
+    */
+   registerEntity.setEmpLocation(registerDto.getEmpLocation());
+   /**
+    * setting the empDesignation
+    */
+   registerEntity.setEmpDesignation(registerDto.getEmpDesignation());
+   /**
+    * setting the empContactNo
+    */
+   registerEntity.setEmpContactNo(registerDto.getEmpContactNo());
 
-    	      /**
-    	       * Encrypt and set the password
-    	       */
-//    	      String encryptedPassword = passwordEncoder
-//    	          .encode(registerDto.getEmpPassword());
-    	      /**
-    	       * set password
-    	       */
-    	      registerEntity.setEmpPassword(password);
-    	      /**
-    	       * setting the role
-    	       */
-    	      registerEntity.setEmpRole(registerDto.getEmpRole());
+   /**
+    * set password
+    */
+   registerEntity.setEmpPassword(password);
+   /**
+    * setting the role
+    */
+   registerEntity.setEmpRole(registerDto.getEmpRole());
 
-    	      /**
-    	       * Save the entity
-    	       */
-    	      registerRepo.save(registerEntity);
-    	      /**
-    	       * returning the response entity
-    	       */
-    	      return ResponseEntity.status(HttpStatus.OK)
-    	          .body("Admin added successfully");
-    	    } else {
-    	      /**
-    	       * returning the response entity
-    	       */
-    	      return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-    	          .body("Admin not added. ");
-    	    }
-    	  }
-    
+   /**
+    * Save the entity
+    */
+   registerRepo.save(registerEntity);
+   /**
+    * returning the response entity
+    */
+   return ResponseEntity.status(HttpStatus.OK)
+    .body("Admin added successfully");
+  } else {
+   /**
+    * returning the response entity
+    */
+   return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+    .body("Admin not added. ");
+  }
+ }
 
-//    public LoginOutDto authenticate(final LoginDto loginDto) throws WrongInputException, DataNotFoundException {
-//        String email = loginDto.getEmpEmail();
-//        String password = loginDto.getEmpPassword();
-//        Optional<RegisterEntity> optionalUser = registerRepo.findByEmpEmail(email);
-//
-//        if (optionalUser.isPresent()) {
-//            RegisterEntity user = optionalUser.get();
-//            String storedEncryptedPassword = user.getEmpPassword();
-//
-//            if (passwordEncoder.matches(password, storedEncryptedPassword)) {
-//                LoginOutDto response = new LoginOutDto();
-//                response.setEmpRole(user.getEmpRole()); 
-//                response.setMessage("Login successful");
-//                return response;
-//            } else {
-//                
-//            	throw new WrongInputException("Invalid Password"); 
-//            }
-//        }
-//
-//        throw new DataNotFoundException("User Not Found");
-//        
-//    }
-    	
-    	public LoginOutDto authenticate(final LoginDto loginDto) throws WrongInputException, DataNotFoundException{
-    		
-    		
-    		
-    		inputFieldChecks.loginValidation(loginDto.getEmpEmail(),loginDto.getEmpPassword());
-    		
-    		Optional<RegisterEntity> employeeOptional = registerRepo.findByEmpEmail(loginDto.getEmpEmail());
-    		
-    		if (employeeOptional.isPresent()) {
-    	        RegisterEntity employee = employeeOptional.get();
+ /**
+  * Method for checking the authentication so that it can authenticate.
+  *
+  * @param loginDto loginDto.
+  * @return Authentication status.
+  * @throws WrongInputException   WrongInputException.
+  * @throws DataNotFoundException DataNotFoundException.
+  */
 
-    	        LoginOutDto response = new LoginOutDto();
-    	        response.setEmpRole(employee.getEmpRole());
-    	        response.setMessage("Login successful");
-    	        return response;
-    	    } else {
-    	        // User not found
-    	        throw new DataNotFoundException("User Not Found");
-    	    }
-    			
-    		
-    		
-    		
-    		
-    	}
-    	
-    	
-    	
+ public LoginOutDto authenticate(final LoginDto loginDto)
+  throws WrongInputException, DataNotFoundException {
+
+  Optional<RegisterEntity> employeeOptional = registerRepo
+   .findByEmpEmail(loginDto.getEmpEmail());
+
+  if (employeeOptional.isPresent()) {
+   RegisterEntity employee = employeeOptional.get();
+
+   LoginOutDto response = new LoginOutDto();
+   response.setEmpRole(employee.getEmpRole());
+   response.setMessage("Login successful");
+   response.setEmpName(employee.getEmpName());
+   return response;
+  } else {
+   throw new DataNotFoundException("User Not Found");
+  }
+
+ }
+
 }

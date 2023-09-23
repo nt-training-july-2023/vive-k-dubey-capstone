@@ -11,13 +11,13 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class InputFieldsChecksUpdatedTest {
+public class RegisterValidationServiceTest {
 
-    private InputFieldsChecksUpdated inputFieldsChecksUpdated;
+    private RegisterValidationService inputFieldsChecksUpdated;
 
     @BeforeEach
     public void setUp() {
-        inputFieldsChecksUpdated = new InputFieldsChecksUpdated();
+        inputFieldsChecksUpdated = new RegisterValidationService();
     }
 
     @Test

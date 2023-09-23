@@ -3,6 +3,7 @@ package com.backend.employee.service;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import com.backend.employee.dto.LoginDto;
 import com.backend.employee.dto.LoginOutDto;
@@ -17,6 +18,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -27,6 +29,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 public class RegisterServiceTest {
 
 	@InjectMocks
@@ -45,10 +48,6 @@ public class RegisterServiceTest {
     	
     	
     	MockitoAnnotations.openMocks(this);
-    	registerService = new RegisterService();
-    	registerService.setRegisterRepo(registerRepo);
-    	registerService.setInputFieldChecks(inputFieldChecks);
-    	registerService.setPasswordEncoder(passwordEncoder);
     	 	
     }
     
@@ -66,10 +65,6 @@ public class RegisterServiceTest {
         input.setEmpContactNo("1111111111");
         input.setEmpPassword("12345678");
         input.setEmpRole("admin");
-
-        
-        when(passwordEncoder.encode(input.getEmpPassword()))
-                .thenReturn("encryptedPassword");
         
 
         ResponseEntity<String> output = registerService.addAdmin(input);

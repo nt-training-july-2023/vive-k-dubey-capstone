@@ -48,7 +48,7 @@ public class ManagerInfoDto {
   * @return A string containing information about the manager's details.
   */
  @Override
- public final String toString() {
+ public String toString() {
   return "ManagerInfoDto [id=" + id + ", managerName=" + managerName
    + ", managerEmployeeId=" + managerEmployeeId + "]";
  }
@@ -58,7 +58,7 @@ public class ManagerInfoDto {
   *
   * @return The unique identifier of the manager.
   */
- public final Long getId() {
+ public Long getId() {
   return id;
  }
 
@@ -67,7 +67,7 @@ public class ManagerInfoDto {
   *
   * @param idLocal The unique identifier of the manager.
   */
- public final void setId(final Long idLocal) {
+ public void setId(final Long idLocal) {
   this.id = idLocal;
  }
 
@@ -76,7 +76,7 @@ public class ManagerInfoDto {
   *
   * @return The name of the manager.
   */
- public final String getManagerName() {
+ public String getManagerName() {
   return managerName;
  }
 
@@ -85,7 +85,7 @@ public class ManagerInfoDto {
   *
   * @param managerNameLocal The name of the manager.
   */
- public final void setManagerName(final String managerNameLocal) {
+ public void setManagerName(final String managerNameLocal) {
   this.managerName = managerNameLocal;
  }
 
@@ -94,7 +94,7 @@ public class ManagerInfoDto {
   *
   * @return The employee ID of the manager.
   */
- public final String getManagerEmployeeId() {
+ public String getManagerEmployeeId() {
   return managerEmployeeId;
  }
 
@@ -103,8 +103,7 @@ public class ManagerInfoDto {
   *
   * @param managerEmployeeIdLocal The employee ID of the manager.
   */
- public final void setManagerEmployeeId(
-  final String managerEmployeeIdLocal) {
+ public void setManagerEmployeeId(final String managerEmployeeIdLocal) {
   this.managerEmployeeId = managerEmployeeIdLocal;
  }
 }

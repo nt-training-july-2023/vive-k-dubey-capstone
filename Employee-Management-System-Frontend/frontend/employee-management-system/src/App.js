@@ -13,6 +13,7 @@ import EmployeeHome from './Components/EmployeeHome';
 import AssignProject from './Components/AssignProject';
 import AllEmployeesList from './Components/AllEmployeesList';
 import UpdateSkills from './Pages/UpdateSkills';
+import RequestResource from './Pages/RequestResource';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -45,6 +46,7 @@ function App() {
       <Route path="/register" element={<Register />} />
       <Route path="/assign-project" element={<AssignProject />} />
       <Route path="/userdashboard/upadteskills" element={<UpdateSkills />} />
+      <Route path="/requestResource" element={<RequestResource />} />
 
 
       <Route

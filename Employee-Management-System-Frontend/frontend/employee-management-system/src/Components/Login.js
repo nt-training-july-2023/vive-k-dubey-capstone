@@ -122,11 +122,11 @@ function Login({ setIsLoggedIn }) {
   )}
     <div className="container">
     <div className="row justify-center">
-      <h1 className="text-center">Employee Management Portal</h1>
+      <h1 className="text-center">Employee Management System</h1>
     </div>
-    <div className="top-right-text">
+      <div className="top-right-text">
       <h3>Login Page</h3>
-    </div>
+     </div>  
     <div className="row justify-center">
       <form className="login-form" style={{paddingRight:35}} onSubmit={handleSubmit}>
         <div className="form-group">

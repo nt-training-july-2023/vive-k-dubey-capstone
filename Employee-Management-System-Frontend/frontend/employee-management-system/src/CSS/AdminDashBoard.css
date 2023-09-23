@@ -31,7 +31,6 @@
     color: white;
     border: 1px solid white;
 
-    /* testing code */
     
   }
 
@@ -69,6 +68,18 @@
   .logout-button:hover {
     background-color: darkred;
   }
+
+  .admindashboard-button {
+    background-color: #337CCF; 
+    color: #fff; 
+    border: none; 
+    padding: 10px 20px; 
+    cursor: pointer; 
+  }
+  
+  .admindashboard-button:hover {
+    background-color: #0056b3; 
+  }
   
  
   @media (max-width: 768px) {
@@ -96,6 +107,11 @@
       
       font-size: 12px;
       padding: 6px 6px; 
+    }
+
+    .welcome-message {
+      font-size: 12px;
+      color: white;
     }
   
    

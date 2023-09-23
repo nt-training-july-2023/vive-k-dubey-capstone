@@ -25,7 +25,7 @@ public class LoginOutDto {
   *
   * @return empName.
   */
- public final String getEmpName() {
+ public String getEmpName() {
   return empName;
  }
 
@@ -34,7 +34,7 @@ public class LoginOutDto {
   *
   * @param empNameLocal empNameLocal.
   */
- public final void setEmpName(final String empNameLocal) {
+ public void setEmpName(final String empNameLocal) {
   this.empName = empNameLocal;
  }
 
@@ -63,7 +63,7 @@ public class LoginOutDto {
   *
   * @return The role of the employee.
   */
- public final String getEmpRole() {
+ public String getEmpRole() {
   return empRole;
  }
 
@@ -72,7 +72,7 @@ public class LoginOutDto {
   *
   * @param empRoleLocal The role of the employee.
   */
- public final void setEmpRole(final String empRoleLocal) {
+ public void setEmpRole(final String empRoleLocal) {
   this.empRole = empRoleLocal;
  }
 
@@ -81,7 +81,7 @@ public class LoginOutDto {
   *
   * @return The login response message.
   */
- public final String getMessage() {
+ public String getMessage() {
   return message;
  }
 
@@ -90,7 +90,7 @@ public class LoginOutDto {
   *
   * @param messageLocal The login response message.
   */
- public final void setMessage(final String messageLocal) {
+ public void setMessage(final String messageLocal) {
   this.message = messageLocal;
  }
 
@@ -101,7 +101,7 @@ public class LoginOutDto {
   *         login response.
   */
  @Override
- public final String toString() {
+ public String toString() {
   return "LoginOutDto [empRole=" + empRole + ", message=" + message + "]";
  }
 }

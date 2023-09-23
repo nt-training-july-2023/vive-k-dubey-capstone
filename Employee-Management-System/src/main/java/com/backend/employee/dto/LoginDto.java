@@ -39,7 +39,7 @@ public class LoginDto {
   *
   * @return The email of the employee.
   */
- public final String getEmpEmail() {
+ public String getEmpEmail() {
   return empEmail;
  }
 
@@ -48,7 +48,7 @@ public class LoginDto {
   *
   * @param empEmailLocal The email of the employee.
   */
- public final void setEmpEmail(final String empEmailLocal) {
+ public void setEmpEmail(final String empEmailLocal) {
   this.empEmail = empEmailLocal;
  }
 
@@ -57,7 +57,7 @@ public class LoginDto {
   *
   * @return The password of the employee.
   */
- public final String getEmpPassword() {
+ public String getEmpPassword() {
   return empPassword;
  }
 
@@ -66,7 +66,7 @@ public class LoginDto {
   *
   * @param empPasswordLocal The password of the employee.
   */
- public final void setEmpPassword(final String empPasswordLocal) {
+ public void setEmpPassword(final String empPasswordLocal) {
   this.empPassword = empPasswordLocal;
  }
 
@@ -76,7 +76,7 @@ public class LoginDto {
   * @return A string containing the email and password of the employee.
   */
  @Override
- public final String toString() {
+ public String toString() {
   return "LoginDto [empEmail=" + empEmail + ", empPassword=" + empPassword
    + "]";
  }

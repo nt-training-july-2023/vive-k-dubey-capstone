@@ -72,7 +72,7 @@ public class ProjectOutDto {
   *
   * @return The unique identifier of the project.
   */
- public final Long getId() {
+ public Long getId() {
   return id;
  }
 
@@ -81,7 +81,7 @@ public class ProjectOutDto {
   *
   * @param idLocal The unique identifier of the project.
   */
- public final void setId(final Long idLocal) {
+ public void setId(final Long idLocal) {
   this.id = idLocal;
  }
 
@@ -90,7 +90,7 @@ public class ProjectOutDto {
   *
   * @return The name of the project.
   */
- public final String getProjectName() {
+ public String getProjectName() {
   return projectName;
  }
 
@@ -99,7 +99,7 @@ public class ProjectOutDto {
   *
   * @param projectNameLocal The name of the project.
   */
- public final void setProjectName(final String projectNameLocal) {
+ public void setProjectName(final String projectNameLocal) {
   this.projectName = projectNameLocal;
  }
 
@@ -109,7 +109,7 @@ public class ProjectOutDto {
   *
   * @return The ManagerId of the project manager.
   */
- public final String getManagerId() {
+ public String getManagerId() {
   return managerId;
  }
 
@@ -119,7 +119,7 @@ public class ProjectOutDto {
   *
   * @param managerIdLocal The ManagerId of the project manager.
   */
- public final void setManagerId(final String managerIdLocal) {
+ public void setManagerId(final String managerIdLocal) {
   this.managerId = managerIdLocal;
  }
 
@@ -128,7 +128,7 @@ public class ProjectOutDto {
   *
   * @return The start date of the project.
   */
- public final String getStartDate() {
+ public String getStartDate() {
   return startDate;
  }
 
@@ -137,7 +137,7 @@ public class ProjectOutDto {
   *
   * @param startDateLocal The start date of the project.
   */
- public final void setStartDate(final String startDateLocal) {
+ public void setStartDate(final String startDateLocal) {
   this.startDate = startDateLocal;
  }
 
@@ -146,7 +146,7 @@ public class ProjectOutDto {
   *
   * @return The list of required skills for the project.
   */
- public final List<String> getSkillsRequired() {
+ public List<String> getSkillsRequired() {
   if (skillsRequired != null) {
    return new ArrayList<>(skillsRequired);
   } else {
@@ -159,8 +159,7 @@ public class ProjectOutDto {
   *
   * @param skillsRequiredLocal The list of required skills for the project.
   */
- public final void setSkillsRequired(
-  final List<String> skillsRequiredLocal) {
+ public void setSkillsRequired(final List<String> skillsRequiredLocal) {
   this.skillsRequired = new ArrayList<>(skillsRequiredLocal);
  }
 
@@ -169,7 +168,7 @@ public class ProjectOutDto {
   *
   * @return The description of the project.
   */
- public final String getDescription() {
+ public String getDescription() {
   return description;
  }
 
@@ -178,7 +177,7 @@ public class ProjectOutDto {
   *
   * @param descriptionLocal The description of the project.
   */
- public final void setDescription(final String descriptionLocal) {
+ public void setDescription(final String descriptionLocal) {
   this.description = descriptionLocal;
  }
 
@@ -191,7 +190,7 @@ public class ProjectOutDto {
   *
   * @return Team members.
   */
- public final List<String> getTeamMembers() {
+ public List<String> getTeamMembers() {
   if (teamMembers != null) {
    return new ArrayList<>(teamMembers);
   } else {
@@ -204,7 +203,7 @@ public class ProjectOutDto {
   *
   * @param teamMembersLocal team members.
   */
- public final void setTeamMembers(final List<String> teamMembersLocal) {
+ public void setTeamMembers(final List<String> teamMembersLocal) {
   this.teamMembers = new ArrayList<>(teamMembersLocal);
  }
 
@@ -214,7 +213,7 @@ public class ProjectOutDto {
   * @return A string containing information about the project.
   */
  @Override
- public final String toString() {
+ public String toString() {
   return "ProjectOutDto [id=" + id + ", projectName=" + projectName
    + ", managerId=" + managerId + ", startDate=" + startDate
    + ", skillsRequired=" + skillsRequired + ", description=" + description

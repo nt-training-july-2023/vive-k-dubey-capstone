@@ -32,7 +32,9 @@ function ProjectsPage() {
 
   return (
     <div className="projects-container">
-      {projects.map((project) => (
+      {projects.sort(function (a, b) {
+              return a.name.localeCompare(b.name);
+            }).map((project) => (
         <div key={project.managerEmployeeId} className="project-card">
           <div className="project-name larger">{project.name}</div>
           <div className="project-head smaller"><span style={{ fontWeight: 600 }}>Head:</span> {project.head}</div>
@@ -52,7 +54,9 @@ function ProjectsPage() {
             )}
         </div>
           <div className="project-team">
-          <span style={{ fontWeight: 600 }}>Team Members:</span> {project.teamMembers.join(', ')}
+          <span style={{ fontWeight: 600 }}>Team Members:</span> { project.teamMembers.length > 0
+    ? project.teamMembers.join(', ')
+    : 'N/A'}
           </div>
           <div className="project-skills">
           <span style={{ fontWeight: 600 }}>Skills: </span>{project.skills.join(', ')}
