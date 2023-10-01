@@ -86,7 +86,7 @@ public class EmployeeService {
 
   String userEmail = updateSkillsDto.getEmpEmail();
   RegisterEntity employee = registerRepo.findByEmpEmail(userEmail)
-   .orElse(null);
+   .orElseThrow(() -> new DataNotFoundException("Employee not found with email: " + userEmail));
 
   employee.setEmpSkills(updateSkillsDto.getEmpSkills());
   registerRepo.save(employee);

@@ -1,39 +1,38 @@
-
 .user-navbar {
-    display: flex;
-    justify-content: space-between; 
-    align-items: center;
-    padding: 20px;
-    background-color: #337CCF;
-    color: white;
-  }
-  
-  .user-dashboard-title {
-    font-size: 24px;
-  }
-  
-  .user-tabs {
-    display: flex;
-  }
-  
-  .user-tab {
-    background-color: transparent;
-    border: none;
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
-    padding: 10px 20px;
-     margin-right: 10px; 
-    outline: none;
-    transition: background-color 0.3s ease;
-  
-    &.user-active {
-      background-color: #fff;
-      color: #333;
-    }
-  }
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background-color: #337ccf;
+  color: white;
+}
 
-  .user-logout-button {
+.user-dashboard-title {
+  font-size: 24px;
+}
+
+.user-tabs {
+  display: flex;
+}
+
+.user-tab {
+  background-color: transparent;
+  border: none;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 10px 20px;
+  margin-right: 10px;
+  outline: none;
+  transition: background-color 0.3s ease;
+
+  &.user-active {
+    background-color: #fff;
+    color: #333;
+  }
+}
+
+.user-logout-button {
   background-color: transparent;
   border: 1px solid white;
   color: white;
@@ -50,19 +49,16 @@
   }
 }
 
-@media (max-width: 768px){
+@media (max-width: 768px) {
+  .user-dashboard-title {
+    font-size: 14px;
+  }
 
+  .user-logout-button {
+    font-size: 12px;
+  }
 
-    .user-dashboard-title {
-        font-size: 14px;
-      }
-
-      .user-logout-button{
-        font-size: 12px;
-      }
-
-      .user-tab{
-        font-size: 12px;
-      }
+  .user-tab {
+    font-size: 12px;
+  }
 }
-  

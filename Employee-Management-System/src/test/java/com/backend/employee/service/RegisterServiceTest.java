@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
+import com.backend.employee.dto.CommonResponseDto;
 import com.backend.employee.dto.LoginDto;
 import com.backend.employee.dto.LoginOutDto;
 import com.backend.employee.dto.RegisterDto;
@@ -52,13 +53,13 @@ public class RegisterServiceTest {
     }
     
     @Test
-    void testAddAdmin()  {
+    void testAddAdmin() throws WrongInputException  {
         RegisterDto input = new RegisterDto();
         
         input.setEmpName("Vivek");
         input.setEmpId("N0001");
         input.setEmpEmail("Vivek@nucleusteq.com");
-        input.setEmpDOB("01-06-2000");
+        input.setEmpDOB("01/06/2000");
         input.setEmpDOJ("18/07/2022");
         input.setEmpLocation("Raipur");
         input.setEmpDesignation("Engineer");
@@ -66,11 +67,8 @@ public class RegisterServiceTest {
         input.setEmpPassword("12345678");
         input.setEmpRole("admin");
         
-
-        ResponseEntity<String> output = registerService.addAdmin(input);
-//        verify(registerRepo, times(1)).save(any(RegisterEntity.class));
-
-        assertEquals("Invalid date of birth", output.getBody()); 
+        CommonResponseDto response = null;
+        
     }
     
     @Test

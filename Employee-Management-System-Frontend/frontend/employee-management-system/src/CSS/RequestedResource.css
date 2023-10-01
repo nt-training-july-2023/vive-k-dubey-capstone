@@ -1,0 +1,85 @@
+.requested-resources-container {
+  width: 86%;
+  margin: 0 auto;
+  padding: 20px;
+  text-align: center;
+}
+
+.resource-page-heading {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.resource-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.resource-table th:first-child,
+.resource-table td:first-child {
+  width: 18%;
+}
+
+.goback-button {
+  font-size: 14px;
+  margin-bottom: 20px;
+  padding: 0 15px;
+  background-color: red;
+  border: #ddd;
+  cursor: pointer;
+}
+
+.center-section-request {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.resource-table th:nth-child(2),
+.resource-table td:nth-child(2) {
+  width: 18%;
+}
+
+.resource-table th:nth-child(3),
+.resource-table td:nth-child(3) {
+  width: 18%;
+}
+
+.resource-table th:nth-child(4),
+.resource-table td:nth-child(4) {
+  width: 28%;
+}
+
+.resource-table th:nth-child(5),
+.resource-table td:nth-child(5) {
+  width: 18%;
+}
+
+.resource-table th,
+.resource-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+
+.resource-table th {
+  background-color: #f2f2f2;
+}
+
+.action-button {
+  padding: 6px 12px;
+  margin-right: 5px;
+  cursor: pointer;
+}
+
+.accept-button {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+}
+
+.reject-button {
+  background-color: #f44336;
+  color: white;
+  border: none;
+}

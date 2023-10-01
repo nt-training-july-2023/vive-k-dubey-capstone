@@ -1,31 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import '../CSS/UpdateSkills.css';
+import React, { useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import "../CSS/UpdateSkills.css";
+import Button from "../Components/Button";
+import skillsList from "../Components/skillsList";
+const userRole = localStorage.getItem("role");
 
 function UpdateSkillsPage() {
   const [currentSkills, setCurrentSkills] = useState([]);
-  const [selectedSkill, setSelectedSkill] = useState('');
+  const [selectedSkill, setSelectedSkill] = useState("");
   const navigate = useNavigate();
-  const predefinedSkills = [
-    'JavaScript',
-    'React',
-    'Node.js',
-    'Python',
-    'Java',
-    'Spark',
-    'HTML',
-    'CSS',
-    'Big Data',
-    'Spring Boot',
-    'Postgres',
-    'Snowflake',
-    'Airflow',
-    'SQL',
-    'Machine Learning',
-    'Data Analysis',
-  ];
 
- 
   const location = useLocation();
   const skillsData = location.state;
 
@@ -35,48 +19,52 @@ function UpdateSkillsPage() {
     }
   }, [skillsData]);
 
-  
-  const availableSkills = predefinedSkills.filter((skill) => !currentSkills.includes(skill));
+  const availableSkills = skillsList.filter(
+    (skill) => !currentSkills.includes(skill)
+  );
 
-  
   const handleSkillSelect = (event) => {
     setSelectedSkill(event.target.value);
   };
   const handleAddSkill = () => {
     if (selectedSkill) {
       setCurrentSkills([...currentSkills, selectedSkill]);
-      setSelectedSkill(''); 
+      setSelectedSkill("");
     }
   };
 
   const handleRemoveSkill = (skillToRemove) => {
-    const updatedSkills = currentSkills.filter((skill) => skill !== skillToRemove);
+    const updatedSkills = currentSkills.filter(
+      (skill) => skill !== skillToRemove
+    );
     setCurrentSkills(updatedSkills);
   };
   const updateSkills = async () => {
     try {
-      const email = localStorage.getItem('userEmail');
-      const response = await fetch(`http://localhost:8081/api/employee/updateskills`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          empEmail: email,
-          empSkills: currentSkills, 
-        }),
-      });
+      const email = localStorage.getItem("userEmail");
+      const response = await fetch(
+        `http://localhost:8081/api/employee/updateskills`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            empEmail: email,
+            empSkills: currentSkills,
+          }),
+        }
+      );
 
       if (response.ok) {
-        console.log('Skills updated successfully');
-        navigate('/userdashboard');
-      } else {
-        console.error('Failed to update skills');
+        navigate("/userdashboard");
       }
-    } catch (error) {
-      console.error('Error updating skills:', error);
-    }
+    } catch (error) {}
   };
+
+  if (userRole !== "employee") {
+    return <h1>unauthrized access</h1>;
+  }
 
   return (
     <div className="update-skills-container">
@@ -85,7 +73,10 @@ function UpdateSkillsPage() {
         {currentSkills.map((skill) => (
           <div key={skill} className="current-skill-item">
             {skill}
-            <button onClick={() => handleRemoveSkill(skill)} className="remove-skill-button">
+            <button
+              onClick={() => handleRemoveSkill(skill)}
+              className="remove-skill-button"
+            >
               Remove
             </button>
           </div>
@@ -108,16 +99,22 @@ function UpdateSkillsPage() {
         </select>
 
         {currentSkills.length === 0 && (
-    <p className="error-message">Select at least one skill</p>
-            )}
-        <button onClick={handleAddSkill} className="add-skill-button">
-          Add Skill
-        </button>
+          <p className="error-message">Select at least one skill</p>
+        )}
+
+        <Button
+          className="add-skill-button"
+          text="Add Skill"
+          onClick={handleAddSkill}
+        />
       </div>
-      <button onClick={updateSkills} className="update-button" disabled={currentSkills.length === 0}>
-        Update Skills
-      </button>
-      
+
+      <Button
+        className="update-button"
+        text="Update Skills and Go back"
+        onClick={updateSkills}
+        isDisabled={currentSkills.length === 0}
+      />
     </div>
   );
 }

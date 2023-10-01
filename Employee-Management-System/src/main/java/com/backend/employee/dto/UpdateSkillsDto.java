@@ -2,6 +2,10 @@ package com.backend.employee.dto;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 
 /**
  * A data transfer object (DTO) representing the update of employee skills.
@@ -11,12 +15,38 @@ public class UpdateSkillsDto {
  /**
   * The email address of the employee whose skills are being updated.
   */
+ @NotBlank(message = "Employee email should not be empty.")
  private String empEmail;
 
  /**
   * The updated skills of the employee.
   */
- private List<String> empSkills;
+ @NotEmpty(message = "Employee skills should not be empty.")
+ private List<@NotBlank String> empSkills;
+
+ @Override
+ public String toString() {
+  return "UpdateSkillsDto [empEmail=" + empEmail + ", empSkills="
+   + empSkills + "]";
+ }
+
+ @Override
+ public int hashCode() {
+  return Objects.hash(empEmail, empSkills);
+ }
+
+ @Override
+ public boolean equals(Object obj) {
+  if (this == obj)
+   return true;
+  if (obj == null)
+   return false;
+  if (getClass() != obj.getClass())
+   return false;
+  UpdateSkillsDto other = (UpdateSkillsDto) obj;
+  return Objects.equals(empEmail, other.empEmail)
+   && Objects.equals(empSkills, other.empSkills);
+ }
 
  /**
   * Gets the email address of the employee.

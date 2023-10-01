@@ -1,98 +1,101 @@
-
-
 .update-skills-container {
-    width: 80%; 
-    max-width: 400px;
-     display: flex;
-    flex-direction: column; 
-    margin: 50px auto; 
-    padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  .update-skills-heading {
-    font-size: 24px;
-    margin-bottom: 20px;
-    color: #333;
-  }
-  
-  .update-skills-description {
-    font-size: 16px;
-    margin-bottom: 20px;
-  }
-  
-  .update-skills-subheading {
-    font-size: 20px;
-    margin-bottom: 10px;
-    color: #333;
-  }
-  
-  .update-skills-current .current-skill-item {
-    display: flex;
-    justify-content: space-between;
-    flex-direction: row;
-    align-items: center;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    padding: 10px;
-    margin-bottom: 7px;
-    background-color: #fff;
-  }
-  
-  .remove-skill-button {
-    background-color: #e74c3c;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    padding: 5px 10px;
-    font-size: 14px;
-    cursor: pointer;
-  }
-  
-  .remove-skill-button:hover {
-    background-color: #c0392b;
-  }
-  
-  .update-skills-add .skill-select {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    margin-bottom: 10px;
-  }
-  
-  .add-skill-button {
-    padding: 10px 20px;
-    background-color: #337CCF;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    font-size: 16px;
-    cursor: pointer;
-  }
+  width: 80%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  margin: 50px auto;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.update-skills-heading {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #333;
+}
 
-  .update-button, .add-skill-button {
-    padding: 8px 16px; 
-    font-size: 14px; 
-  }
-  
-  .add-skill-button:hover {
-    background-color: #0056b3;
-  }
-  
-  .update-button {
-    background-color: #337CCF;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    margin-top: 20px;
-    margin-left: 25%;
-    width: 50%;
-  }
-  
-  .update-button:hover {
-    background-color: #0056b3;
-  }
-  
+.update-skills-description {
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+.update-skills-subheading {
+  font-size: 20px;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.update-skills-current .current-skill-item {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  align-items: center;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 10px;
+  margin-bottom: 7px;
+  background-color: #fff;
+}
+
+.remove-skill-button {
+  background-color: #e74c3c;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 5px 10px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.remove-skill-button:hover {
+  background-color: #c0392b;
+}
+
+.update-skills-add .skill-select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+
+.add-skill-button {
+  padding: 10px 20px;
+  background-color: #337ccf;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.update-button,
+.add-skill-button {
+  padding: 8px 16px;
+  font-size: 14px;
+}
+
+.disabled {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.add-skill-button:hover {
+  background-color: #0056b3;
+}
+
+.update-button {
+  background-color: #337ccf;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 20px;
+  margin-left: 25%;
+  width: 50%;
+}
+
+.update-button:hover {
+  background-color: #0056b3;
+}

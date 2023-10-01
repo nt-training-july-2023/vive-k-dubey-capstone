@@ -34,7 +34,7 @@ public class RegisterEntity {
   this.empDOB = registerDto.getEmpDOB();
   this.empDOJ = registerDto.getEmpDOJ();
   this.empLocation = registerDto.getEmpLocation();
-  this.empRole = registerDto.getEmpRole();
+  this.empRole = registerDto.getEmpRole().toLowerCase();
  }
 
  /**
@@ -204,7 +204,7 @@ public class RegisterEntity {
   *
   * @param empDOJLocal This is the empDOJLocal.
   */
- public final void setEmpDOJ(final String empDOJLocal) {
+ public void setEmpDOJ(final String empDOJLocal) {
   this.empDOJ = empDOJLocal;
  }
 
@@ -321,29 +321,33 @@ public class RegisterEntity {
  /**
   * The designation of the employee.
   */
+ @Column( nullable = false)
  private String empDesignation;
  /**
   * The contact number of the employee.
   */
- @Column(unique = true)
+ @Column(unique = true, nullable = false)
  private String empContactNo;
  /**
   * The password of the employee.
   */
+ @Column( nullable = false)
  private String empPassword;
 
  /**
   * The email of the employee.
   */
- @Column(unique = true)
+ @Column(unique = true, nullable = false )
  private String empEmail;
  /**
   * The date of birth of the employee.
   */
+ @Column( nullable = false)
  private String empDOB;
  /**
   * The date of joining of the employee.
   */
+ @Column( nullable = false)
  private String empDOJ;
  /**
   * The location of the employee.
@@ -353,13 +357,12 @@ public class RegisterEntity {
  /**
   * The role of the employee.
   */
+ @Column( nullable = false)
  private String empRole;
 
  /**
   * The skills of the employee.
   */
-
- @Column
  private List<String> empSkills;
 
  /**

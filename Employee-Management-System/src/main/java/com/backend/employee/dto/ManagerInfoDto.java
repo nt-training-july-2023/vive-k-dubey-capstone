@@ -1,5 +1,7 @@
 package com.backend.employee.dto;
 
+import java.util.Objects;
+
 /**
  * A data transfer object (DTO) representing information about a manager's
  * details.
@@ -96,6 +98,25 @@ public class ManagerInfoDto {
   */
  public String getManagerEmployeeId() {
   return managerEmployeeId;
+ }
+
+ @Override
+ public int hashCode() {
+  return Objects.hash(id, managerEmployeeId, managerName);
+ }
+
+ @Override
+ public boolean equals(Object obj) {
+  if (this == obj)
+   return true;
+  if (obj == null)
+   return false;
+  if (getClass() != obj.getClass())
+   return false;
+  ManagerInfoDto other = (ManagerInfoDto) obj;
+  return Objects.equals(id, other.id)
+   && Objects.equals(managerEmployeeId, other.managerEmployeeId)
+   && Objects.equals(managerName, other.managerName);
  }
 
  /**

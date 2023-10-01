@@ -1,10 +1,15 @@
-
 import React from "react";
 import "../CSS/AllEmployeesList.css";
 
-function Button({ className, text, onClick }) {
+function Button({ className, text, onClick, type, isDisabled }) {
+  const buttonClassName = `${className} ${isDisabled ? "disabled" : ""}`;
   return (
-    <button className={className} onClick={onClick}>
+    <button
+      className={buttonClassName}
+      onClick={isDisabled ? null : onClick}
+      type={type}
+      disabled={isDisabled}
+    >
       {text}
     </button>
   );

@@ -2,7 +2,12 @@
   text-align: left;
   /* margin-top: 50px; */
   height: 100vh;
-  background-color: #337CCF;
+   /* background-color: #337CCF;  */
+   background-image: url(../Assets/qingbao-meng-01_igFr7hd4-unsplash.jpg);
+   background-size: cover; 
+  background-position: center center; 
+  background-repeat: no-repeat;
+  background-color: #f0f0f0;
   
 }
 

@@ -59,10 +59,17 @@ public class RegisterValidationService {
   * @throws WrongInputException throw an exception.
   */
  public void checkEmpId(final String empId) throws WrongInputException {
+  if (empId == null) {
+   throw new WrongInputException("Employee Id should not be null");
+  }
   String empIdPattern = "^N\\d{4}$";
   if (empId.equals("")) {
    throw new WrongInputException("Employee Id should not be empty");
   }
+  if (empId.equals("N0000")) {
+   throw new WrongInputException("Employee Id should not be N0000");
+  }
+
   if (!Pattern.matches(empIdPattern, empId)) {
    String s = "Not a valid employee id. "
     + "Employee Id should be in the form of N0000";
@@ -77,6 +84,9 @@ public class RegisterValidationService {
   * @throws WrongInputException throw exception if not a valid DOB.
   */
  public void checkDob(final String date) throws WrongInputException {
+  if (date == null) {
+   throw new WrongInputException("DOB should not be null");
+}
   String datePattern = "^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/"
    + "(19|20)\\d\\d$";
   if (date.equals("")) {
@@ -96,6 +106,9 @@ public class RegisterValidationService {
   * @throws WrongInputException throw exception if date is not in valid format.
   */
  public void checkDoj(final String date) throws WrongInputException {
+  if (date == null) {
+   throw new WrongInputException("DOJ should not be null");
+}
   String datePattern = "^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/"
    + "(19|20)\\d\\d$";
   if (date.equals("")) {
@@ -142,6 +155,9 @@ public class RegisterValidationService {
   */
  public void checkEmpEmail(final String empEmail)
   throws WrongInputException {
+  if (empEmail == null) {
+   throw new WrongInputException("Email should not be null");
+}
   String empEmailPattern = "^[a-zA-Z0-9._%+-]+@nucleusteq\\.com$";
   if (empEmail.equals("")) {
    throw new WrongInputException("Employee Email should not be empty");
@@ -176,6 +192,9 @@ public class RegisterValidationService {
   */
  public void checkEmpContactNo(final String empContactNo)
   throws WrongInputException {
+  if (empContactNo == null) {
+   throw new WrongInputException("Contact number should not be null");
+}
   String empContactNoPattern = "^\\d{10}$";
   if (empContactNo.equals("")) {
    throw new WrongInputException(
@@ -196,7 +215,9 @@ public class RegisterValidationService {
   */
  public void checkEmpPassword(final String empPassword)
   throws WrongInputException {
-  // String empIdPattern = "^N\\d{4}$";
+  if (empPassword == null) {
+   throw new WrongInputException("Password should not be null");
+}
   if (empPassword.equals("")) {
    throw new WrongInputException("Password should not be empty");
   }
@@ -214,6 +235,9 @@ public class RegisterValidationService {
   * @throws WrongInputException throw exception for wrong name.
   */
  public void checkEmpName(final String name) throws WrongInputException {
+  if (name == null) {
+   throw new WrongInputException("Name should not be null");
+}
   String namePattern = "^[A-Za-z\\s]+$";
   if (name.equals("")) {
    throw new WrongInputException("Employee name should not be empty");
@@ -314,4 +338,23 @@ public class RegisterValidationService {
   checkEmpDesignation(registerDto.getEmpDesignation());
   checkEmpLocation(registerDto.getEmpLocation());
  }
+
+ public void validateRegisterDtoAdmin(RegisterDto registerDto)
+  throws WrongInputException, DataAlreadyExistsException {
+  checkEmpId(registerDto.getEmpId());
+  checkDob(registerDto.getEmpDOB());
+  checkDoj(registerDto.getEmpDOJ());
+  checkEmpEmail(registerDto.getEmpEmail());
+  checkValidAdminEmail(registerDto.getEmpEmail());
+  checkEmpContactNo(registerDto.getEmpContactNo());
+  checkEmpPassword(registerDto.getEmpPassword());
+  checkEmpName(registerDto.getEmpName());
+  checkDatesDifference(registerDto.getEmpDOB(), registerDto.getEmpDOJ());
+  checkEmailExistence(registerDto.getEmpEmail());
+  checkEmpIdExistence(registerDto.getEmpId());
+  checkEmpContactExistence(registerDto.getEmpContactNo());
+  checkEmpDesignation(registerDto.getEmpDesignation());
+  checkEmpLocation(registerDto.getEmpLocation());
+ }
+
 }

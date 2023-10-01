@@ -76,6 +76,6 @@ public class RegisterEntityTest {
 
   @Test
   public void testEmpRole() {
-      assertEquals("Employee", registerEntity.getEmpRole());
+      assertEquals("employee", registerEntity.getEmpRole());
   }
 }

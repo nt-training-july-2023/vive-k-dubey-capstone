@@ -2,8 +2,10 @@
 package com.backend.employee.service;
 
 import com.backend.employee.dto.AssignProjectDto;
+import com.backend.employee.dto.AssignProjectOutDto;
 import com.backend.employee.dto.CommonResponseDto;
-import com.backend.employee.dto.ManagerDto;
+import com.backend.employee.dto.FilterDto;
+import com.backend.employee.dto.ManagerOutDto;
 import com.backend.employee.dto.ManagerInfoDto;
 import com.backend.employee.dto.ProjectDto;
 import com.backend.employee.dto.ProjectOutDto;
@@ -20,6 +22,8 @@ import com.backend.employee.validations.RegisterValidationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -197,7 +201,7 @@ public class AdminService {
   * @return A list of ManagerDto objects representing managers.
   * @throws DataNotFoundException If no manager data is found.
   */
- public List<ManagerDto> getAllManagers() {
+ public List<ManagerOutDto> getAllManagers() {
   /*
    * Retrieve all manager entities
    */
@@ -208,7 +212,7 @@ public class AdminService {
    /*
     * Convert manager entities to ManagerDto objects
     */
-   List<ManagerDto> managerDtos = convertToManagerDtoList(managerEntities);
+   List<ManagerOutDto> managerDtos = convertToManagerDtoList(managerEntities);
    return managerDtos;
   } else {
    throw new DataNotFoundException("No managers found");
@@ -221,12 +225,11 @@ public class AdminService {
   * @param entities The list of RegisterEntity objects to convert.
   * @return A list of ManagerDto objects.
   */
- private List<ManagerDto> convertToManagerDtoList(
+ private List<ManagerOutDto> convertToManagerDtoList(
   final List<RegisterEntity> entities) {
-  List<ManagerDto> dtos = new ArrayList<>();
+  List<ManagerOutDto> dtos = new ArrayList<>();
   for (RegisterEntity entity : entities) {
-   ManagerDto dto = new ManagerDto();
-   // Map entity fields to dto fields
+   ManagerOutDto dto = new ManagerOutDto();
    dto.setId(entity.getId());
    dto.setEmpId(entity.getEmpId());
    dto.setEmpName(entity.getEmpName());
@@ -318,7 +321,7 @@ public class AdminService {
   * @throws DataNotFoundException DataNotFoundException.
   */
 
- public List<ProjectDto> getAllProjects() throws DataNotFoundException {
+ public List<ProjectDto> getAllProjects() {
   /**
    * Retrieve all project entities
    */
@@ -327,9 +330,9 @@ public class AdminService {
   /**
    * Check if projects list is empty and throw DataNotFoundException if it is.
    */
-  if (projects.isEmpty()) {
-   throw new DataNotFoundException("No projects found");
-  }
+//  if (projects.isEmpty()) {
+//   throw new DataNotFoundException("No projects found");
+//  }
 
   /**
    * Convert project entities to a list of ProjectDto objects
@@ -384,6 +387,34 @@ public class AdminService {
   }
   return dtos;
  }
+ 
+ public List<AssignProjectOutDto> getAllProjectsForAssign() throws DataNotFoundException {
+  /**
+   * Retrieve all project entities
+   */
+  List<ProjectEntity> projects = projectRepository.findAll();
+
+  /**
+   * Check if projects list is empty and throw DataNotFoundException if it is.
+   */
+  if (projects.isEmpty()) {
+    throw new DataNotFoundException("No projects found");
+  }
+
+  /**
+   * Convert project entities to a list of AssignProjectOutDto objects
+   */
+  List<AssignProjectOutDto> projectDtos = projects.stream()
+    .map(project -> {
+      AssignProjectOutDto dto = new AssignProjectOutDto();
+      dto.setProjectId(project.getProjectId());
+      dto.setName(project.getName());
+      return dto;
+    })
+    .collect(Collectors.toList());
+
+  return projectDtos;
+}
 
  /**
   * Retrieves a list of projects managed by a manager with the given manager ID.
@@ -455,6 +486,79 @@ public class AdminService {
 
   return new CommonResponseDto("Project assigned successfully");
 
+ }
+
+ public List<RegisterDto> getFilteredEmployee(
+  final FilterDto filterEmployeeDto) {
+  List<RegisterEntity> employeeList = registerRepository
+   .findAllByEmpRole("employee");
+  List<RegisterDto> employeeDtoList = new ArrayList<RegisterDto>();
+
+  for (RegisterEntity employee : employeeList) {
+   RegisterDto empDto = new RegisterDto();
+   empDto.setEmpName(employee.getEmpName());
+   empDto.setEmpEmail(employee.getEmpEmail());
+   empDto.setEmpId(employee.getEmpId());
+   empDto.setEmpDesignation(employee.getEmpDesignation());
+   empDto.setEmpContactNo(employee.getEmpContactNo());
+   empDto.setEmpDOB(employee.getEmpDOB());
+   empDto.setEmpDOJ(employee.getEmpDOJ());
+   empDto.setEmpLocation(employee.getEmpLocation());
+   empDto.setEmpSkills(employee.getEmpSkills());
+
+   if (employee.getProjectId() == null) {
+    empDto.setProjectName("N/A");
+    empDto.setProjectId(employee.getProjectId());
+   } else {
+    ProjectEntity project = projectRepository
+     .findById(employee.getProjectId()).get();
+    empDto.setProjectName(project.getName());
+    empDto.setProjectId(employee.getProjectId());
+   }
+
+   RegisterEntity manager = registerRepository
+    .findById(employee.getManagerId()).orElse(null);
+   empDto.setManagerName(manager.getEmpName());
+
+   if (filterEmployeeDto.getSkills() == null
+    || filterEmployeeDto.getSkills().isEmpty()) {
+
+    if (filterEmployeeDto.getChecked()
+     && empDto.getProjectName().equals("N/A")) {
+
+     employeeDtoList.add(empDto);
+    } else if (!filterEmployeeDto.getChecked()) {
+     employeeDtoList.add(empDto);
+    }
+   } else {
+    boolean hasMatchingSkills = empDto.getEmpSkills().stream()
+     .anyMatch(skill -> filterEmployeeDto.getSkills().contains(skill));
+
+    if (filterEmployeeDto.getChecked() && hasMatchingSkills
+     && empDto.getProjectName().equals("N/A")) {
+     employeeDtoList.add(empDto);
+    } else if (!filterEmployeeDto.getChecked() && hasMatchingSkills) {
+     employeeDtoList.add(empDto);
+    }
+   }
+  }
+  
+  return employeeDtoList;
+ }
+
+ /**
+  * unassigns project to employee.
+  *
+  * @param empId the empId of employee.
+  */
+ public void unassignProject(final String empId) {
+  RegisterEntity employee = registerRepository.findByEmpId(empId)
+   .orElse(null);
+  RegisterEntity admin = registerRepository
+   .findByEmpEmail("ankita.sharma@nucleusteq.com").orElse(null);
+  employee.setProjectId(null);
+  employee.setManagerId(admin.getId());
+  registerRepository.save(employee);
  }
 
 }

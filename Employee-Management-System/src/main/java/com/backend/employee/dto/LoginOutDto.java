@@ -1,5 +1,7 @@
 package com.backend.employee.dto;
 
+import java.util.Objects;
+
 /**
  * A data transfer object (DTO) representing login-related information sent as a
  * response.
@@ -27,6 +29,25 @@ public class LoginOutDto {
   */
  public String getEmpName() {
   return empName;
+ }
+
+ @Override
+ public int hashCode() {
+  return Objects.hash(empName, empRole, message);
+ }
+
+ @Override
+ public boolean equals(Object obj) {
+  if (this == obj)
+   return true;
+  if (obj == null)
+   return false;
+  if (getClass() != obj.getClass())
+   return false;
+  LoginOutDto other = (LoginOutDto) obj;
+  return Objects.equals(empName, other.empName)
+   && Objects.equals(empRole, other.empRole)
+   && Objects.equals(message, other.message);
  }
 
  /**
@@ -102,6 +123,7 @@ public class LoginOutDto {
   */
  @Override
  public String toString() {
-  return "LoginOutDto [empRole=" + empRole + ", message=" + message + "]";
+     return "LoginOutDto [empRole=" + empRole + ", message=" + message + ", empName=" + empName + "]";
  }
+
 }

@@ -1,9 +1,11 @@
-// AssignProject.js
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import InputField from "../Components/InputField.js";
 import axios from "axios";
 import "../CSS/RequestResource.css";
+import Popup from "../Components/Popup.js";
+import Button from "../Components/Button.js";
+import Dropdown from "../Components/Dropdown.js";
 
 function AssignProject() {
   const [selectedProject, setSelectedProject] = useState("");
@@ -26,8 +28,6 @@ function AssignProject() {
       `http://localhost:8081/getAll/project/byManager/${managerEmail}`
     );
     setProjectList(res.data);
-    console.log(projectList);
-    console.log("projectid", res.data.id);
   }
   useEffect(() => {
     getProjectList();
@@ -54,6 +54,10 @@ function AssignProject() {
     return false;
   }
 
+  function handleCancel(event) {
+    navigate("/managerdashboard");
+  }
+
   function handleChange(event) {
     if (event.target.value === "") {
       setErrorProject("Project is Required");
@@ -61,7 +65,6 @@ function AssignProject() {
       setErrorProject("");
     }
     setProjectId(event.target.value);
-    console.log("Project Id", event.target.value);
   }
 
   function handleCommentChange(event) {
@@ -85,11 +88,8 @@ function AssignProject() {
         "http://localhost:8081/requestResource/create",
         reqData
       );
-      console.log(res.data);
       navigate("/managerdashboard");
-      console.log("Working request resource");
     } catch (error) {
-      console.log(error.response.data.message);
       const resMessage = {};
       resMessage.message = error.response.data.message;
       setShowPopUp(true);
@@ -100,17 +100,13 @@ function AssignProject() {
     event.preventDefault();
 
     validateData();
-    console.log(projectId);
 
     if (!checkErrors() || projectId === "" || comment === "") {
-      console.log("Not working");
+      return;
     } else {
-      console.log("Submitting data");
-      console.log("ProjectId", projectId, "empData", empData);
       apiCall();
     }
   }
-  console.log("project list", projectList);
 
   const closePopup = () => {
     setShowPopUp(false);
@@ -123,12 +119,7 @@ function AssignProject() {
   return (
     <>
       {showPopUp && (
-        <div className="popup">
-          <div className="popup-content">
-            <p>{popUpMessage.message}</p>
-            <button onClick={closePopup}>Close</button>
-          </div>
-        </div>
+        <Popup message={popUpMessage.message} onClose={closePopup} />
       )}
       <div className="assign-project-container">
         <div className="assign-project-header">Request Resource</div>
@@ -152,15 +143,13 @@ function AssignProject() {
               );
             })}
           </select>
-          <div>
-            
-          </div>
+
+          <div></div>
           {errorProject && (
-      <div >
-        <p className="request-error-message">{errorProject}</p>
-      </div>
-      
-    )}
+            <div>
+              <p className="request-error-message">{errorProject}</p>
+            </div>
+          )}
         </div>
         <div className="comment-textarea-container">
           <label htmlFor="comments" className="comment-label">
@@ -173,15 +162,21 @@ function AssignProject() {
             onChange={handleCommentChange}
           />
           {errorComment && (
-      <div >
-        <p className="request-error-message">{errorComment}</p>
-      </div>
-    )}
+            <div>
+              <p className="request-error-message">{errorComment}</p>
+            </div>
+          )}
         </div>
-
-        <button className="resource-request-button" onClick={handleSubmit}>
-          Request Resource
-        </button>
+        <Button
+          className="resource-request-button"
+          text="Request Resource"
+          onClick={handleSubmit}
+        />
+        <Button
+          className="resource-request-button-cancel"
+          text="Cancel"
+          onClick={handleCancel}
+        />
       </div>
     </>
   );

@@ -2,6 +2,7 @@ package com.backend.employee.dto;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * A data transfer object (DTO) representing information about a project.
@@ -74,6 +75,30 @@ public class ProjectOutDto {
   */
  public Long getId() {
   return id;
+ }
+
+ @Override
+ public int hashCode() {
+  return Objects.hash(description, id, managerId, projectName,
+   skillsRequired, startDate, teamMembers);
+ }
+
+ @Override
+ public boolean equals(Object obj) {
+  if (this == obj)
+   return true;
+  if (obj == null)
+   return false;
+  if (getClass() != obj.getClass())
+   return false;
+  ProjectOutDto other = (ProjectOutDto) obj;
+  return Objects.equals(description, other.description)
+   && Objects.equals(id, other.id)
+   && Objects.equals(managerId, other.managerId)
+   && Objects.equals(projectName, other.projectName)
+   && Objects.equals(skillsRequired, other.skillsRequired)
+   && Objects.equals(startDate, other.startDate)
+   && Objects.equals(teamMembers, other.teamMembers);
  }
 
  /**

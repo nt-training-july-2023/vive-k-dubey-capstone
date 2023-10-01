@@ -6,14 +6,18 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import com.backend.employee.dto.CommonResponseDto;
 import com.backend.employee.dto.RequestResourceDto;
 import com.backend.employee.dto.RequestResourceManagerProjectDto;
 import com.backend.employee.dto.RequestedDto;
 import com.backend.employee.dto.RequestedOutDto;
+import com.backend.employee.dto.ResourceRequestsAdminOutDto;
 import com.backend.employee.entity.ProjectEntity;
 import com.backend.employee.entity.RegisterEntity;
 import com.backend.employee.entity.RequestResource;
+import com.backend.employee.exception.DataAlreadyExistsException;
+import com.backend.employee.exception.DataNotFoundException;
+import com.backend.employee.exception.WrongInputException;
 import com.backend.employee.repo.ProjectRepo;
 import com.backend.employee.repo.RegisterRepo;
 import com.backend.employee.repo.RequestResourceRepo;
@@ -65,7 +69,7 @@ public class RequestResourceService {
   Optional<RegisterEntity> manager = registerRepository
    .findByEmpEmail(requestedDto.getManagerEmail());
   if (requestResourceRepository.findByEmployeeIdAndManagerId(
-   employee.get().getId(), manager.get().getId()) != null) {
+   employee.orElse(null).getId(), manager.orElse(null).getId()) != null) {
    requestedOutDto.setIsRequested(true);
   } else {
    requestedOutDto.setIsRequested(false);
@@ -92,6 +96,73 @@ public class RequestResourceService {
 
   }
   return projectOutList;
+ }
+
+ public List<ResourceRequestsAdminOutDto> getAllResourceRequests() {
+
+  List<RequestResource> requestList = requestResourceRepository.findAll();
+  if (requestList.isEmpty()) {
+   throw new DataNotFoundException(
+    "Currently, there are no resource requests to be entertained.");
+  }
+  List<ResourceRequestsAdminOutDto> outRequestList = new ArrayList<ResourceRequestsAdminOutDto>();
+  for (RequestResource requestResource : requestList) {
+   ResourceRequestsAdminOutDto resourceRequestsAdminOutDto = new ResourceRequestsAdminOutDto();
+
+   RegisterEntity employee = registerRepository
+    .findById(requestResource.getEmployeeId()).orElse(null);
+   RegisterEntity manager = registerRepository
+    .findById(requestResource.getManagerId()).orElse(null);
+
+   ProjectEntity project = projectRepository
+    .findByProjectId(requestResource.getProjectId());
+
+   resourceRequestsAdminOutDto.setEmployeeName(employee.getEmpName());
+   resourceRequestsAdminOutDto.setManagerName(manager.getEmpName());
+   resourceRequestsAdminOutDto.setProjectName(project.getName());
+   resourceRequestsAdminOutDto.setComment(requestResource.getComment());
+   resourceRequestsAdminOutDto.setId(requestResource.getId());
+   resourceRequestsAdminOutDto
+    .setEmployeeId(requestResource.getEmployeeId());
+   resourceRequestsAdminOutDto.setManagerId(requestResource.getManagerId());
+   resourceRequestsAdminOutDto.setProjectId(requestResource.getProjectId());
+
+   outRequestList.add(resourceRequestsAdminOutDto);
+  }
+  return outRequestList;
+ }
+
+ public CommonResponseDto acceptRequest(Long id) {
+  RequestResource request = requestResourceRepository.findById(id)
+   .orElse(null);
+  RegisterEntity employee = registerRepository
+   .findById(request.getEmployeeId()).orElse(null);
+
+  if (employee != null && employee.getProjectId() != null) {
+   throw new DataAlreadyExistsException("Employee already has a project");
+  }
+  System.out.println(request.toString());
+  employee.setProjectId(request.getProjectId());
+  employee.setManagerId(request.getManagerId());
+  registerRepository.save(employee);
+  rejectResourceRequest(id);
+
+  List<RequestResource> employeeRequests = requestResourceRepository
+   .findByEmployeeId(employee.getId());
+  System.out.println(employeeRequests);
+  for (RequestResource req : employeeRequests) {
+
+   rejectResourceRequest(req.getId());
+  }
+  CommonResponseDto response = new CommonResponseDto();
+  response.setMessage("Request Accepted");
+  return response;
+ }
+
+ public void rejectResourceRequest(Long id) {
+
+  requestResourceRepository.deleteById(id);
+
  }
 
 }

@@ -59,4 +59,39 @@ public class LoginOutDtoTest {
         assertEquals("Test Message", loginOutDto.getMessage());
         assertEquals("Ankita Sharma", loginOutDto.getEmpName());
     }
+    
+    @Test
+    public void testEmpNameGetterSetter() {
+        // Create a LoginOutDto object
+        LoginOutDto loginOutDto = new LoginOutDto();
+
+        // Set an employee name using the setter
+        loginOutDto.setEmpName("Ankita Sharma");
+
+        // Get the employee name using the getter and assert its correctness
+        assertEquals("Ankita Sharma", loginOutDto.getEmpName());
+    }
+
+    @Test
+    public void testHashCode() {
+        LoginOutDto loginOutDto1 = new LoginOutDto("admin", "Test Message", "Ankita Sharma");
+        LoginOutDto loginOutDto2 = new LoginOutDto("admin", "Test Message", "Ankita Sharma");
+
+        assertEquals(loginOutDto1.hashCode(), loginOutDto2.hashCode());
+    }
+
+    @Test
+    public void testEquals() {
+        LoginOutDto loginOutDto1 = new LoginOutDto("admin", "Test Message", "Ankita Sharma");
+        LoginOutDto loginOutDto2 = new LoginOutDto("admin", "Test Message", "Ankita Sharma");
+
+        assertEquals(loginOutDto1, loginOutDto2);
+    }
+
+    @Test
+    public void testToString() {
+        LoginOutDto loginOutDto = new LoginOutDto("admin", "Test Message", "Ankita Sharma");
+
+        assertEquals("LoginOutDto [empRole=admin, message=Test Message, empName=Ankita Sharma]", loginOutDto.toString());
+    }
 }

@@ -1,5 +1,7 @@
 package com.backend.employee.dto;
 
+import java.util.Objects;
+
 public class RequestResourceManagerProjectDto {
 
  /**
@@ -19,6 +21,30 @@ public class RequestResourceManagerProjectDto {
   */
  public Long getId() {
      return id;
+ }
+
+ @Override
+ public String toString() {
+  return "RequestResourceManagerProjectDto [id=" + id + ", projectName="
+   + projectName + "]";
+ }
+
+ @Override
+ public int hashCode() {
+  return Objects.hash(id, projectName);
+ }
+
+ @Override
+ public boolean equals(Object obj) {
+  if (this == obj)
+   return true;
+  if (obj == null)
+   return false;
+  if (getClass() != obj.getClass())
+   return false;
+  RequestResourceManagerProjectDto other = (RequestResourceManagerProjectDto) obj;
+  return Objects.equals(id, other.id)
+   && Objects.equals(projectName, other.projectName);
  }
 
  /**

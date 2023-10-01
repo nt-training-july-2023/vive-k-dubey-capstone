@@ -1,7 +1,9 @@
 package com.backend.employee.dto;
 
 import java.util.ArrayList;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * A data transfer object (DTO) representing employee registration information.
@@ -83,6 +85,39 @@ public class RegisterDto {
   */
 
  private String projectName;
+
+ @Override
+ public int hashCode() {
+  return Objects.hash(empContactNo, empDOB, empDOJ, empDesignation,
+   empEmail, empId, empLocation, empName, empPassword, empRole, empSkills,
+   id, managerName, projectId, projectName);
+ }
+
+ @Override
+ public boolean equals(Object obj) {
+  if (this == obj)
+   return true;
+  if (obj == null)
+   return false;
+  if (getClass() != obj.getClass())
+   return false;
+  RegisterDto other = (RegisterDto) obj;
+  return Objects.equals(empContactNo, other.empContactNo)
+   && Objects.equals(empDOB, other.empDOB)
+   && Objects.equals(empDOJ, other.empDOJ)
+   && Objects.equals(empDesignation, other.empDesignation)
+   && Objects.equals(empEmail, other.empEmail)
+   && Objects.equals(empId, other.empId)
+   && Objects.equals(empLocation, other.empLocation)
+   && Objects.equals(empName, other.empName)
+   && Objects.equals(empPassword, other.empPassword)
+   && Objects.equals(empRole, other.empRole)
+   && Objects.equals(empSkills, other.empSkills)
+   && Objects.equals(id, other.id)
+   && Objects.equals(managerName, other.managerName)
+   && Objects.equals(projectId, other.projectId)
+   && Objects.equals(projectName, other.projectName);
+ }
 
  /**
   *

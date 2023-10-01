@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import EmployeeCard from '../Components/EmployeeCard'; 
 import '../CSS/AllEmployeesList.css';
+import Popup from '../Components/Popup';
 
 function Organization() {
   const [employees, setEmployees] = useState([]);
@@ -33,12 +34,7 @@ function Organization() {
   return (
     <>
       {showPopup && (
-        <div className="popup">
-          <div className="popup-content">
-            <p>{popupMessage}</p>
-            <button onClick={closePopup}>Close</button>
-          </div>
-        </div>
+        <Popup message={popupMessage} onClose={closePopup} />
       )}
       <div className="content-allemployees">
         <div className="card-container">

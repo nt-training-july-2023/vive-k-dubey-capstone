@@ -1,9 +1,9 @@
-// AssignProject.js
+
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../CSS/AssignProject.css";
-
+import Button from "../Components/Button";
 function AssignProject() {
   const [selectedProject, setSelectedProject] = useState("");
   const [employeeName] = useState("Employee Name");
@@ -13,11 +13,11 @@ function AssignProject() {
   const navigate = useNavigate();
   const location = useLocation();
   const empData = location.state;
-  const [errorProject, setErrorProject] = useState("");
+  const [errorProject, setErrorProject] = useState("error");
 
   async function getProjectList() {
     const res = await axios.get(
-      "http://localhost:8081/employee/getAllProjects"
+      "http://localhost:8081/employee/getAllProjectsForAssign"
     );
     setProjectList(res.data);
   }
@@ -51,20 +51,26 @@ function AssignProject() {
     console.log("Project Id", event.target.value);
   }
 
+  function handleCancel(event) {
+    navigate("/admin-dashboard");
+  }
+
   async function apiCall() {
-    try {
-      const reqData = {
-        empId: empData.empId,
-        projectId: projectId,
-      };
-      const res = await axios.post(
-        "http://localhost:8081/employee/assignProject",
-        reqData
-      );
-      console.log(res.data);
-      navigate("/admin-dashboard");
-    } catch (error) {
-      console.log(error);
+    if (!errorProject) {
+      try {
+        const reqData = {
+          empId: empData.empId,
+          projectId: projectId,
+        };
+        const res = await axios.post(
+          "http://localhost:8081/employee/assignProject",
+          reqData
+        );
+        console.log(res.data);
+        navigate("/admin-dashboard");
+      } catch (error) {
+        console.log(error);
+      }
     }
   }
 
@@ -73,8 +79,6 @@ function AssignProject() {
     validateData();
     console.log(projectId);
     if (checkErrors()) {
-      console.log("Submitting data");
-      console.log("ProjectId", projectId, "empData", empData);
       apiCall();
     } else {
       console.log("Not working");
@@ -109,11 +113,22 @@ function AssignProject() {
             );
           })}
         </select>
-        {errorProject && <div className="error-message">{errorProject}</div>}
+        {errorProject && errorProject !== "error" && (
+          <div className="error-message">{errorProject}</div>
+        )}
       </div>
-      <button className="assign-project-button" onClick={handleSubmit}>
-        Assign Project
-      </button>
+
+      <Button
+        className="assign-project-button"
+        text="Assign Project"
+        onClick={handleSubmit}
+      />
+
+      <Button
+        className="assign-project-button-cancel"
+        text="Cancel"
+        onClick={handleCancel}
+      />
     </div>
   );
 }

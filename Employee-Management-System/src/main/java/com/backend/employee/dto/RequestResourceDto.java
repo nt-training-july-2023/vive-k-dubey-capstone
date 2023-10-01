@@ -1,6 +1,9 @@
 package com.backend.employee.dto;
 
-import javax.validation.constraints.NotNull;
+import java.util.Objects;
+
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 /**
  * Represents input dto for request resource.
@@ -9,23 +12,50 @@ public class RequestResourceDto {
     /**
      * Employee empId.
      */
-    @NotNull(message = "empId can not be null")
+    @NotBlank(message = "Employee Id can not be null")
     private String empId;
+
+    @Override
+    public String toString() {
+     return "RequestResourceDto [empId=" + empId + ", managerEmail="
+      + managerEmail + ", projectId=" + projectId + ", comment=" + comment
+      + "]";
+    }
+
+    @Override
+    public int hashCode() {
+     return Objects.hash(comment, empId, managerEmail, projectId);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+     if (this == obj)
+      return true;
+     if (obj == null)
+      return false;
+     if (getClass() != obj.getClass())
+      return false;
+     RequestResourceDto other = (RequestResourceDto) obj;
+     return Objects.equals(comment, other.comment)
+      && Objects.equals(empId, other.empId)
+      && Objects.equals(managerEmail, other.managerEmail)
+      && Objects.equals(projectId, other.projectId);
+    }
 
     /**
      * Email of manager.
      */
-    @NotNull(message = "manager email can not be null")
+    @NotBlank(message = "Manager email can not be null.")
     private String managerEmail;
     /**
      * Id of project.
      */
-    @NotNull(message = "project id can not be null")
+    @NotNull(message = "Project Id can not be null.")
     private Long projectId;
     /**
      * Comment for request resource.
      */
-    @NotNull(message = "comment can not be null")
+    @NotBlank(message = "Comment can not be empty.")
     private String comment;
 
     /**

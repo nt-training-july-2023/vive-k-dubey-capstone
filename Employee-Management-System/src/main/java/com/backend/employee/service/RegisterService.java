@@ -11,6 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.backend.employee.dto.CommonResponseDto;
 import com.backend.employee.dto.LoginDto;
 import com.backend.employee.dto.LoginOutDto;
 import com.backend.employee.dto.RegisterDto;
@@ -54,95 +55,13 @@ public class RegisterService {
   * Add admin method.
   *
   * @param registerDto registerDto.
-  * @return ResponseEntity.
+  * @return CommonResponseDto.
   */
- public  ResponseEntity<String> addAdmin(
-  final RegisterDto registerDto) {
+ public CommonResponseDto addAdmin(final RegisterDto registerDto)
+  throws WrongInputException {
 
-  /**
-   * Check if the provided date is valid.
-   */
-  if (!inputFieldChecks.checkDate(registerDto.getEmpDOB())) {
-   return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-    .body("Invalid date of birth");
-  }
-
-  /**
-   * Check if the provided employee ID is valid.
-   */
-  if (!inputFieldChecks.checkEmpId(registerDto.getEmpId())) {
-   return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-    .body("Invalid employee ID");
-  }
-
-  if (registerDto.getEmpEmail().equals("ankita.sharma@nucleusteq.com")) {
-   registerDto.setEmpRole("admin"); // Set the role to "admin"
-  }
-
-  /**
-   * Check if the provided email is valid.
-   */
-  if (!inputFieldChecks.checkEmpEmail(registerDto.getEmpEmail())) {
-   return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-    .body("Invalid email");
-  }
-  /**
-   * setting the role as admin.
-   */
   if (registerDto.getEmpEmail().equals("ankita.sharma@nucleusteq.com")) {
    registerDto.setEmpRole("admin");
-  }
-
-  /**
-   * Check if the provided contact number is valid.
-   */
-  if (!inputFieldChecks.checkEmpContactNo(registerDto.getEmpContactNo())) {
-   return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-    .body("Invalid contact number");
-  }
-
-  /**
-   * Check if the provided password is valid.
-   */
-  if (!inputFieldChecks.checkEmpPassword(registerDto.getEmpPassword())) {
-   return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-    .body("Invalid password");
-  }
-
-  // Check if the provided name is valid
-  if (!inputFieldChecks.checkValidName(registerDto.getEmpName())) {
-   return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-    .body("Invalid name");
-  }
-  /**
-   * Check if the email is already registered.
-   */
-  Optional<RegisterEntity> existingUser = registerRepo
-   .findByEmpEmail(registerDto.getEmpEmail());
-
-  if (existingUser.isPresent()) {
-   return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-    .body("Email already registered");
-  }
-
-  /**
-   * Check if the contact number is already registered.
-   */
-  Optional<RegisterEntity> existingContactNoUser = registerRepo
-   .findByEmpContactNo(registerDto.getEmpContactNo());
-  if (existingContactNoUser.isPresent()) {
-   return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-    .body("Contact number already registered");
-  }
-
-  /**
-   * Check if the employee ID is already registered.
-   */
-  Optional<RegisterEntity> existingEmpIdUser = registerRepo
-   .findByEmpId(registerDto.getEmpId());
-  if (existingEmpIdUser.isPresent()) {
-   return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-    .body("Employee ID already registered");
   }
 
   String password = registerDto.getEmpPassword();
@@ -210,14 +129,12 @@ public class RegisterService {
    /**
     * returning the response entity
     */
-   return ResponseEntity.status(HttpStatus.OK)
-    .body("Admin added successfully");
+   return new CommonResponseDto("Admin added successfully");
   } else {
    /**
     * returning the response entity
     */
-   return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-    .body("Admin not added. ");
+   throw new WrongInputException("Admin not added.");
   }
  }
 

@@ -9,21 +9,12 @@ import java.util.Objects;
  * projects under their supervision.
  */
 
-public class ManagerDto {
-
- @Override
- public String toString() {
-  return "ManagerDto [id=" + id + ", empName=" + empName
-   + ", empDesignation=" + empDesignation + ", empContactNo=" + empContactNo
-   + ", empEmail=" + empEmail + ", empLocation=" + empLocation + ", empId="
-   + empId + ", empSkills=" + empSkills + ", managerName=" + managerName
-   + ", projectNames=" + projectNames + "]";
- }
+public class ManagerOutDto {
 
  /**
   * Constructs a new ManagerDto with no initial information.
   */
- public ManagerDto() {
+ public ManagerOutDto() {
 
  }
 
@@ -215,6 +206,15 @@ public class ManagerDto {
  public void setProjectNames(final List<String> projectNamesLocal) {
   this.projectNames = new ArrayList<>(projectNamesLocal);
  }
+ 
+ @Override
+ public String toString() {
+  return "ManagerDto [id=" + id + ", empName=" + empName
+   + ", empDesignation=" + empDesignation + ", empContactNo=" + empContactNo
+   + ", empEmail=" + empEmail + ", empLocation=" + empLocation + ", empId="
+   + empId + ", empSkills=" + empSkills + ", managerName=" + managerName
+   + ", projectNames=" + projectNames + "]";
+ }
 
  /**
   * The unique identifier of the manager.
@@ -294,7 +294,7 @@ public class ManagerDto {
   if (getClass() != obj.getClass()) {
    return false;
   }
-  ManagerDto other = (ManagerDto) obj;
+  ManagerOutDto other = (ManagerOutDto) obj;
   return Objects.equals(empContactNo, other.empContactNo)
    && empDesignation.equals(other.empDesignation)
    && Objects.equals(empEmail, other.empEmail)

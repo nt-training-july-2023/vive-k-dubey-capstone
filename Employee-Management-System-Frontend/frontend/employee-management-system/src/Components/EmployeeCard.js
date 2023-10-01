@@ -1,13 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Popup from "./Popup";
 import axios from "axios";
+import Button from "./Button";
 
-function EmployeeCard({ employee, userRole }) {
+function EmployeeCard({ employee, userRole, fetchEmployeeData }) {
   const navigate = useNavigate();
   const managerEmail = localStorage.getItem("userEmail");
+  const [showUnassignPopup, setShowUnassignPopup] = useState(false);
   const [isRequested, setIsRequested] = useState("false");
-  const buttonText =
-    userRole === "manager" ? "Request Resource" : "Assign Project";
 
   async function getIsRequested() {
     try {
@@ -19,14 +20,15 @@ function EmployeeCard({ employee, userRole }) {
         "http://localhost:8081/requestResource/isRequested",
         reqData
       );
-      console.log(employee.empId, res.data);
       setIsRequested(res.data.requested);
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   }
 
-  const handleAssignProjectClick = () => {
+  useEffect(() => {
+    getIsRequested();
+  }, []);
+
+  const handleClick = () => {
     if (userRole === "manager") {
       navigate("/requestResource", {
         state: { empId: employee.empId, empName: employee.empName },
@@ -36,6 +38,24 @@ function EmployeeCard({ employee, userRole }) {
         state: { empId: employee.empId, empName: employee.empName },
       });
     }
+  };
+
+  const handleUnassignConfirmation = () => {
+    setShowUnassignPopup(true);
+  };
+
+  async function handleUnassign(empId) {
+    try {
+      const response = await axios.put(
+        `http://localhost:8081/employee/unassignProject/${empId}`
+      );
+      fetchEmployeeData();
+    } catch (error) {}
+  }
+
+  const handleUnassignProject = (empId) => {
+    handleUnassign(empId);
+    setShowUnassignPopup(false);
   };
 
   return (
@@ -60,11 +80,6 @@ function EmployeeCard({ employee, userRole }) {
         <div className="field">
           <span style={{ fontWeight: 600 }}>Email:</span> {employee.empEmail}
         </div>
-        {/* {employee.projectId === null && (userRole === 'manager' || userRole === 'admin') &&  (
-          <button className="assign-button" onClick={handleAssignProjectClick}>
-             {buttonText}
-          </button>
-        )} */}
       </div>
       <div className="right-section">
         <div className=" emp-id">
@@ -86,38 +101,48 @@ function EmployeeCard({ employee, userRole }) {
             {employee.empSkills.join(", ")}
           </div>
         )}
-        {/* {employee.projectId === null &&
-          (userRole === "manager" || userRole === "admin") && (
-            <button
-              className="assign-button"
-              onClick={handleAssignProjectClick}
-            >
-              {buttonText}
-            </button>
-          )} */}
 
         {employee.projectId === null &&
           (userRole === "manager" && isRequested ? (
-            <button
+            <Button
               className="assign-button"
-              onClick={handleAssignProjectClick}
-              disabled
-            >
-              Requested
-            </button>
-          ) : ( userRole === "manager" &&
-            <button
-              className="assign-button"
-              onClick={handleAssignProjectClick}
-            >
-              Request Resource
-            </button>
+              text="Requested"
+              onClick={handleClick}
+              isDisabled={true}
+            />
+          ) : (
+            userRole === "manager" && (
+              <Button
+                className="assign-button"
+                text="Request Resource"
+                onClick={handleClick}
+              />
+            )
           ))}
 
         {employee.projectId === null && userRole === "admin" && (
-          <button className="assign-button" onClick={handleAssignProjectClick}>
-            Assign Project
-          </button>
+          <Button
+            className="assign-button"
+            text="Assign Project"
+            onClick={handleClick}
+          />
+        )}
+        {employee.projectId !== null && userRole === "admin" && (
+          <>
+            <Button
+              className="assign-button"
+              text=" Unassign Project"
+              onClick={handleUnassignConfirmation}
+            />
+            {showUnassignPopup && (
+              <Popup
+                message={`Are you sure you want to unassign ${employee.empName}'s project?`}
+                confirmText="OK"
+                onClose={() => setShowUnassignPopup(false)}
+                onConfirm={() => handleUnassignProject(employee.empId)}
+              />
+            )}
+          </>
         )}
       </div>
     </div>

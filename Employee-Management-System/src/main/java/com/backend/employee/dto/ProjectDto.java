@@ -2,11 +2,43 @@ package com.backend.employee.dto;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 /**
  * A data transfer object (DTO) representing information about a project.
  */
 public class ProjectDto {
+
+ @Override
+ public int hashCode() {
+  return Objects.hash(description, head, managerEmployeeId, name, projectId,
+   skills, startDate, teamMembers);
+ }
+
+ @Override
+ public boolean equals(Object obj) {
+  if (this == obj)
+   return true;
+  if (obj == null)
+   return false;
+  if (getClass() != obj.getClass())
+   return false;
+  ProjectDto other = (ProjectDto) obj;
+  return Objects.equals(description, other.description)
+   && Objects.equals(head, other.head)
+   && Objects.equals(managerEmployeeId, other.managerEmployeeId)
+   && Objects.equals(name, other.name)
+   && Objects.equals(projectId, other.projectId)
+   && Objects.equals(skills, other.skills)
+   && Objects.equals(startDate, other.startDate)
+   && Objects.equals(teamMembers, other.teamMembers);
+ }
 
  /**
   * The unique identifier of the project.
@@ -16,27 +48,32 @@ public class ProjectDto {
  /**
   * The name of the project.
   */
+ @NotBlank(message = "Project name can not be null.")
  private String name;
 
  /**
   * The description of the project.
   */
+ @NotBlank(message = "Description can not be null.")
  private String description;
 
  /**
   * The start date of the project.
   */
+ @NotBlank(message = "StartDate can not be null.")
  private String startDate;
 
  /**
-  * The employee ID of the manager responsible for the project.
+  * The ID of the manager responsible for the project.
   */
+ @NotNull(message = "Manager Id can not be null")
  private Long managerEmployeeId;
 
  /**
   * The skills required for the project.
   */
- private List<String> skills;
+ @NotEmpty(message = "Skills required for project can not be empty.")
+ private List<@NotBlank String> skills;
 
  /**
   * The head or leader of the project.

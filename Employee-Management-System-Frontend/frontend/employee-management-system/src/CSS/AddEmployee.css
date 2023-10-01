@@ -53,6 +53,15 @@
   .grid-item {
     display: flex;
     flex-direction: column;
+
+  }
+
+  .grid-dropdown{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 70px;
+
   }
 
 
@@ -126,13 +135,18 @@
     margin-left: 10px;
 }
 
+.select-classname{
+  height: 22px;
+}
+
 
 .cancel-button-addemployee:hover {
   background-color: #d32f2f; 
 }
 
 .select-container-addemployee {
-  max-width: 350px; 
+  max-width: 300px;
+  position: relative; 
 }
 
   @media (max-width: 768px) {
@@ -140,7 +154,7 @@
     .grid-container {
       grid-template-columns: 1fr; 
       gap: 10px; 
-      width: 80%; 
+      width: 90%; 
       margin: 0 auto;
     }
   

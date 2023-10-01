@@ -1,137 +1,130 @@
 .content-allemployees {
-    width: 76%;
-    margin: 3% 12%;
-  }
-  
-  .card-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-content: flex-start;
-  }
+  width: 76%;
+  margin: 3% 12%;
+}
 
-  .admindashboard-button {
-    background-color: #337CCF; 
-    color: #fff; 
-    border: none; 
-    padding: 10px 20px; 
-    cursor: pointer;
-    margin-left: 83%;
-    @media (max-width: 768px) {
-      padding: 4px 8px; 
-      font-size: 10px;
-      margin-left: 62%;
-    }
-  }
-  
-  .admindashboard-button:hover {
-    background-color: #0056b3; 
-  }
-  
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-content: flex-start;
+}
 
-  .allemployee-search-form{
+.admindashboard-button {
+  background-color: #337ccf;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  margin-left: 83%;
+  @media (max-width: 768px) {
+    padding: 4px 8px;
+    font-size: 10px;
+    margin-left: 70%;
+  }
+}
+
+.admindashboard-button:hover {
+  background-color: #0056b3;
+}
+
+.allemployee-search-form {
   display: flex;
   align-items: center;
   justify-content: center;
   margin-top: 20px;
-  } 
+}
 
-  .searching-by-manager-dropdown{
-    width: 30%;
-  }
+.searching-by-manager-dropdown {
+  width: 30%;
+}
 
-  .search-input {
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    margin-right: 10px;
-    width: 300px;
-  }
-  
-  .checkbox-label {
-    display: flex;
-    align-items: center;
-    font-size: 16px;
-    margin-right: 10px;
-  }
-  
- .checkbox-input {
-    margin-right: 5px;
-    height: 25px;
-    width: 25px;
-  }
-  
-  .search-button {
-    padding: 10px 20px;
-    background-color: #337CCF;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
-  }
-  
- 
-  .search-button:hover {
-    background-color: #337CCF;
-  } 
-  
-  .card {
-    width: calc(45% - 10px);
-    border: 1px solid #ccc;
-    padding: 10px;
-    margin: 10px 0;
-    display: flex;
-    justify-content: space-between;
-  }
+.search-input {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-right: 10px;
+  width: 300px;
+}
 
-  .left-section-allemployees{
-    padding: 10px;
-    width: 60%; 
-    box-sizing: border-box;
-    overflow-wrap: break-word;
-  }
-  
-  .right-section{
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  margin-right: 10px;
+}
 
-    padding: 10px;
-    width: 40%; 
-    box-sizing: border-box;
-    overflow-wrap: break-word;
+.checkbox-input {
+  margin-right: 5px;
+  height: 25px;
+  width: 25px;
+}
 
-  }
+.search-button {
+  padding: 10px 20px;
+  background-color: #337ccf;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
 
-  .right-section .emp-id{
-    margin-bottom: 17%;
-  }
-  
-  
-  .field {
-    margin: 5px 0;
-    font-size: 14px;
-  }
-  
-  .larger {
-    font-size: 22px;
-    font-weight: bold;
-  }
- .smaller{
-    font-size: 12px;
- }
+.search-button:hover {
+  background-color: #337ccf;
+}
 
- .assign-button {
-  background-color: #337CCF;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
-    margin-top: 10px; 
-    transition: background-color 0.3s;
-  }
-  
-  .assign-button:hover {
-    background-color: darkgray;
-  }
+.card {
+  width: calc(45% - 10px);
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin: 10px 0;
+  display: flex;
+  justify-content: space-between;
+}
 
-  
+.left-section-allemployees {
+  padding: 10px;
+  width: 60%;
+  box-sizing: border-box;
+  overflow-wrap: break-word;
+}
+
+.right-section {
+  padding: 10px;
+  width: 40%;
+  box-sizing: border-box;
+  overflow-wrap: break-word;
+}
+
+.right-section .emp-id {
+  margin-bottom: 17%;
+}
+
+.field {
+  margin: 5px 0;
+  font-size: 14px;
+}
+
+.larger {
+  font-size: 22px;
+  font-weight: bold;
+}
+.smaller {
+  font-size: 12px;
+}
+
+.assign-button {
+  background-color: #337ccf;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background-color 0.3s;
+}
+
+.assign-button:hover {
+  background-color: darkgray;
+}

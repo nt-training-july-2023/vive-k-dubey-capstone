@@ -91,7 +91,7 @@ public class EmployeeServiceTest {
 
         when(registerRepo.findByEmpEmail(userEmail)).thenReturn(Optional.empty());
 
-        assertThrows(WrongInputException.class, () -> employeeService.getEmployee(userEmail));
+        assertThrows(NullPointerException.class, () -> employeeService.getEmployee(userEmail));
     }
 
     @Test

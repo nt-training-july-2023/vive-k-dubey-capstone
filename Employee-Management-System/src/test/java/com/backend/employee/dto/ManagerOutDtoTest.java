@@ -1,6 +1,6 @@
 package com.backend.employee.dto;
 
-import com.backend.employee.dto.ManagerDto;
+import com.backend.employee.dto.ManagerOutDto;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -9,14 +9,14 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class ManagerDtoTest {
+public class ManagerOutDtoTest {
 
     @Test
     public void testGetterSetter() {
-        // Create a ManagerDto object
-        ManagerDto managerDto = new ManagerDto();
 
-        // Set values using the setter methods
+        ManagerOutDto managerDto = new ManagerOutDto();
+
+
         managerDto.setId(1L);
         managerDto.setEmpName("Vivek Dubey");
         managerDto.setEmpDesignation("Manager");
@@ -28,7 +28,7 @@ public class ManagerDtoTest {
         managerDto.setManagerName("Manager Name");
         managerDto.setProjectNames(Arrays.asList("Project1", "Project2"));
 
-        // Get values using the getter methods and assert their correctness
+
         assertEquals(1L, managerDto.getId());
         assertEquals("Vivek Dubey", managerDto.getEmpName());
         assertEquals("Manager", managerDto.getEmpDesignation());
@@ -43,8 +43,7 @@ public class ManagerDtoTest {
 
     @Test
     public void testEqualsWithSettersAndGetters() {
-        // Create two ManagerDto objects with the same values
-        ManagerDto managerDto1 = new ManagerDto();
+        ManagerOutDto managerDto1 = new ManagerOutDto();
         managerDto1.setId(1L);
         managerDto1.setEmpName("Vivek Dubey");
         managerDto1.setEmpDesignation("Manager");
@@ -56,7 +55,7 @@ public class ManagerDtoTest {
         managerDto1.setManagerName("Manager Name");
         managerDto1.setProjectNames(Arrays.asList("Project1", "Project2"));
 
-        ManagerDto managerDto2 = new ManagerDto();
+        ManagerOutDto managerDto2 = new ManagerOutDto();
         managerDto2.setId(1L);
         managerDto2.setEmpName("Vivek Dubey");
         managerDto2.setEmpDesignation("Manager");
@@ -68,8 +67,8 @@ public class ManagerDtoTest {
         managerDto2.setManagerName("Manager Name");
         managerDto2.setProjectNames(Arrays.asList("Project1", "Project2"));
 
-        // Create another ManagerDto object with different values
-        ManagerDto managerDto3 = new ManagerDto();
+
+        ManagerOutDto managerDto3 = new ManagerOutDto();
         managerDto3.setId(2L);
         managerDto3.setEmpName("Jane Smith");
         managerDto3.setEmpDesignation("Manager");
@@ -81,14 +80,13 @@ public class ManagerDtoTest {
         managerDto3.setManagerName("Manager Name");
         managerDto3.setProjectNames(Arrays.asList("Project1", "Project2"));
 
-        // Test equals method
-        assertTrue(managerDto1.equals(managerDto2)); // Equal objects
-        assertFalse(managerDto1.equals(managerDto3)); // Different objects
+        assertTrue(managerDto1.equals(managerDto2)); 
+        assertFalse(managerDto1.equals(managerDto3)); 
     }
     @Test
     public void testHashCodeWithSettersAndGetters() {
-        // Create two ManagerDto objects with the same values
-        ManagerDto managerDto1 = new ManagerDto();
+
+        ManagerOutDto managerDto1 = new ManagerOutDto();
         managerDto1.setId(1L);
         managerDto1.setEmpName("Vivek Dubey");
         managerDto1.setEmpDesignation("Manager");
@@ -100,7 +98,7 @@ public class ManagerDtoTest {
         managerDto1.setManagerName("Manager Name");
         managerDto1.setProjectNames(Arrays.asList("Project1", "Project2"));
 
-        ManagerDto managerDto2 = new ManagerDto();
+        ManagerOutDto managerDto2 = new ManagerOutDto();
         managerDto2.setId(1L);
         managerDto2.setEmpName("Vivek Dubey");
         managerDto2.setEmpDesignation("Manager");
@@ -112,7 +110,6 @@ public class ManagerDtoTest {
         managerDto2.setManagerName("Manager Name");
         managerDto2.setProjectNames(Arrays.asList("Project1", "Project2"));
 
-        // Test hashCode method
         assertEquals(managerDto1.hashCode(), managerDto2.hashCode()); // Equal objects
     }
 }

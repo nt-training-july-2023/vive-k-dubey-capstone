@@ -1,19 +1,45 @@
 package com.backend.employee.dto;
 
-import javax.validation.constraints.NotNull;
+import java.util.Objects;
+
+import jakarta.validation.constraints.NotBlank;
 
 public class RequestedDto {
     /**
      * Employee empId.
      */
-    @NotNull(message = "empId can not be null")
+    @NotBlank(message = "Employee Id can not be blank.")
     private String empId;
 
     /**
      * Email of manager.
      */
-    @NotNull(message = "manager email can not be null")
+    @NotBlank(message = "Manager email can not be blank.")
     private String managerEmail;
+
+    @Override
+    public int hashCode() {
+     return Objects.hash(empId, managerEmail);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+     if (this == obj)
+      return true;
+     if (obj == null)
+      return false;
+     if (getClass() != obj.getClass())
+      return false;
+     RequestedDto other = (RequestedDto) obj;
+     return Objects.equals(empId, other.empId)
+      && Objects.equals(managerEmail, other.managerEmail);
+    }
+
+    @Override
+    public String toString() {
+     return "RequestedDto [empId=" + empId + ", managerEmail="
+      + managerEmail + "]";
+    }
 
     /**
      * @return the empId

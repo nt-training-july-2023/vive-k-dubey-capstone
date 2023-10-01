@@ -2,9 +2,14 @@ package com.backend.employee.validations;
 
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.time.LocalDate;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -23,6 +28,7 @@ import com.backend.employee.entity.RequestResource;
 import com.backend.employee.exception.WrongInputException;
 import com.backend.employee.exception.DataAlreadyExistsException;
 import com.backend.employee.exception.DataNotFoundException;
+import com.backend.employee.exception.UnauthorizedException;
 import com.backend.employee.repo.RegisterRepo;
 import com.backend.employee.repo.ProjectRepo;
 import com.backend.employee.repo.RequestResourceRepo;
@@ -64,6 +70,23 @@ public class ValidationService {
    .findByEmpId(requestResourceDto.getEmpId());
   Optional<RegisterEntity> manager = registerRepository
    .findByEmpEmail(requestResourceDto.getManagerEmail());
+  ProjectEntity project = projectRepository
+   .findByProjectId(requestResourceDto.getProjectId());
+  employee
+   .orElseThrow(() -> new DataNotFoundException("Employee not found"));
+  manager.orElseThrow(() -> new DataNotFoundException("Manager not found"));
+  if (project == null) {
+   throw new DataNotFoundException("Project not found");
+  }
+  Long managerId = project.getManagerEmployeeId();
+  Optional<RegisterEntity> managerOne = registerRepository
+   .findById(managerId);
+
+  if (managerOne.isPresent() && !managerOne.get().getEmpEmail()
+   .equals(requestResourceDto.getManagerEmail())) {
+   throw new WrongInputException(
+    "Given project is not under the provided manager.");
+  }
 
   if (employee.isPresent() && employee.get().getProjectId() != null) {
    throw new WrongInputException(
@@ -75,7 +98,6 @@ public class ValidationService {
     employee.get().getId(), manager.get().getId());
 
   } else {
-   // Handle the case where either employee or manager is not found
   }
 
   if (requestResource != null) {
@@ -91,6 +113,21 @@ public class ValidationService {
   }
   if (requestedDto.getManagerEmail().equals("")) {
    throw new WrongInputException("Manager email id should not be empty");
+  }
+  Optional<RegisterEntity> userOptional = registerRepository
+   .findByEmpId(requestedDto.getEmpId());
+
+  if (!userOptional.isPresent()) {
+   String s = "Employee with emp id " + requestedDto.getEmpId()
+    + " does not exist";
+   throw new DataNotFoundException(s);
+  }
+  Optional<RegisterEntity> userOptionalManager = registerRepository
+   .findByEmpEmail(requestedDto.getManagerEmail());
+  if (!userOptionalManager.isPresent()) {
+   String s = "Manager with email " + requestedDto.getManagerEmail()
+    + " does not exist";
+   throw new DataNotFoundException(s);
   }
  }
 
@@ -122,7 +159,7 @@ public class ValidationService {
     passwordEncoders.matches(decodedPassword, user.getEmpPassword()));
    System.out.println(password);
    String message = "Wrong password";
-   throw new WrongInputException(message);
+   throw new UnauthorizedException(message);
   }
 
  }
@@ -134,6 +171,7 @@ public class ValidationService {
   validateProjectDescription(projectDto.getDescription());
   validateDuplicateProjectName(projectDto.getName());
   validateManagerExistence(projectDto.getManagerEmployeeId());
+  validateStartDate(projectDto.getStartDate());
  }
 
  private void validateSkills(List<String> selectedSkills)
@@ -143,12 +181,37 @@ public class ValidationService {
   }
  }
 
+ private static final String DATE_FORMAT_REGEX = "^(0[1-9]|[1-2][0-9]|3[0-1])/(0[1-9]|1[0-2])/(\\d{4})$";
+
+ public void validateStartDate(String startDate)
+  throws WrongInputException {
+  try {
+   if (!startDate.matches(DATE_FORMAT_REGEX)) {
+    throw new WrongInputException(
+     "Start date must be in the format DD/MM/YYYY");
+   }
+   DateTimeFormatter dateFormatter = DateTimeFormatter
+    .ofPattern("dd/MM/yyyy");
+   LocalDate parsedStartDate = LocalDate.parse(startDate, dateFormatter);
+   LocalDate currentDate = LocalDate.now();
+   if (parsedStartDate.isBefore(currentDate)) {
+    throw new WrongInputException("Start date must be a future date");
+   }
+  } catch (Exception e) {
+   throw new WrongInputException("Invalid date format");
+  }
+ }
+
  private void validateProjectName(String projectName)
   throws WrongInputException {
-  if (projectName == null || projectName.isEmpty()
-   || projectName.matches(".*\\d.*")) {
-   throw new WrongInputException(
-    "Project name is invalid. It shouldn't have digits and should not be empty");
+  try {
+   if (projectName == null || projectName.isEmpty()
+    || projectName.matches(".*\\d.*")) {
+    throw new WrongInputException(
+     "Project name is invalid. It shouldn't have digits and should not be empty");
+   }
+  } catch (Exception e) {
+   throw new WrongInputException("Invalid name type");
   }
  }
 
@@ -175,6 +238,9 @@ public class ValidationService {
   if (managerEntity.isEmpty()) {
    throw new WrongInputException("Manager not found");
   }
+  if (!managerEntity.get().getEmpRole().equals("manager")) {
+   throw new WrongInputException("The specified manager is not a manager");
+  }
  }
 
  public void validateManagerId(Long managerId)
@@ -199,6 +265,10 @@ public class ValidationService {
 
   }
 
+  if (employee.getProjectId() != null) {
+   throw new WrongInputException("Employee is already assigned a project.");
+  }
+
   ProjectEntity project = projectRepository
    .findByProjectId(assignProjectDto.getProjectId());
   if (project == null) {
@@ -206,7 +276,31 @@ public class ValidationService {
   }
  }
 
- public void validateUserEmail(String email) throws WrongInputException {
+ public void validateManagerEmail(String email) throws WrongInputException {
+  RegisterEntity employee = registerRepository.findByEmpEmail(email)
+   .orElse(null);
+
+  if (employee == null) {
+   throw new WrongInputException("Employee does not exist");
+  }
+ }
+
+ public void validateRejectResource(Long id) throws WrongInputException {
+  Optional<RequestResource> resourceRequest = requestResourceRepository
+   .findById(id);
+  try {
+   if (resourceRequest.isEmpty()) {
+    throw new DataNotFoundException(
+     "Resource request with ID " + id + " not found");
+   }
+  } catch (DataNotFoundException e) {
+   throw e;
+  }
+
+ }
+
+ public void validateUserEmail(String email)
+  throws DataNotFoundException, WrongInputException {
   RegisterEntity employee = registerRepository.findByEmpEmail(email)
    .orElse(null);
 
@@ -235,6 +329,19 @@ public class ValidationService {
   List<String> empSkills = updateSkillsDto.getEmpSkills();
   if (empSkills == null || empSkills.isEmpty()) {
    throw new WrongInputException("Employee skills cannot be empty");
+  }
+ }
+
+ public void unassignProjectValidator(String empId)
+  throws WrongInputException {
+  RegisterEntity employee = registerRepository.findByEmpId(empId)
+   .orElse(null);
+  if (employee == null) {
+   throw new DataNotFoundException("Employee id does not exist");
+  }
+  if (employee.getProjectId() == null) {
+   throw new WrongInputException(
+    "Employee does not have a project in first place.");
   }
  }
 

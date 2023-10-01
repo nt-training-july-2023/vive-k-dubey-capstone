@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef} from "react";
 import "../CSS/CustomMultipleDropdown.css";
 function CustomMultipleDropdown({
   options,
@@ -6,6 +6,8 @@ function CustomMultipleDropdown({
   onChange,
   placeholder,
   alreadySelectedSkills,
+  customClassName,
+  customDropdown,
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedValues, setSelectedValues] = useState(selectedOptions || []);
@@ -44,7 +46,7 @@ function CustomMultipleDropdown({
     };
   }, []);
   return (
-    <div className="custom-multi-select" ref={dropdownRef}>
+    <div className={`${customClassName || "custom-multi-select"}`} ref={dropdownRef}>
       <div
         className={`dropdown ${isOpen ? "open" : ""}`}
         onClick={toggleDropdown}
@@ -61,6 +63,7 @@ function CustomMultipleDropdown({
         </div>
         <div className="dropdown-arrow" />
       </div>
+
       {isOpen && (
         <div className="dropdown-options">
           {options.map((option) => (

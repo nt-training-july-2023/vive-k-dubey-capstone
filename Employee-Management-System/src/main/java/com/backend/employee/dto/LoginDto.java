@@ -1,18 +1,44 @@
 package com.backend.employee.dto;
 
+import java.util.Objects;
+
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+
 /**
  * Data Transfer Object (DTO) representing the login credentials of an employe.
  */
 public class LoginDto {
 
+ @Override
+ public int hashCode() {
+  return Objects.hash(empEmail, empPassword);
+ }
+
+ @Override
+ public boolean equals(Object obj) {
+  if (this == obj)
+   return true;
+  if (obj == null)
+   return false;
+  if (getClass() != obj.getClass())
+   return false;
+  LoginDto other = (LoginDto) obj;
+  return Objects.equals(empEmail, other.empEmail)
+   && Objects.equals(empPassword, other.empPassword);
+ }
+
  /**
   * The email of the employee.
   */
+ 
+ @NotEmpty(message = "Email cannot be blank")
  private String empEmail;
 
  /**
   * The password of the employee.
   */
+ @NotEmpty(message = "Password cannot be blank")
  private String empPassword;
 
  /**
