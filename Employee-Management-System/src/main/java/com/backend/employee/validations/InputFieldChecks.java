@@ -61,8 +61,8 @@ public class InputFieldChecks {
   * @return True if the date matches the pattern, otherwise false.
   */
  public boolean checkDate(final String date) {
-  String s = "^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/(19|20)\\d\\d$";
-  String datePattern = s;
+  String message = "^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/(19|20)\\d\\d$";
+  String datePattern = message;
   return Pattern.matches(datePattern, date);
  }
 
@@ -122,8 +122,8 @@ public class InputFieldChecks {
   Optional<RegisterEntity> userOptional = registerRepo
    .findByEmpEmail(empEmail);
   if (!userOptional.isPresent()) {
-   String s = "Employee with email id " + empEmail + " does not exist";
-   throw new DataNotFoundException(s);
+   String message = "Employee with email id " + empEmail + " does not exist";
+   throw new DataNotFoundException(message);
   }
   RegisterEntity user = userOptional.get();
   byte[] decodedBytes = Base64.getDecoder().decode(password);
@@ -131,8 +131,8 @@ public class InputFieldChecks {
    java.nio.charset.StandardCharsets.UTF_8);
 
   if (!passwordEncoders.matches(decodedPassword, user.getEmpPassword())) {
-   String s = "Wrong password";
-   throw new WrongInputException(s);
+   String message = "Wrong password";
+   throw new WrongInputException(message);
   }
 
  }
