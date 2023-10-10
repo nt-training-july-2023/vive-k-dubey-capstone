@@ -74,7 +74,6 @@ function AllEmployeesList() {
     };
 
     getFilterEmployee(filterData);
-    console.log("filterdata", filterData);
   }
 
   function handleSkillChange(selectedOptions) {

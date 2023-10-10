@@ -51,7 +51,6 @@ function AddProject({ handleTabChange }) {
       );
       setManagerList(res.data);
     } catch (error) {
-      console.log(error);
     }
   }
 
@@ -96,13 +95,11 @@ function AddProject({ handleTabChange }) {
 
   function handleSubmit(event) {
     event.preventDefault();
-    console.log(projectData);
     checkEmptyData();
     if (
       !checkErrors() ||
       Object.values(projectData).some((value) => value === "")
     ) {
-      console.log("error manager id");
     } else {
       apiCall();
     }

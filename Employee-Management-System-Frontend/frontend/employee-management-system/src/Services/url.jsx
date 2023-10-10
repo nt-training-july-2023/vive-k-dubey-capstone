@@ -1,6 +1,5 @@
 export const BASE_URL = 'http://localhost:8081/';
 
-// URLs related to admin controller and register controller.
 export const ADD_ADMIN = 'admin';
 export const LOGIN = 'login';
 export const ALL_EMPLOYEE = 'employee/getAllEmployees';
@@ -18,7 +17,6 @@ export const GET_ALL_PROJECT_BY_MANAGER_ID = 'employee/getAll/project/';
 
 
 
-//URLs related to request resource.
 export const CREATE_REQUEST = 'requestResource/create';
 export const IS_REQUESTED_STATUS = 'requestResource/isRequested';
 export const GET_ALL_PROJECT_BY_MANAGER_EMAIL = 'getAll/project/byManager/';
@@ -26,6 +24,5 @@ export const GET_ALL_REQUESTS = 'requestResource/getAll/requests';
 export const REJECT_REQUEST = 'requestResource/reject/';
 export const ACCEPT_REQUEST = 'request/accept/';
 
-//URLs related to employee controller.
 export const GET_USER_DETAILS = 'api/employee/';
 export const UPDATE_SKILLS_OF_USER = 'api/employee/updateskills';

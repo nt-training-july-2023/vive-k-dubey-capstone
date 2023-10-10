@@ -53,7 +53,7 @@ function EmployeeCard({ employee, userRole, fetchEmployeeData }) {
       );
       fetchEmployeeData();
     } catch (error) {
-        console.log(error);
+
     }
   }
 
