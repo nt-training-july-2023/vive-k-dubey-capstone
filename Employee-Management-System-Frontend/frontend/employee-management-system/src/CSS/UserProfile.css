@@ -1,0 +1,54 @@
+.user-profile {
+  width: 62%;
+  margin: 0 auto;
+  padding: 50px;
+  border: 1px solid #ccc;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+  margin-top: 50px;
+}
+
+.user-profile-content {
+  display: flex;
+  justify-content: space-between;
+}
+
+.user-profile-left,
+.user-profile-right {
+  width: 45%;
+}
+
+.user-input-field {
+  margin-bottom: 15px;
+}
+
+.user-input-label {
+  font-weight: bold;
+}
+
+.user-input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-top: 4px;
+}
+
+.user-input-multiline {
+  height: 80px;
+  resize: vertical;
+}
+
+.user-update-button {
+  background-color: #337ccf;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.user-update-button:hover {
+  background-color: #0056b3;
+}

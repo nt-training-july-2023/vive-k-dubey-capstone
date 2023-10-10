@@ -1,51 +1,68 @@
-.content {
-    width: 70%;
-    margin: 3% 15%;
-  }
-  
-  .card-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-content: flex-start;
-  }
-  
+.content-all-managers {
+  width: 76%;
+  margin: 3% 12%;
+}
+
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-content: flex-start;
+}
+
+.card {
+  width: calc(45% - 10px);
+  border: 1px solid #ccc;
+  padding: 20px;
+  margin: 10px 0;
+  display: flex;
+  justify-content: space-between;
+}
+
+.left-section-allmanagers,
+.right-section-allmanagers {
+  box-sizing: border-box;
+  overflow-wrap: break-word;
+}
+
+.left-section-allmanagers {
+  flex: 0 0 60%;
+  overflow: hidden;
+}
+
+.right-section-allmanagers {
+  flex: 0 0 40%;
+  text-align: left;
+}
+
+.field {
+  margin: 5px 0;
+  font-size: 14px;
+}
+
+.larger {
+  font-size: 22px;
+  font-weight: bold;
+}
+.smaller {
+  font-size: 12px;
+}
+
+.right-section-manager {
+  margin-top: 2%;
+}
+
+.right-section-manager .employee-id {
+  margin-bottom: 10%;
+}
+
+#projectName {
+  width: 90%;
+  border: none;
+}
+
+@media (max-width: 900px) {
   .card {
-    width: calc(45% - 10px);
-    border: 1px solid #ccc;
-    padding: 20px;
-    margin: 10px 0;
-    display: flex;
-    justify-content: space-between;
-  }
-  
-  .left-section,
-  .right-section {
-    flex: 1;
-    padding: 0 10px;
-  }
-  
-  .field {
-    margin: 5px 0;
-    font-size: 14px;
-  }
-  
-  .larger {
-    font-size: 22px;
-    font-weight: bold;
-  }
- .smaller{
-    font-size: 12px;
- }
-
- .right-section .employee-id {
-    margin-top: 0%;
-    font-weight: bold;
- }
-
- #projectName{
     width: 100%;
-    border: none;
- }
-
- 
+  }
+}

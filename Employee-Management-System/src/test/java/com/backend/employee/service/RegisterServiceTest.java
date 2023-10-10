@@ -1,105 +1,125 @@
 package com.backend.employee.service;
 
-import static org.mockito.Mockito.*;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.springframework.http.ResponseEntity;
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.backend.employee.dto.RegisterDto;
-import com.backend.employee.dto.LoginDto;
-import com.backend.employee.service.RegisterService;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
+import com.backend.employee.dto.CommonResponseDto;
+import com.backend.employee.dto.LoginDto;
+import com.backend.employee.dto.LoginOutDto;
+import com.backend.employee.dto.RegisterDto;
+import com.backend.employee.entity.RegisterEntity;
+import com.backend.employee.exception.WrongInputException;
+import com.backend.employee.repo.RegisterRepo;
+import com.backend.employee.validations.InputFieldChecks;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import java.util.Objects;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.*;
+
+@ExtendWith(MockitoExtension.class)
 public class RegisterServiceTest {
 
+	@InjectMocks
     private RegisterService registerService;
+    
+    @Mock
+    private RegisterRepo registerRepo;
+    @Mock
+    private BCryptPasswordEncoder passwordEncoder;
+    
+    @Mock
+    private InputFieldChecks inputFieldChecks;
 
     @BeforeEach
-    public void setup() {
-        registerService = mock(RegisterService.class);
+    public void setUp() {
+    	
+    	
+    	MockitoAnnotations.openMocks(this);
+    	 	
     }
-
     @Test
-    public void testAddAdmin_Success() {
-        // Create a sample RegisterDto
-        RegisterDto registerDto = new RegisterDto();
-        registerDto.setEmpId("E123");
-        registerDto.setEmpName("Vivek Dubey");
-        registerDto.setEmpEmail("vivek@example.com");
-        registerDto.setEmpDOB("1990-01-01");
-        registerDto.setEmpDOJ("2021-01-01");
-        registerDto.setEmpLocation("Gorakhpur");
-        registerDto.setEmpDesignation("Software Engineer");
-        registerDto.setEmpContactNo("1234567890");
-        registerDto.setEmpPassword("password");
-        registerDto.setEmpRole("admin"); 
+    public void testAddAdmin() {
+        RegisterDto validAdminDto = new RegisterDto();
+        validAdminDto.setEmpId("N1234");
+        validAdminDto.setEmpDOB("01/01/1990");
+        validAdminDto.setEmpDOJ("01/01/2022");
+        validAdminDto.setEmpEmail("ankita.sharma@nucleusteq.com"); 
+        validAdminDto.setEmpContactNo("1234567890");
+        validAdminDto.setEmpPassword("password");
+        validAdminDto.setEmpName("Ankita Sharma");
+        validAdminDto.setEmpDesignation("Recruiter");
+        validAdminDto.setEmpLocation("Indore");
+
+        when(registerRepo.save(any(RegisterEntity.class))).thenReturn(new RegisterEntity());
+
+        CommonResponseDto responseDto = registerService.addAdmin(validAdminDto);
+        assertEquals("Admin added successfully", responseDto.getMessage());
+
+        RegisterDto invalidAdminDto = new RegisterDto();
+        invalidAdminDto.setEmpId("N54321");
+        invalidAdminDto.setEmpDOB("01/01/1990");
+        invalidAdminDto.setEmpDOJ("01/01/2022");
+        invalidAdminDto.setEmpEmail("different@admin.com");
+        invalidAdminDto.setEmpContactNo("1234567890");
+        invalidAdminDto.setEmpPassword("password");
+        invalidAdminDto.setEmpName("Jane Doe");
+        invalidAdminDto.setEmpDesignation("Software Engineer");
+        invalidAdminDto.setEmpLocation("Indore");
+
+        registerService.addAdmin(invalidAdminDto);
+        assertNotEquals("admin", invalidAdminDto.getEmpRole());
+    }
+    
+    @Test
+    void testLogin() throws WrongInputException {
+    	LoginDto input = new LoginDto();
+        input.setEmpEmail("vivek@nucleusteq.com");
+        input.setEmpPassword("12345678");
+        RegisterEntity employeeEntity = new RegisterEntity(); 
+     
+        
+        employeeEntity.setEmpId("N0001");
+        employeeEntity.setEmpName("Vivek");
+        employeeEntity.setEmpEmail("vivek@nucleusteq.com");
+        employeeEntity.setEmpDOB("25/04/2001");
+        employeeEntity.setEmpDOJ("25/04/2023");
+        employeeEntity.setEmpLocation("Raipur");
+        employeeEntity.setEmpDesignation("Engineer");
+        employeeEntity.setEmpContactNo("1111111111");
+        employeeEntity.setEmpPassword("12345678");
+        employeeEntity.setEmpRole("admin");
+        
+        Optional<RegisterEntity> employee = Optional.of(employeeEntity);
         
 
-        // Configure mock behavior
-        when(registerService.addAdmin(eq(registerDto)))
-            .thenReturn(ResponseEntity.ok("Admin added successfully"));
+        when(registerRepo.findByEmpEmail(input.getEmpEmail()))
+                .thenReturn(employee);
+        
+        LoginOutDto output = registerService.authenticate(input);
+        verify(registerRepo, times(1)).findByEmpEmail(input.getEmpEmail());
 
-       
-        ResponseEntity<String> response = registerService.addAdmin(registerDto);
+        LoginOutDto expectedOutput = new LoginOutDto();
+        expectedOutput.setMessage("Login success!!");
+        expectedOutput.setEmpRole(employeeEntity.getEmpRole());
 
-        // Verify the result
-        assertNotNull(response);
-        assertEquals("Admin added successfully", response.getBody());
+        Objects.equals(output, expectedOutput);
     }
 
-    @Test
-    public void testAddAdmin_Failure() {
-        // Create a sample RegisterDto with missing required fields
-        RegisterDto registerDto = new RegisterDto();
 
-        // Configure mock behavior
-        when(registerService.addAdmin(eq(registerDto)))
-            .thenReturn(ResponseEntity.badRequest().body("Invalid data"));
-
-        // Call the service method
-        ResponseEntity<String> response = registerService.addAdmin(registerDto);
-
-        // Verify the result
-        assertNotNull(response);
-        assertEquals("Invalid data", response.getBody());
-    }
-
-    @Test
-    public void testAuthenticate_Success() {
-        // Create a sample LoginDto
-        LoginDto loginDto = new LoginDto();
-        loginDto.setEmpEmail("example@nucleusteq.com");
-        loginDto.setEmpPassword("password");
-
-        // Configure mock behavior
-        when(registerService.authenticate(eq(loginDto)))
-            .thenReturn(ResponseEntity.ok("Authentication successful"));
-
-        // Call the service method
-        ResponseEntity<String> response = registerService.authenticate(loginDto);
-
-        // Verify the result
-        assertNotNull(response);
-        assertEquals("Authentication successful", response.getBody());
-    }
-
-    @Test
-    public void testAuthenticate_Failure() {
-        // Create a sample LoginDto with incorrect credentials
-        LoginDto loginDto = new LoginDto();
-        loginDto.setEmpEmail("example@nucleusteq.com");
-        loginDto.setEmpPassword("wrongpassword");
-
-        // Configure mock behavior
-        when(registerService.authenticate(eq(loginDto)))
-            .thenReturn(ResponseEntity.status(401).body("Authentication failed"));
-
-        // Call the service method
-        ResponseEntity<String> response = registerService.authenticate(loginDto);
-
-        // Verify the result
-        assertNotNull(response);
-        assertEquals("Authentication failed", response.getBody());
-    }
+    
 }
+

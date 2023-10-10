@@ -1,0 +1,117 @@
+.assign-project-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh; 
+  text-align: center;
+  
+}
+
+.assign-project-header {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.manager-name {
+  font-size: 26px;
+  text-align: left;
+  margin-left: 20px;
+  margin-bottom: 30px;
+  font-weight: 600;
+}
+
+.project-dropdown-container {
+  display: flex;
+  align-items: center;
+  margin-left: 20px;
+  margin-bottom: 30px;
+}
+
+.project-label {
+  display: inline-block;
+  font-size: 18px;
+  margin-right: 14px;
+  text-align: left;
+}
+
+#project-select {
+  flex: 1;
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 500px;
+}
+
+.assign-project-button {
+  background-color: #337ccf;
+  color: white;
+  width: 400px;
+  font-size: 16px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 10px;
+  margin-left: 50px;
+}
+
+.assign-project-button-cancel {
+  background-color: red;
+  color: white;
+  width: 400px;
+  font-size: 16px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 10px;
+  margin-left: 50px;
+}
+
+.assign-project-button:hover {
+  background-color: #337ccf;
+}
+
+@media (max-width: 768px) {
+  .assign-project-container {
+    padding: 60px;
+  }
+
+  .project-label {
+    font-size: 16px;
+  }
+
+  .project-dropdown-container {
+    width: 80%;
+    margin-left: 0;
+  }
+
+  .assign-project-button {
+    width: 75%;
+    margin-left: 0;
+  }
+
+  .assign-project-button-cancel {
+    width: 75%;
+    margin-left: 0;
+  }
+
+  #project-select {
+    flex: 1;
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%;
+  }
+
+  .manager-name {
+    font-weight: bolder;
+  }
+}

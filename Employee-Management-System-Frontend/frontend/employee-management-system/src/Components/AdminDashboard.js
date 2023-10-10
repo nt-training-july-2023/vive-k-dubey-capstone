@@ -1,114 +1,113 @@
-import React, { useState } from 'react';
-import { useEffect } from 'react';
-import '../CSS/AdminDashBoard.css';
-import AllEmployeesList from './AllEmployeesList';
-import AllManagersList from './AllManagersList';
-import AllProjectsList from './AllProjectsList';
-import AddEmployee from './AddEmployee';
-import AddManager from './AddManager';
-import AddProject from './AddProject';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import "../CSS/AdminDashBoard.css";
+import AllEmployeesList from "../Pages/AllEmployeesList";
+import AllManagersList from "../Pages/AllManagersList";
+import AllProjectsList from "../Pages/AllProjectsList";
+import AddEmployee from "../Pages/AddEmployee";
+import AddProject from "../Pages/AddProject";
+import { useNavigate } from "react-router-dom";
+import Button from "./Button";
+import Tab from "./Tab";
+import Unauthorized from "./Unauthorized";
 
-function AdminDashboard({ setIsLoggedIn, isLoggedIn }) {
-  const [selectedTab, setSelectedTab] = useState('employee');
-  const [addAction, setAddAction] = useState('Add Employee');
+function AdminDashboard() {
+  const [selectedTab, setSelectedTab] = useState("employee");
+  const [addAction, setAddAction] = useState("Add Employee");
   const [showAddEmployee, setShowAddEmployee] = useState(false);
   const [showAddManager, setShowAddManager] = useState(false);
   const [showAddProject, setShowAddProject] = useState(false);
   const navigate = useNavigate();
 
-  /* testing code 
-  */
-
-
-  
-
-   useEffect(() => {
-     // If the user is not logged in, navigate them to the login page
-     if (!isLoggedIn) {
-      navigate('/');
-     } else {
-       // Replace the current history state with the admin dashboard route
-       window.history.replaceState(null, null, '/admin-dashboard');
-     }
-   }, [isLoggedIn, navigate]);
-
-   
+  const userRole = localStorage.getItem("role");
+  const userName = localStorage.getItem("userName");
+  const firstName = userName ? userName.split(" ")[0] : "";
 
   const handleTabChange = (tab) => {
     setSelectedTab(tab);
 
-    if (tab === 'employee') {
-      setAddAction('Add Employee');
-    } else if (tab === 'manager') {
-      setAddAction('Add Manager');
-    } else if (tab === 'project') {
-      setAddAction('Add Project');
+    if (tab === "employee") {
+      setAddAction("Add Employee");
+    } else if (tab === "manager") {
+      setAddAction("Add Manager");
+    } else if (tab === "project") {
+      setAddAction("Add Project");
     }
 
-    // Reset showAddEmployee when changing tabs
     setShowAddEmployee(false);
     setShowAddManager(false);
     setShowAddProject(false);
-
   };
 
   const handleAddActionClick = () => {
-    // Determine the action based on the selected tab
-    if (selectedTab === 'employee') {
+    if (selectedTab === "employee") {
       setShowAddEmployee(true);
-    } else if (selectedTab === 'manager') {
+    } else if (selectedTab === "manager") {
       setShowAddManager(true);
-    } else if (selectedTab === 'project') {
+    } else if (selectedTab === "project") {
       setShowAddProject(true);
     }
   };
 
-   const handleLogout = () => {
-     // Clear the isLoggedIn state and navigate to the login page
-     setIsLoggedIn(false);
-     navigate('/');
-   };
+  const handleLogout = () => {
+    localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("role");
+
+    navigate("/");
+  };
+
+  if (userRole === "employee") {
+    return <Unauthorized/>;
+  }
+
+  if (!userRole) {
+    navigate("/");
+  }
 
   return (
     <div className="admin-dashboard">
       <nav className="navbar">
         <div className="navbar-section">
-          <button
-            className={`tab-button ${selectedTab === 'employee' ? 'selected' : ''}`}
-            onClick={() => handleTabChange('employee')}
-          >
-            Employee
-          </button>
-          <button
-            className={`tab-button ${selectedTab === 'manager' ? 'selected' : ''}`}
-            onClick={() => handleTabChange('manager')}
-          >
-            Manager
-          </button>
-          <button
-            className={`tab-button ${selectedTab === 'project' ? 'selected' : ''}`}
-            onClick={() => handleTabChange('project')}
-          >
-            Project
-          </button>
+          <span className="welcome-message">Welcome, {firstName}!</span>
         </div>
         <div className="navbar-section">
-            <button className="add-button" onClick={handleAddActionClick}>
-              {addAction}
-            </button>
-            <button className="logout-button" onClick={handleLogout}>
-            Logout
-            </button>
-         
+          <Tab
+            label="Employee"
+            isSelected={selectedTab === "employee"}
+            onClick={() => handleTabChange("employee")}
+          />
+          <Tab
+            label="Manager"
+            isSelected={selectedTab === "manager"}
+            onClick={() => handleTabChange("manager")}
+          />
+          <Tab
+            label="Project"
+            isSelected={selectedTab === "project"}
+            onClick={() => handleTabChange("project")}
+          />
+        </div>
+        <div className="navbar-section right-container">
+          {selectedTab !== "manager" &&
+            userRole !== "manager" &&
+            !showAddEmployee &&
+            !showAddProject && (
+              <button className="add-button" onClick={handleAddActionClick}>
+                {addAction}
+              </button>
+            )}
+
+          <Button
+            className="logout-button"
+            text="Logout"
+            onClick={handleLogout}
+          />
         </div>
       </nav>
-      {selectedTab === 'employee' && !showAddEmployee && <AllEmployeesList />}
-      {showAddEmployee && <AddEmployee />} {/* Render AddEmployee when showAddEmployee is true */}
-      {selectedTab === 'manager' && !showAddManager && <AllManagersList />}
-      {showAddManager && <AddManager />} {/* Render AddEmployee when showAddEmployee is true */}
-      {selectedTab === 'project' && !showAddProject && <AllProjectsList />}
-      {showAddProject && <AddProject />}
+      {selectedTab === "employee" && !showAddEmployee && <AllEmployeesList />}
+      {showAddEmployee && <AddEmployee handleTabChange={handleTabChange} />}
+      {selectedTab === "manager" && !showAddManager && <AllManagersList />}
+      {selectedTab === "project" && !showAddProject && <AllProjectsList />}
+      {showAddProject && <AddProject handleTabChange={handleTabChange} />}
     </div>
   );
 }

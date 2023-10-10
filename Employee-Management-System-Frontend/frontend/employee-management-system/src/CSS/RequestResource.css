@@ -1,0 +1,130 @@
+.assign-project-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  text-align: center;
+  border: none;
+}
+
+.assign-project-header {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.comment-textarea-container {
+  display: flex;
+  align-items: left;
+  margin-bottom: 30px;
+  flex-direction: column;
+}
+
+.comment-label {
+  display: inline-block;
+  font-size: 18px;
+}
+
+.manager-name {
+  font-size: 18px;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.comment-textarea {
+  flex: 1;
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 500px;
+  height: 150px;
+  margin-left: 40px;
+}
+
+.project-dropdown-container {
+  display: flex;
+  align-items: left;
+  flex-direction: column;
+  margin-bottom: 30px;
+}
+
+.project-label {
+  font-size: 18px;
+}
+
+#project-select {
+  flex: 1;
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 515px;
+  margin-left: 10px;
+}
+
+.resource-request-button {
+  background-color: #007bff;
+  color: white;
+  width: 400px;
+  font-size: 16px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.resource-request-button-cancel {
+  background-color: red;
+  color: white;
+  width: 400px;
+  font-size: 16px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.resource-request-button {
+  background-color: #0056b3;
+}
+
+.request-error-message {
+  font-size: 14px;
+  color: red;
+}
+
+@media (max-width: 768px) {
+  .assign-project-container {
+    padding: 20px;
+  }
+
+  .project-label {
+    font-size: 16px;
+  }
+
+  .comment-label {
+    font-size: 16px;
+  }
+
+  .project-dropdown-container {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .comment-textarea-container {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .resource-request-button {
+    width: 50%;
+    margin-left: 0;
+  }
+}

@@ -8,13 +8,14 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  */
 @SuppressWarnings("serial")
 @ResponseStatus(HttpStatus.BAD_REQUEST)
-public class WrongInputException extends Exception{
-    /**
-     * Constructor to call constructor of Exception class.
-     * @param s accept a message.
-     */
-    public WrongInputException(String s){
-        super(s);
-    }
+public class WrongInputException extends Exception {
+ /**
+  * Constructor to call constructor of Exception class.
+  *
+  * @param message accept a message.
+  */
+ public WrongInputException(final String message) {
+  super(message);
+ }
 
 }

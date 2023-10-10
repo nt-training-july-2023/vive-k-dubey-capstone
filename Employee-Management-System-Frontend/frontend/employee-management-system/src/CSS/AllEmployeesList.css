@@ -1,97 +1,126 @@
-.content {
-    width: 70%;
-    margin: 3% 15%;
-  }
-  
-  .card-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-content: flex-start;
-  }
-  
-  .card {
-    width: calc(45% - 10px);
-    border: 1px solid #ccc;
-    padding: 20px;
-    margin: 10px 0;
-    display: flex;
-    justify-content: space-between;
-  }
-  
-  .left-section,
-  .right-section {
-    flex: 1;
-    padding: 0 10px;
-  }
-  .right-section{
-    margin-top: 40px;
-  }
-  
-  .field {
-    margin: 5px 0;
-    font-size: 14px;
-  }
-  
-  .larger {
-    font-size: 22px;
-    font-weight: bold;
-  }
- .smaller{
-    font-size: 12px;
- }
+.content-allemployees {
+  width: 76%;
+  margin: 3% 12%;
+}
 
- .assign-button {
-    background-color:grey;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
-    margin-top: 10px; /* Add some top margin to separate it from other fields */
-    transition: background-color 0.3s;
-  }
-  
-  .assign-button:hover {
-    background-color: darkgray;
-  }
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-content: flex-start;
+}
 
- @media screen and (max-width: 768px) {
-    .card {
-      width: 100%;
-      flex-direction: column;
-    }
-  
-    .right-section {
-      margin-top: 20px;
-    }
-    .content {
-        width: 90%;
-        margin: 3% auto;
-      }
-      
-      .card-container {
-        display: flex;
-        flex-wrap: wrap;
-        align-content: flex-start;
-      }
+.admindashboard-button {
+  background-color: #337ccf;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  font-size: 0.83rem;
+  cursor: pointer;
+}
 
-      .field {
-        margin: 5px 0;
-        font-size: 14px;
-      }
+.admindashboard-button:hover {
+  background-color: #0056b3;
+}
 
-  .left-section,
-  .right-section {
-    flex: 1;
-    padding: 0 10px;
-  }
-      
-      .larger {
-        font-size: 20px;
-        font-weight: bold;
-      }
-      
-      .smaller {
-        font-size: 12px;
-      }
-  }
+.allemployee-search-form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.searching-by-manager-dropdown {
+  width: 30%;
+}
+
+.search-input {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-right: 10px;
+  width: 300px;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  margin-right: 10px;
+}
+
+.checkbox-input {
+  margin-right: 5px;
+  height: 25px;
+  width: 25px;
+}
+
+.search-button {
+  padding: 10px 20px;
+  background-color: #337ccf;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.search-button:hover {
+  background-color: #337ccf;
+}
+
+.card {
+  width: calc(45% - 10px);
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin: 10px 0;
+  display: flex;
+  justify-content: space-between;
+}
+
+.left-section-allemployees {
+  padding: 10px;
+  width: 60%;
+  box-sizing: border-box;
+  overflow-wrap: break-word;
+}
+
+.right-section {
+  padding: 10px;
+  width: 40%;
+  box-sizing: border-box;
+  overflow-wrap: break-word;
+}
+
+.right-section .emp-id {
+  margin-bottom: 17%;
+}
+
+.field {
+  margin: 5px 0;
+  font-size: 14px;
+}
+
+.larger {
+  font-size: 22px;
+  font-weight: bold;
+}
+.smaller {
+  font-size: 12px;
+}
+
+.assign-button {
+  background-color: #337ccf;
+  color: white;
+  border: none;
+   padding: 0.625rem 1.25rem; 
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background-color 0.3s;
+  font-size: 0.8333rem;
+}
+
+.assign-button:hover {
+  background-color: darkgray;
+}

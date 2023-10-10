@@ -1,91 +1,424 @@
 package com.backend.employee.dto;
 
-import java.beans.JavaBean;
+import java.util.ArrayList;
 import java.util.List;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import java.util.Objects;
 
 /**
- * register dto.
+ * A data transfer object (DTO) representing employee registration information.
  */
-@Setter
-@Getter
-@NoArgsConstructor
-@AllArgsConstructor
-@JavaBean
 public class RegisterDto {
 
-  /**
-   * The unique identifier for the employee.
-   */
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+ /**
+  * The unique identifier for the employee.
+  */
+ private Long id;
 
-  /**
-   * The employee ID.
-   */
-  @Column(unique = true)
-  private String empId;
+ /**
+  * The employee ID.
+  */
+ private String empId;
 
-  /**
-   * The name of the employee.
-   */
-  private String empName;
+ /**
+  * The name of the employee.
+  */
+ private String empName;
 
-  /**
-   * The email address of the employee.
-   */
-  @Column(unique = true)
-  private String empEmail;
+ /**
+  * The email address of the employee.
+  */
+ private String empEmail;
 
-  /**
-   * The date of birth of the employee.
-   */
-  private String empDOB;
+ /**
+  * The date of birth of the employee.
+  */
+ private String empDOB;
 
-  /**
-   * The date of joining of the employee.
-   */
-  private String empDOJ;
+ /**
+  * The date of joining of the employee.
+  */
+ private String empDOJ;
 
-  /**
-   * The location of the employee.
-   */
-  private String empLocation;
+ /**
+  * The location of the employee.
+  */
+ private String empLocation;
 
-  /**
-   * The designation of the employee.
-   */
-  private String empDesignation;
+ /**
+  * The designation of the employee.
+  */
+ private String empDesignation;
 
-  /**
-   * The contact number of the employee.
-   */
-  private String empContactNo;
+ /**
+  * The contact number of the employee.
+  */
+ private String empContactNo;
 
-  /**
-   * The password of the employee.
-   */
-  private String empPassword;
+ /**
+  * The password of the employee.
+  */
+ private String empPassword;
 
-  /**
-   * The role of the employee.
-   */
-  private String empRole;
-  
-  private List<String> empSkills;
-  
-  private String managerName;
-  
-  
-  private Long projectId;
+ /**
+  * The role of the employee.
+  */
+ private String empRole;
 
+ /**
+  * The list of skills possessed by the employee.
+  */
+ private List<String> empSkills;
+
+ /**
+  * The name of the manager associated with the employee.
+  */
+ private String managerName;
+
+ /**
+  * The unique identifier of the project associated with the employee.
+  */
+ private Long projectId;
+
+ /**
+  * Identifier for projectName.
+  */
+
+ private String projectName;
+
+ /**
+  * Hashcode.
+  */
+ @Override
+ public int hashCode() {
+  return Objects.hash(empContactNo, empDOB, empDOJ, empDesignation,
+   empEmail, empId, empLocation, empName, empPassword, empRole, empSkills,
+   id, managerName, projectId, projectName);
+ }
+
+ /**
+  * Equals method.
+  */
+ @Override
+ public boolean equals(final Object obj) {
+  if (this == obj) {
+   return true;
+  }
+  if (obj == null) {
+   return false;
+  }
+  if (getClass() != obj.getClass()) {
+   return false;
+  }
+  RegisterDto other = (RegisterDto) obj;
+  return Objects.equals(empContactNo, other.empContactNo)
+   && Objects.equals(empDOB, other.empDOB)
+   && Objects.equals(empDOJ, other.empDOJ)
+   && Objects.equals(empDesignation, other.empDesignation)
+   && Objects.equals(empEmail, other.empEmail)
+   && Objects.equals(empId, other.empId)
+   && Objects.equals(empLocation, other.empLocation)
+   && Objects.equals(empName, other.empName)
+   && Objects.equals(empPassword, other.empPassword)
+   && Objects.equals(empRole, other.empRole)
+   && Objects.equals(empSkills, other.empSkills)
+   && Objects.equals(id, other.id)
+   && Objects.equals(managerName, other.managerName)
+   && Objects.equals(projectId, other.projectId)
+   && Objects.equals(projectName, other.projectName);
+ }
+
+ /**
+  *
+  * @return projectName Project name.
+  */
+ public String getProjectName() {
+  return projectName;
+ }
+
+ /**
+  *
+  * @param projectNameLocal projectNameLocal.
+  */
+ public void setProjectName(final String projectNameLocal) {
+  this.projectName = projectNameLocal;
+ }
+
+ /**
+  * Constructs a new RegisterDto with no initial information.
+  */
+ public RegisterDto() {
+
+ }
+
+ /**
+  * Gets the unique identifier for the employee.
+  *
+  * @return The unique identifier for the employee.
+  */
+ public Long getId() {
+  return id;
+ }
+
+ /**
+  * Sets the unique identifier for the employee.
+  *
+  * @param idLocal The unique identifier for the employee.
+  */
+ public void setId(final Long idLocal) {
+  this.id = idLocal;
+ }
+
+ /**
+  * Gets the employee ID.
+  *
+  * @return The employee ID.
+  */
+ public String getEmpId() {
+  return empId;
+ }
+
+ /**
+  * Sets the employee ID.
+  *
+  * @param empIdLocal The employee ID.
+  */
+ public void setEmpId(final String empIdLocal) {
+  this.empId = empIdLocal;
+ }
+
+ /**
+  * Gets the name of the employee.
+  *
+  * @return The name of the employee.
+  */
+ public String getEmpName() {
+  return empName;
+ }
+
+ /**
+  * Sets the name of the employee.
+  *
+  * @param empNameLocal The name of the employee.
+  */
+ public void setEmpName(final String empNameLocal) {
+  this.empName = empNameLocal;
+ }
+
+ /**
+  * Gets the email address of the employee.
+  *
+  * @return The email address of the employee.
+  */
+ public String getEmpEmail() {
+  return empEmail;
+ }
+
+ /**
+  * Sets the email address of the employee.
+  *
+  * @param empEmailLocal The email address of the employee.
+  */
+ public void setEmpEmail(final String empEmailLocal) {
+  this.empEmail = empEmailLocal;
+ }
+
+ /**
+  * Gets the date of birth of the employee.
+  *
+  * @return The date of birth of the employee.
+  */
+ public final String getEmpDOB() {
+  return empDOB;
+ }
+
+ /**
+  * Sets the date of birth of the employee.
+  *
+  * @param empDOBLocal The date of birth of the employee.
+  */
+ public void setEmpDOB(final String empDOBLocal) {
+  this.empDOB = empDOBLocal;
+ }
+
+ /**
+  * Gets the date of joining of the employee.
+  *
+  * @return The date of joining of the employee.
+  */
+ public String getEmpDOJ() {
+  return empDOJ;
+ }
+
+ /**
+  * Sets the date of joining of the employee.
+  *
+  * @param empDOJLocal The date of joining of the employee.
+  */
+ public void setEmpDOJ(final String empDOJLocal) {
+  this.empDOJ = empDOJLocal;
+ }
+
+ /**
+  * Gets the location of the employee.
+  *
+  * @return The location of the employee.
+  */
+ public String getEmpLocation() {
+  return empLocation;
+ }
+
+ /**
+  * Sets the location of the employee.
+  *
+  * @param empLocationLocal The location of the employee.
+  */
+ public void setEmpLocation(final String empLocationLocal) {
+  this.empLocation = empLocationLocal;
+ }
+
+ /**
+  * Gets the designation of the employee.
+  *
+  * @return The designation of the employee.
+  */
+ public String getEmpDesignation() {
+  return empDesignation;
+ }
+
+ /**
+  * Sets the designation of the employee.
+  *
+  * @param empDesignationLocal The designation of the employee.
+  */
+ public void setEmpDesignation(final String empDesignationLocal) {
+  this.empDesignation = empDesignationLocal;
+ }
+
+ /**
+  * Gets the contact number of the employee.
+  *
+  * @return The contact number of the employee.
+  */
+ public String getEmpContactNo() {
+  return empContactNo;
+ }
+
+ /**
+  * Sets the contact number of the employee.
+  *
+  * @param empContactNoLocal The contact number of the employee.
+  */
+ public void setEmpContactNo(final String empContactNoLocal) {
+  this.empContactNo = empContactNoLocal;
+ }
+
+ /**
+  * Gets the password of the employee.
+  *
+  * @return The password of the employee.
+  */
+ public String getEmpPassword() {
+  return empPassword;
+ }
+
+ /**
+  * Sets the password of the employee.
+  *
+  * @param empPasswordLocal The password of the employee.
+  */
+ public void setEmpPassword(final String empPasswordLocal) {
+  this.empPassword = empPasswordLocal;
+ }
+
+ /**
+  * Gets the role of the employee.
+  *
+  * @return The role of the employee.
+  */
+ public String getEmpRole() {
+  return empRole;
+ }
+
+ /**
+  * Sets the role of the employee.
+  *
+  * @param empRoleLocal The role of the employee.
+  */
+ public void setEmpRole(final String empRoleLocal) {
+  this.empRole = empRoleLocal;
+ }
+
+ /**
+  * Gets the list of skills possessed by the employee.
+  *
+  * @return The list of skills possessed by the employee.
+  */
+ public List<String> getEmpSkills() {
+  if (empSkills != null) {
+   return new ArrayList<>(empSkills);
+  } else {
+   return new ArrayList<>();
+  }
+ }
+
+ /**
+  * Sets the list of skills possessed by the employee.
+  *
+  * @param empSkillsLocal The list of skills possessed by the employee.
+  */
+ public void setEmpSkills(final List<String> empSkillsLocal) {
+  this.empSkills = new ArrayList<>(empSkillsLocal);
+ }
+
+ /**
+  * Gets the name of the manager associated with the employee.
+  *
+  * @return The name of the manager associated with the employee.
+  */
+ public String getManagerName() {
+  return managerName;
+ }
+
+ /**
+  * Sets the name of the manager associated with the employee.
+  *
+  * @param managerNameLocal The name of manager associated with the employee.
+  */
+ public void setManagerName(final String managerNameLocal) {
+  this.managerName = managerNameLocal;
+ }
+
+ /**
+  * Gets the unique identifier of the project associated with the employee.
+  *
+  * @return The unique identifier of the project associated with the employee.
+  */
+ public Long getProjectId() {
+  return projectId;
+ }
+
+ /**
+  * Sets the unique identifier of the project associated with the employee.
+  *
+  * @param projectIdLocal The unique identifier of the project associated with
+  *                       the employee.
+  */
+ public void setProjectId(final Long projectIdLocal) {
+  this.projectId = projectIdLocal;
+ }
+
+ /**
+  * Returns a string representation of the RegisterDto.
+  *
+  * @return A string containing information about the employee.
+  */
+ @Override
+ public String toString() {
+  return "RegisterDto [id=" + id + ", empId=" + empId + ", empName="
+   + empName + ", empEmail=" + empEmail + ", empDOB=" + empDOB + ", empDOJ="
+   + empDOJ + ", empLocation=" + empLocation + ", empDesignation="
+   + empDesignation + ", empContactNo=" + empContactNo + ", empPassword="
+   + empPassword + ", empRole=" + empRole + ", empSkills=" + empSkills
+   + ", managerName=" + managerName + ", projectId=" + projectId + "]";
+ }
 }

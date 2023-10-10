@@ -1,102 +1,118 @@
-.admin-dashboard {
-    padding: 20px;
-  }
-  
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #337ccf;
+  padding: 10px 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 97%;
+  height: 60px;
+}
+
+.navbar-section {
+  display: flex;
+  align-items: center;
+}
+.right-container{
+  width: 30%;
+  /* border: 1px solid red; */
+  justify-content: right;
+}
+
+.tab-button {
+  border: none;
+  background-color: #337ccf;
+  color: white;
+   padding: 10px 40px;
+  font-size: 15px; 
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.tab-button.selected {
+  background-color: #337ccf;
+  color: white;
+  border: 1px solid white;
+}
+
+.welcome-message {
+   font-size: 24px; 
+  color: white;
+}
+
+.add-button {
+  border: none;
+  background-color: #337ccf;
+  border: 1px solid white;
+  color: white;
+   padding: 10px 20px;
+  margin-right: 20px; 
+  cursor: pointer;
+  transition: background-color 0.3s;
+   font-size: 15px; 
+
+}
+
+.add-button:hover {
+  background-color: #337ccf;
+}
+
+.logout-button {
+  border: none;
+  background-color: red;
+  color: white;
+   padding: 10px 20px; 
+  cursor: pointer;
+  transition: background-color 0.3s;
+   font-size: 15px; 
+}
+
+.logout-button:hover {
+  background-color: darkred;
+}
+
+@media (max-width: 768px) {
   .navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: white;
-    padding: 10px 20px;
+    background-color: #337ccf;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    width: 90%;
-    margin-left: 5%;
-    margin-right: 5%;
+    width: 97%;
   }
-  
-   .navbar-section {
+
+  .navbar-section {
     display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
     align-items: center;
-  } 
-  
-  .tab-button {
-    border: none;
-    background-color: white;
-    color: #333;
-    padding: 10px 20px;
-    cursor: pointer;
-    transition: background-color 0.3s;
   }
-  
-  .tab-button.selected {
-    background-color: blue;
+
+   .tab-button {
+     font-size: 12px;
+    padding: 6px 6px; 
+  }
+
+  .welcome-message {
+     font-size: 14px; 
     color: white;
   }
-  
+
   .add-button {
-    border: none;
-    background-color:blue;
-    color: white;
-    padding: 10px 20px;
-    margin-right: 20px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  .add-button:hover {
-    background-color: darkblue;
+     font-size: 12px;
+    padding: 6px 6px; 
   }
 
   .logout-button {
-    border: none;
-    background-color: red;
-    color: white;
-    padding: 10px 20px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  .logout-button:hover {
-    background-color: darkred;
-  }
-  
- 
-  @media screen and (max-width: 768px) {
-    .navbar-section {
-      flex-direction: column;
-      align-items: flex-start;
-    }
-  
-    .tab-button,
-    .add-button {
-      width: 100%;
-      text-align: center;
-    }
-
-    .admin-dashboard {
-      padding: 20px;
-    }
+    font-size: 12px;
+    padding: 6px 6px; 
     
-    .navbar {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      align-items: center;
-      background-color: white;
-      padding: 10px 20px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      width: 90%;
-      margin: 0 auto;
-    }
-    .tab-button.selected {
-      background-color: blue;
-      color: white;
-    }
-    .add-button:hover {
-      background-color: darkblue;
-    }
   }
+  .right-container{
+    width: 35%;
+    /* border: 1px solid red; */
+    justify-content: right;
+  } 
+
   
-  
-  
-  
+}
