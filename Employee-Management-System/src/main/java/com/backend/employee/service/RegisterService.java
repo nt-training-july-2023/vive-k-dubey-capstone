@@ -57,27 +57,16 @@ public class RegisterService {
   }
 
   String password = registerDto.getEmpPassword();
-
   RegisterEntity registerEntity = new RegisterEntity();
-
   registerEntity.setEmpId(registerDto.getEmpId());
-
   registerEntity.setEmpName(registerDto.getEmpName());
-
   registerEntity.setEmpDOB(registerDto.getEmpDOB());
-
   registerEntity.setEmpDOJ(registerDto.getEmpDOJ());
-
   registerEntity.setEmpEmail(registerDto.getEmpEmail());
-
   registerEntity.setEmpLocation(registerDto.getEmpLocation());
-
   registerEntity.setEmpDesignation(registerDto.getEmpDesignation());
-
   registerEntity.setEmpContactNo(registerDto.getEmpContactNo());
-
   registerEntity.setEmpPassword(password);
-
   registerEntity.setEmpRole(registerDto.getEmpRole());
 
   registerRepo.save(registerEntity);

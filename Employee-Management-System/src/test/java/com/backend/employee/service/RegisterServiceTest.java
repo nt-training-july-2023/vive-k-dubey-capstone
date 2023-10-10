@@ -57,7 +57,7 @@ public class RegisterServiceTest {
         validAdminDto.setEmpId("N1234");
         validAdminDto.setEmpDOB("01/01/1990");
         validAdminDto.setEmpDOJ("01/01/2022");
-        validAdminDto.setEmpEmail("ankita.sharma@nucleusteq.com"); // Valid admin email
+        validAdminDto.setEmpEmail("ankita.sharma@nucleusteq.com"); 
         validAdminDto.setEmpContactNo("1234567890");
         validAdminDto.setEmpPassword("password");
         validAdminDto.setEmpName("Ankita Sharma");

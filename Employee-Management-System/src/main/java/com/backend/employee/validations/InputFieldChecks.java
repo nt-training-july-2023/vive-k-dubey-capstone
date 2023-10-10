@@ -51,7 +51,6 @@ public class InputFieldChecks {
   */
  public boolean checkEmpId(final String empId) {
   String empIdPattern = "N\\d{4}$";
-  System.out.println(Pattern.matches(empIdPattern, empId));
   return Pattern.matches(empIdPattern, empId);
  }
 
@@ -64,7 +63,6 @@ public class InputFieldChecks {
  public boolean checkDate(final String date) {
   String s = "^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/(19|20)\\d\\d$";
   String datePattern = s;
-  System.out.println(Pattern.matches(datePattern, date));
   return Pattern.matches(datePattern, date);
  }
 
@@ -123,26 +121,16 @@ public class InputFieldChecks {
   throws WrongInputException {
   Optional<RegisterEntity> userOptional = registerRepo
    .findByEmpEmail(empEmail);
-
   if (!userOptional.isPresent()) {
    String s = "Employee with email id " + empEmail + " does not exist";
    throw new DataNotFoundException(s);
   }
-
   RegisterEntity user = userOptional.get();
-
   byte[] decodedBytes = Base64.getDecoder().decode(password);
   String decodedPassword = new String(decodedBytes,
    java.nio.charset.StandardCharsets.UTF_8);
-  System.out.println(decodedPassword);
-  System.out.println(
-   passwordEncoders.matches(decodedPassword, user.getEmpPassword()));
 
   if (!passwordEncoders.matches(decodedPassword, user.getEmpPassword())) {
-   System.out.println(user.getEmpPassword());
-   System.out.println(
-    passwordEncoders.matches(decodedPassword, user.getEmpPassword()));
-   System.out.println(password);
    String s = "Wrong password";
    throw new WrongInputException(s);
   }

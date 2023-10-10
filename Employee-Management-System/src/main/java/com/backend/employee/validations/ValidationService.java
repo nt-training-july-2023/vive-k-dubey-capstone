@@ -394,7 +394,6 @@ public class ValidationService {
   throws DataNotFoundException, WrongInputException {
   RegisterEntity employee = registerRepository.findByEmpEmail(email)
    .orElse(null);
-
   if (employee == null) {
    throw new WrongInputException(ValidationMessages.EMPLOYEE_NOT_EXISTS);
   }
@@ -417,7 +416,6 @@ public class ValidationService {
   String empEmail = updateSkillsDto.getEmpEmail();
   RegisterEntity employee = registerRepository.findByEmpEmail(empEmail)
    .orElse(null);
-
   if (employee == null) {
    throw new DataNotFoundException(ValidationMessages.EMPLOYEE_NOT_EXISTS);
   }

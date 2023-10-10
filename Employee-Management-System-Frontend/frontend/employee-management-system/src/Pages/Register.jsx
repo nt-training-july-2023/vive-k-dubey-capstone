@@ -151,7 +151,7 @@ function RegisterForm() {
   const validateEmployeeId = () => {
     const employeeIdPattern = /^N\d{4}$/;
     if (!employeeId.match(employeeIdPattern)) {
-      setEmployeeIdError("Should be like NXXXX - X->Digit )");
+      setEmployeeIdError("Should be like NXXXX where X is a digit");
     } else {
       setEmployeeIdError("");
     }

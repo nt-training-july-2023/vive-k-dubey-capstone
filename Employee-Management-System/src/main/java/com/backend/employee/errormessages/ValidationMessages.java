@@ -13,12 +13,12 @@ public final class ValidationMessages {
   */
  public static final String NOT_NULL = "Field can not be null.";
  /**
-  * Not null employee dvalidation message.
+  * Not null employee validation message.
   */
  public static final String NOT_NULL_EMPLOYEE_ID =
   "Employee Id should not be null";
  /**
-  * Not N0000 employee dvalidation message.
+  * Not N0000 employee validation message.
   */
  public static final String NOT_N0000_EMPLOYEE_ID =
   "Employee Id should not be N0000";

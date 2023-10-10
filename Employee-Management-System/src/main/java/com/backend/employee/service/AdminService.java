@@ -55,24 +55,6 @@ public class AdminService {
  private RegisterValidationService inputFieldChecksUpdated;
 
  /**
-  *
-  * @param password Password of user.
-  * @return Whether encoded or not.
-  */
- public boolean isEncodedPassword(final String password) {
-  try {
-   byte[] decodedBytes = Base64.getDecoder().decode(password);
-   String decodedPassword = new String(decodedBytes,
-    java.nio.charset.StandardCharsets.UTF_8);
-   String validPasswordPattern =
-    "^[a-zA-Z0-9!@#$%^&*()_+\\-=\\[\\]{}|;:'\",.<>/?]*$";
-   return decodedPassword.matches(validPasswordPattern);
-  } catch (IllegalArgumentException e) {
-   return false;
-  }
- }
-
- /**
   * Adds a new employee based on the provided RegisterDto.
   *
   * @param registerDto The RegisterDto containing employee information.
@@ -85,13 +67,9 @@ public class AdminService {
   throws WrongInputException, DataAlreadyExistsException {
 
   RegisterEntity registerEntity = new RegisterEntity(registerDto);
-
   registerEntity.setEmpSkills(registerDto.getEmpSkills());
-
   String empPassword = registerDto.getEmpPassword();
-
   registerEntity.setEmpPassword(empPassword);
-
   RegisterEntity managerEntity = registerRepository.findByEmpRole("admin");
   if (managerEntity != null) {
    registerEntity.setManagerId(managerEntity.getId());
@@ -157,7 +135,6 @@ public class AdminService {
      dto.setManagerName(managerEntity.getEmpName());
     }
    }
-
    if (entity.getProjectId() != null) {
     ProjectEntity projectEntity = projectRepository
      .findByProjectId(entity.getProjectId());
@@ -247,9 +224,7 @@ public class AdminService {
   throws WrongInputException {
 
   ProjectEntity projectEntity = new ProjectEntity(projectDto);
-
   projectRepository.save(projectEntity);
-
   return new CommonResponseDto("Project added successfully");
  }
 
@@ -262,11 +237,8 @@ public class AdminService {
   */
 
  public List<ProjectDto> getAllProjects() {
-
   List<ProjectEntity> projects = projectRepository.findAll();
-
   List<ProjectDto> projectDtos = convertToProjectDtoList(projects);
-
   return projectDtos;
  }
 
@@ -290,21 +262,16 @@ public class AdminService {
    dto.setSkills(entity.getSkills());
    List<RegisterEntity> teamMembers = registerRepository
     .findAllByProjectId(entity.getProjectId());
-
    Optional<RegisterEntity> headEntity = registerRepository
     .findById(entity.getManagerEmployeeId());
    if (headEntity.isPresent()) {
     dto.setHead(headEntity.get().getEmpName());
    }
-
    List<String> teamMemberNames = new ArrayList<>();
-
    for (RegisterEntity teamMember : teamMembers) {
     teamMemberNames.add(teamMember.getEmpName());
    }
-
    dto.setTeamMembers(teamMemberNames);
-
    dtos.add(dto);
   }
   return dtos;
@@ -354,13 +321,10 @@ public class AdminService {
     .findAllByProjectId(project.getProjectId());
 
    List<String> teamMemberNames = new ArrayList<>();
-
    for (RegisterEntity teamMember : teamMembers) {
     teamMemberNames.add(teamMember.getEmpName());
    }
-
    projectOutDto.setTeamMembers(teamMemberNames);
-
    projectOutList.add(projectOutDto);
   }
 
@@ -379,10 +343,8 @@ public class AdminService {
 
   RegisterEntity employee = registerRepository
    .findByEmpId(assignProjectDto.getEmpId()).orElse(null);
-
   ProjectEntity project = projectRepository
    .findByProjectId(assignProjectDto.getProjectId());
-
   employee.setManagerId(project.getManagerEmployeeId());
   employee.setProjectId(assignProjectDto.getProjectId());
   registerRepository.save(employee);
@@ -427,13 +389,10 @@ public class AdminService {
    RegisterEntity manager = registerRepository
     .findById(employee.getManagerId()).orElse(null);
    empDto.setManagerName(manager.getEmpName());
-
    if (filterEmployeeDto.getSkills() == null
     || filterEmployeeDto.getSkills().isEmpty()) {
-
     if (filterEmployeeDto.getChecked()
      && empDto.getProjectName().equals("N/A")) {
-
      employeeDtoList.add(empDto);
     } else if (!filterEmployeeDto.getChecked()) {
      employeeDtoList.add(empDto);

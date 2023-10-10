@@ -181,7 +181,6 @@ public class RequestResourceService {
 
   List<RequestResource> employeeRequests = requestResourceRepository
    .findByEmployeeId(employee.getId());
-  System.out.println(employeeRequests);
   for (RequestResource req : employeeRequests) {
 
    rejectResourceRequest(req.getId());
