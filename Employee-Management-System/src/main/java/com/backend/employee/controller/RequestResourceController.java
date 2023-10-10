@@ -30,7 +30,7 @@ import jakarta.validation.Valid;
  * Represents controller class for request resource.
  */
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*")
 public class RequestResourceController {
 
  /**

@@ -173,7 +173,6 @@ public class RequestResourceService {
   if (employee.getProjectId() != null) {
    throw new DataAlreadyExistsException("Employee already has a project");
   }
-  System.out.println(request.toString());
   employee.setProjectId(request.getProjectId());
   employee.setManagerId(request.getManagerId());
   registerRepository.save(employee);
