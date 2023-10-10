@@ -7,6 +7,9 @@ import Popup from "../Components/Popup";
 import CustomMultipleDropdown from "../Components/CustomMultipleDropdown";
 import Button from "../Components/Button";
 import skillsList from "../Components/skillsList";
+import InputField from "../Components/InputField";
+import { getRequest, postRequest } from "../Services/Service";
+import { ADD_PROJECT, ALL_MANAGER_INFO_PROJECT } from "../Services/url";
 
 function AddProject({ handleTabChange }) {
   const [projectName, setProjectName] = useState("");
@@ -43,36 +46,29 @@ function AddProject({ handleTabChange }) {
 
   async function getManagerList() {
     try {
-      const res = await axios.get(
-        "http://localhost:8081/employee/getAllManagersInfo"
+      const res = await getRequest(
+        ALL_MANAGER_INFO_PROJECT
       );
-      console.log("manager list", res.data);
       setManagerList(res.data);
-      console.log("manager list new", managerList);
     } catch (error) {
       console.log(error);
     }
   }
 
   async function apiCall() {
-    const resMessage = {};
     try {
-      const res = await axios.post(
-        "http://localhost:8081/employee/addProject",
+      const res = await postRequest(
+        ADD_PROJECT,
         projectData
       );
-      console.log(res.data);
-      console.log(res.data);
       setPopupMessage(res.data.message);
       setShowPopup(true);
-
       setProjectAdded(true);
 
       setTimeout(() => {
         handleTabChange("project");
       }, 800);
     } catch (error) {
-      console.log(error);
       setPopupMessage(error.response.data.message);
       setShowPopup(true);
     }
@@ -117,7 +113,7 @@ function AddProject({ handleTabChange }) {
       setProjectNameError("Project name is required");
     }
     if (!projectData.managerEmployeeId) {
-      setErrorManagerId("Manager id is required");
+      setErrorManagerId("Manager is required");
     }
     if (!projectData.startDate) {
       setStartDateError("Start date is required");
@@ -133,7 +129,7 @@ function AddProject({ handleTabChange }) {
   function validateData(name, value) {
     if (name === "name") {
       const namePattern = /^^[A-Za-z ]+$/;
-      if (value === "") {
+      if (value.trim() === "") {
         setProjectNameError("Project name is required");
       } else if (!namePattern.test(value)) {
         setProjectNameError("Project Name must contain only letters.");
@@ -144,7 +140,7 @@ function AddProject({ handleTabChange }) {
 
     if (name === "managerId") {
       if (value === "") {
-        setErrorManagerId("Manager id is required");
+        setErrorManagerId("Manager is required");
       } else {
         setErrorManagerId("");
       }
@@ -209,24 +205,23 @@ function AddProject({ handleTabChange }) {
   return (
     <>
       {showPopup && <Popup message={popupMessage} onClose={closePopup} />}
-      <div className="add-project-heading">Add Project Page</div>
       <div className="add-project-container">
         <form onSubmit={handleSubmit}>
           <div className="add-project-group">
-            <label htmlFor="add-project-name">Project Name:</label>
-            <input
-              type="text"
-              id="add-project-name"
-              name="name"
-              className="add-project-input"
-              onChange={handleChange}
-            />
+            <InputField
+                label="Project Name:"
+                type="text"
+                name="name"
+                id="add-project-name"
+                onChange={handleChange}
+                className="add-project-input"
+              />
             {projectNameError && (
               <div className="error-message">{projectNameError}</div>
             )}
           </div>
           <div className="add-project-group">
-            <label htmlFor="add-project-manager">Manager ID:</label>
+             <label htmlFor="add-project-manager">Manager :</label>
             <select
               id="add-project-manager"
               name="managerEmployeeId"
@@ -234,9 +229,9 @@ function AddProject({ handleTabChange }) {
               className="add-project-select"
               onChange={handleChange}
             >
+
               <option value="">Select Manager</option>
               {managerList.map((manager) => {
-                console.log("id value", manager.id);
                 return (
                   <option key={manager.id} value={manager.id}>
                     {manager.managerEmployeeId} - {manager.managerName}
@@ -249,17 +244,15 @@ function AddProject({ handleTabChange }) {
             )}
           </div>
           <div className="add-project-group">
-            <label htmlFor="add-project-start-date">
-              Start Date (DD/MM/YYYY):
-            </label>
-            <input
-              type="text"
-              id="add-project-start-date"
-              className="add-project-input"
-              name="startDate"
-              onChange={handleChange}
-              placeholder="DD/MM/YYYY"
-            />
+             <InputField
+                label="Start Date (DD/MM/YYYY):"
+                type="text"
+                name="startDate"
+                id="add-project-start-date"
+                onChange={handleChange}
+                placeholder="DD/MM/YYYY"
+                className="add-project-input"
+              />
             {startDateError && (
               <div className="error-message">{startDateError}</div>
             )}

@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import "../CSS/AdminDashBoard.css";
-import AllEmployeesList from "./AllEmployeesList";
-import AllManagersList from "./AllManagersList";
-import AllProjectsList from "./AllProjectsList";
+import AllEmployeesList from "../Pages/AllEmployeesList";
+import AllManagersList from "../Pages/AllManagersList";
+import AllProjectsList from "../Pages/AllProjectsList";
 import AddEmployee from "../Pages/AddEmployee";
 import AddProject from "../Pages/AddProject";
 import { useNavigate } from "react-router-dom";
 import Button from "./Button";
 import Tab from "./Tab";
+import Unauthorized from "./Unauthorized";
 
 function AdminDashboard() {
   const [selectedTab, setSelectedTab] = useState("employee");
@@ -55,7 +56,11 @@ function AdminDashboard() {
   };
 
   if (userRole === "employee") {
-    return <h1>unauthrized access</h1>;
+    return <Unauthorized/>;
+  }
+
+  if (!userRole) {
+    navigate("/");
   }
 
   return (
@@ -65,7 +70,6 @@ function AdminDashboard() {
           <span className="welcome-message">Welcome, {firstName}!</span>
         </div>
         <div className="navbar-section">
-
           <Tab
             label="Employee"
             isSelected={selectedTab === "employee"}
@@ -82,15 +86,14 @@ function AdminDashboard() {
             onClick={() => handleTabChange("project")}
           />
         </div>
-        <div className="navbar-section ">
+        <div className="navbar-section right-container">
           {selectedTab !== "manager" &&
             userRole !== "manager" &&
             !showAddEmployee &&
             !showAddProject && (
-               <button className="add-button" onClick={handleAddActionClick}>
+              <button className="add-button" onClick={handleAddActionClick}>
                 {addAction}
               </button>
-             
             )}
 
           <Button

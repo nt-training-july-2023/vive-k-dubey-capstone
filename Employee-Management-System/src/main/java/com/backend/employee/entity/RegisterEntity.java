@@ -321,7 +321,7 @@ public class RegisterEntity {
  /**
   * The designation of the employee.
   */
- @Column( nullable = false)
+ @Column(nullable = false)
  private String empDesignation;
  /**
   * The contact number of the employee.
@@ -331,23 +331,23 @@ public class RegisterEntity {
  /**
   * The password of the employee.
   */
- @Column( nullable = false)
+ @Column(nullable = false)
  private String empPassword;
 
  /**
   * The email of the employee.
   */
- @Column(unique = true, nullable = false )
+ @Column(unique = true, nullable = false)
  private String empEmail;
  /**
   * The date of birth of the employee.
   */
- @Column( nullable = false)
+ @Column(nullable = false)
  private String empDOB;
  /**
   * The date of joining of the employee.
   */
- @Column( nullable = false)
+ @Column(nullable = false)
  private String empDOJ;
  /**
   * The location of the employee.
@@ -357,7 +357,7 @@ public class RegisterEntity {
  /**
   * The role of the employee.
   */
- @Column( nullable = false)
+ @Column(nullable = false)
  private String empRole;
 
  /**

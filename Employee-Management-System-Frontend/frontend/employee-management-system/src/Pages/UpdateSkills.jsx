@@ -3,6 +3,10 @@ import { useLocation, useNavigate } from "react-router-dom";
 import "../CSS/UpdateSkills.css";
 import Button from "../Components/Button";
 import skillsList from "../Components/skillsList";
+import axios from 'axios';
+import { postRequest } from "../Services/Service";
+import { UPDATE_SKILLS_OF_USER } from "../Services/url";
+import Unauthorized from "../Components/Unauthorized";
 const userRole = localStorage.getItem("role");
 
 function UpdateSkillsPage() {
@@ -41,29 +45,30 @@ function UpdateSkillsPage() {
   };
   const updateSkills = async () => {
     try {
+      
       const email = localStorage.getItem("userEmail");
-      const response = await fetch(
-        `http://localhost:8081/api/employee/updateskills`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            empEmail: email,
-            empSkills: currentSkills,
-          }),
-        }
+      const payload = {
+        empEmail: email,
+        empSkills: currentSkills,
+      };
+      const response = await postRequest(
+        UPDATE_SKILLS_OF_USER,
+        payload
       );
-
-      if (response.ok) {
-        navigate("/userdashboard");
+    
+      if (response.status === 200) {
+        navigate('/userdashboard');
       }
-    } catch (error) {}
+    } catch (error) {
+    }
   };
 
-  if (userRole !== "employee") {
-    return <h1>unauthrized access</h1>;
+  if (!userRole) {
+    navigate("/");
+  }
+
+  if (userRole === "admin" || userRole ==="manager") {
+    return <Unauthorized/>;
   }
 
   return (
@@ -73,12 +78,11 @@ function UpdateSkillsPage() {
         {currentSkills.map((skill) => (
           <div key={skill} className="current-skill-item">
             {skill}
-            <button
+            <Button
+               className="remove-skill-button"
+              text="Remove"
               onClick={() => handleRemoveSkill(skill)}
-              className="remove-skill-button"
-            >
-              Remove
-            </button>
+            />
           </div>
         ))}
       </div>

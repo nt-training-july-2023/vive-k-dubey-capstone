@@ -40,7 +40,6 @@ public class RequestedDtoTest {
         Validator validator = factory.getValidator();
         Set<ConstraintViolation<RequestedDto>> violations = validator.validate(dto);
 
-        // Ensure that both fields are marked as invalid due to @NotBlank
         assertEquals(2, violations.size());
 
         for (ConstraintViolation<RequestedDto> violation : violations) {

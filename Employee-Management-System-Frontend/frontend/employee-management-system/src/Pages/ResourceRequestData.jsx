@@ -4,6 +4,8 @@ import axios from "axios";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Popup from "../Components/Popup";
+import { deleteRequest, postRequestWithoutPayload } from "../Services/Service";
+import { ACCEPT_REQUEST, REJECT_REQUEST } from "../Services/url";
 
 export default function ResourceRequestData({
   employeeName,
@@ -21,8 +23,8 @@ export default function ResourceRequestData({
 
   const handleAccept = async () => {
     try {
-      const response = await axios.post(
-        `http://localhost:8081/request/accept/${id}`
+      const response = await postRequestWithoutPayload(
+        ACCEPT_REQUEST + id
       );
       refreshData();
     } catch (error) {
@@ -33,8 +35,8 @@ export default function ResourceRequestData({
 
   async function rejectResourceRequest() {
     try {
-      const res = await axios.delete(
-        `http://localhost:8081/requestResource/reject/${id}`
+      const res = await deleteRequest(
+        REJECT_REQUEST + id
       );
       refreshData();
     } catch (error) {

@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import EmployeeCard from '../Components/EmployeeCard'; 
 import '../CSS/AllEmployeesList.css';
 import Popup from '../Components/Popup';
+import { getRequest } from '../Services/Service';
+import { ALL_ORGANIZATION_EMPLOYEE } from '../Services/url';
 
 function Organization() {
   const [employees, setEmployees] = useState([]);
@@ -15,21 +17,29 @@ function Organization() {
   useEffect(() => {
     async function fetchEmployeeData() {
       try {
-        const response = await axios.get('http://localhost:8081/employee/getAllEmployeesAndManagers');
+        const response = await getRequest(ALL_ORGANIZATION_EMPLOYEE);
         setEmployees(response.data);
-        console.log(response.data);
       } catch (error) {
+        if (error.response) {
+          const errorMessage = error.response.data;
+          setPopupMessage(errorMessage.message);
+          setShowPopup(true);
+        } else {
+          setPopupMessage("Server is not running.");
+          setShowPopup(true);
+        }
       }
     }
 
     fetchEmployeeData();
   }, []);
-
-  
-
   const closePopup = () => {
     setShowPopup(false);
   };
+
+  if (!userRole) {
+    navigate("/");
+  }
 
   return (
     <>
@@ -39,7 +49,10 @@ function Organization() {
       <div className="content-allemployees">
         <div className="card-container">
           {Array.isArray(employees) && employees.length > 0 ? (
-            employees.map((employee) => (
+            employees.sort(function (a, b) {
+              return a.empName.localeCompare(b.empName);
+            })
+            .map((employee) => (
               <EmployeeCard employee={employee} key={employee.empId} /> 
             ))
           ) : (

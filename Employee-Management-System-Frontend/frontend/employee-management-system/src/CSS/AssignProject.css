@@ -4,9 +4,9 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100vh;
+  height: 100vh; 
   text-align: center;
-  border: none;
+  
 }
 
 .assign-project-header {
@@ -18,10 +18,11 @@
 }
 
 .manager-name {
-  font-size: 18px;
+  font-size: 26px;
   text-align: left;
   margin-left: 20px;
   margin-bottom: 30px;
+  font-weight: 600;
 }
 
 .project-dropdown-container {
@@ -99,6 +100,15 @@
   .assign-project-button-cancel {
     width: 75%;
     margin-left: 0;
+  }
+
+  #project-select {
+    flex: 1;
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%;
   }
 
   .manager-name {

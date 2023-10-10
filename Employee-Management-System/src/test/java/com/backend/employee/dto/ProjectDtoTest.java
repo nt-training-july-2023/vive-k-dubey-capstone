@@ -15,6 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -127,55 +128,79 @@ public class ProjectDtoTest {
     @Test
     public void testNameNotBlank() {
         ProjectDto projectDto = new ProjectDto();
-        projectDto.setName(""); 
+        projectDto.setName("");
+        projectDto.setStartDate("15/12/2023");
+        projectDto.setDescription("Description");
+        List<String> skills = new ArrayList<>();
+        skills.add("Skill1");
+        skills.add("Skill2");
+        projectDto.setSkills(skills); 
+        projectDto.setManagerEmployeeId(2L);
 
         Set<ConstraintViolation<ProjectDto>> violations = validator.validate(projectDto);
 
         assertFalse(violations.isEmpty());
-        assertEquals(5, violations.size());
+        assertEquals(1, violations.size());
 
         
     }
 
     @Test
     public void testDescriptionNotBlank() {
-        ProjectDto projectDto = new ProjectDto();
-        projectDto.setDescription(""); 
+     ProjectDto projectDto = new ProjectDto();
+     projectDto.setName("Fyndr");
+     projectDto.setStartDate("15/12/2023");
+     projectDto.setDescription("");
+     List<String> skills = new ArrayList<>();
+     skills.add("Skill1");
+     skills.add("Skill2");
+     projectDto.setSkills(skills); 
+     projectDto.setManagerEmployeeId(2L);
 
-        Set<ConstraintViolation<ProjectDto>> violations = validator.validate(projectDto);
+     Set<ConstraintViolation<ProjectDto>> violations = validator.validate(projectDto);
 
-        assertFalse(violations.isEmpty());
-        assertEquals(5, violations.size());
+     assertFalse(violations.isEmpty());
+     assertEquals(1, violations.size());
 
         
     }
 
     @Test
     public void testStartDateNotBlank() {
-        ProjectDto projectDto = new ProjectDto();
-        projectDto.setStartDate(""); 
+     ProjectDto projectDto = new ProjectDto();
+     projectDto.setName("Fyndr");
+     projectDto.setStartDate("");
+     projectDto.setDescription("Description");
+     List<String> skills = new ArrayList<>();
+     skills.add("Skill1");
+     skills.add("Skill2");
+     projectDto.setSkills(skills); 
+     projectDto.setManagerEmployeeId(2L);
 
-        Set<ConstraintViolation<ProjectDto>> violations = validator.validate(projectDto);
+     Set<ConstraintViolation<ProjectDto>> violations = validator.validate(projectDto);
 
-        assertFalse(violations.isEmpty());
-        assertEquals(5, violations.size());
-
-        ConstraintViolation<ProjectDto> violation = violations.iterator().next();
+     assertFalse(violations.isEmpty());
+     assertEquals(1, violations.size());
         
     }
 
     
     @Test
     public void testManagerEmployeeIdNotNull() {
-        ProjectDto projectDto = new ProjectDto();
-        projectDto.setManagerEmployeeId(null); 
+     ProjectDto projectDto = new ProjectDto();
+     projectDto.setName("Fyndr");
+     projectDto.setStartDate("15/12/2023");
+     projectDto.setDescription("Description");
+     List<String> skills = new ArrayList<>();
+     skills.add("Skill1");
+     skills.add("Skill2");
+     projectDto.setSkills(skills); 
+     projectDto.setManagerEmployeeId(null);
 
-        Set<ConstraintViolation<ProjectDto>> violations = validator.validate(projectDto);
+     Set<ConstraintViolation<ProjectDto>> violations = validator.validate(projectDto);
 
-        assertFalse(violations.isEmpty());
-        assertEquals(5, violations.size());
-
-        ConstraintViolation<ProjectDto> violation = violations.iterator().next();
+     assertFalse(violations.isEmpty());
+     assertEquals(1, violations.size());
         
     }
     
@@ -183,14 +208,16 @@ public class ProjectDtoTest {
     public void testAnnotationValidation() {
         ProjectDto projectDto = new ProjectDto();
        
-        projectDto.setName(""); // This violates the @NotBlank constraint on the "name" property
-        projectDto.setDescription(""); // This violates the @NotBlank constraint on the "description" property
-        projectDto.setStartDate(""); // This violates the @NotBlank constraint on the "startDate" property
-        projectDto.setManagerEmployeeId(null); // This violates the @NotNull constraint on the "managerEmployeeId" property
-
+        projectDto.setName(""); 
+        projectDto.setDescription(""); 
+        projectDto.setStartDate(""); 
+        projectDto.setManagerEmployeeId(null);
+        List<String> skills = new ArrayList<>();
+        projectDto.setSkills(skills);
         Set<ConstraintViolation<ProjectDto>> violations = validator.validate(projectDto);
 
-        assertEquals(5, violations.size()); // Expecting 4 violations
+        assertEquals(5, violations.size());
+        assertFalse(violations.isEmpty());
 
         
         for (ConstraintViolation<ProjectDto> violation : violations) {

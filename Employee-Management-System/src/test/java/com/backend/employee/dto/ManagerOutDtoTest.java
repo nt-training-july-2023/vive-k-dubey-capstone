@@ -39,6 +39,17 @@ public class ManagerOutDtoTest {
         assertEquals(Arrays.asList("Skill1", "Skill2"), managerDto.getEmpSkills());
         assertEquals("Manager Name", managerDto.getManagerName());
         assertEquals(Arrays.asList("Project1", "Project2"), managerDto.getProjectNames());
+        
+        assertNotEquals(2L, managerDto.getId());
+        assertNotEquals("Vivek", managerDto.getEmpName());
+        assertNotEquals("Employee", managerDto.getEmpDesignation());
+        assertNotEquals("1234567892", managerDto.getEmpContactNo());
+        assertNotEquals("vivek@nucleusteq.com", managerDto.getEmpEmail());
+        assertNotEquals("Lucknow", managerDto.getEmpLocation());
+        assertNotEquals("EMP011", managerDto.getEmpId());
+        assertNotEquals(Arrays.asList("Skill1", "Skill3"), managerDto.getEmpSkills());
+        assertNotEquals("Manager", managerDto.getManagerName());
+        assertNotEquals(Arrays.asList("Project1", "Project3"), managerDto.getProjectNames());
     }
 
     @Test
@@ -110,7 +121,7 @@ public class ManagerOutDtoTest {
         managerDto2.setManagerName("Manager Name");
         managerDto2.setProjectNames(Arrays.asList("Project1", "Project2"));
 
-        assertEquals(managerDto1.hashCode(), managerDto2.hashCode()); // Equal objects
+        assertEquals(managerDto1.hashCode(), managerDto2.hashCode()); 
     }
 }
 

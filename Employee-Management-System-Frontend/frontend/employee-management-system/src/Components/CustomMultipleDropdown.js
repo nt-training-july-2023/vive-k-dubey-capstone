@@ -5,9 +5,11 @@ function CustomMultipleDropdown({
   selectedOptions,
   onChange,
   placeholder,
+  onBlur,
   alreadySelectedSkills,
   customClassName,
   customDropdown,
+  width,
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedValues, setSelectedValues] = useState(selectedOptions || []);
@@ -35,21 +37,18 @@ function CustomMultipleDropdown({
     }
   };
   useEffect(() => {
-    console.log(
-      "selected options from custom component is : ",
-      alreadySelectedSkills
-    );
-    console.log("selected values are: ", selectedValues);
     document.addEventListener("click", handleDocumentClick);
     return () => {
       document.removeEventListener("click", handleDocumentClick);
     };
   }, []);
+
   return (
     <div className={`${customClassName || "custom-multi-select"}`} ref={dropdownRef}>
       <div
         className={`dropdown ${isOpen ? "open" : ""}`}
         onClick={toggleDropdown}
+        style={{ lineHeight: width ? "0.38" : "normal" }}
       >
         <div className="selected-values">
           {selectedValues.length > 0

@@ -6,6 +6,10 @@ import bcrypt from "bcryptjs";
 import Popup from "../Components/Popup";
 import Button from "../Components/Button";
 import axios from "axios";
+import InputField from "../Components/InputField";
+import { postRequest } from "../Services/Service";
+import { LOGIN } from "../Services/url";
+import Unauthorized from "../Components/Unauthorized";
 
 function Login({ setIsLoggedIn }) {
   const [email, setEmail] = useState("");
@@ -17,6 +21,17 @@ function Login({ setIsLoggedIn }) {
   const [emailBlurred, setEmailBlurred] = useState(false);
   const [passwordBlurred, setPasswordBlurred] = useState(false);
   const navigate = useNavigate();
+  const userRole = localStorage.getItem("role");
+
+  useEffect(() => {
+    if (userRole === "admin") {
+      navigate("/admin-dashboard");
+    } else if (userRole === "manager") {
+      navigate("/managerdashboard");
+    } else if (userRole === "employee") {
+      navigate("/userdashboard");
+    }
+  }, [navigate]);
 
   const validateEmail = () => {
     const emailPattern = /^[A-Za-z0-9._%+-]+@nucleusteq\.com$/;
@@ -61,16 +76,11 @@ function Login({ setIsLoggedIn }) {
 
     if (isEmailValid && isPasswordValid) {
       try {
-        const response = await axios.post(
-          "http://localhost:8081/login",
-          requestBody,
-          {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
-        console.log("api call");
+        const response = await postRequest(LOGIN, requestBody, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
 
         if (response.status === 200) {
           const responseData = response.data;
@@ -95,9 +105,15 @@ function Login({ setIsLoggedIn }) {
           }
         }
       } catch (error) {
-        const errorMessage = error.response.data;
-        setPopupMessage(errorMessage.message);
-        setShowPopup(true);
+        if (error.response) {
+          const errorMessage = error.response.data;
+          setPopupMessage(errorMessage.message);
+          setShowPopup(true);
+        } else {
+          console.log("error");
+          setPopupMessage("Server is not running.");
+          setShowPopup(true);
+        }
       }
     }
   };
@@ -112,9 +128,6 @@ function Login({ setIsLoggedIn }) {
         <div className="row justify-center">
           <h1 className="text-center">Employee Management System</h1>
         </div>
-        <div className="top-right-text">
-          <h3>Login Page</h3>
-        </div>
         <div className="row justify-center">
           <form
             className="login-form"
@@ -122,15 +135,11 @@ function Login({ setIsLoggedIn }) {
             onSubmit={handleSubmit}
           >
             <div className="form-group">
-              <label htmlFor="email" className="label">
-                Email
-              </label>
-              <input
+              <InputField
+                label="Email"
+                labelClassName="label"
                 type="email"
                 id="email"
-                className="input-field"
-                placeholder="Example@nucleusteq.com"
-                value={email}
                 onChange={(e) => {
                   setEmail(e.target.value);
                   setEmailError(false);
@@ -139,6 +148,8 @@ function Login({ setIsLoggedIn }) {
                   setEmailBlurred(true);
                   validateEmail();
                 }}
+                placeholder="Example@nucleusteq.com"
+                className="input-field"
               />
               <div className="error-message-container">
                 {emailError && (
@@ -147,15 +158,11 @@ function Login({ setIsLoggedIn }) {
               </div>
             </div>
             <div className="form-group">
-              <label htmlFor="password" className="label">
-                Password
-              </label>
-              <input
+              <InputField
+                label="Password"
+                labelClassName="label"
                 type="password"
                 id="password"
-                className="input-field"
-                placeholder="Password"
-                value={password}
                 onChange={(e) => {
                   setPassword(e.target.value);
                   setPasswordError(false);
@@ -164,7 +171,10 @@ function Login({ setIsLoggedIn }) {
                   setPasswordBlurred(true);
                   validatePassword();
                 }}
+                placeholder="Password"
+                className="input-field"
               />
+
               <div className="error-message-container">
                 {passwordError && (
                   <div className="error-message">{passwordError}</div>

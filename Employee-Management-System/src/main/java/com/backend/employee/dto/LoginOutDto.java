@@ -31,19 +31,28 @@ public class LoginOutDto {
   return empName;
  }
 
+ /**
+  * Hashcode.
+  */
  @Override
  public int hashCode() {
   return Objects.hash(empName, empRole, message);
  }
 
+ /**
+  * Equals.
+  */
  @Override
- public boolean equals(Object obj) {
-  if (this == obj)
+ public boolean equals(final Object obj) {
+  if (this == obj) {
    return true;
-  if (obj == null)
+  }
+  if (obj == null) {
    return false;
-  if (getClass() != obj.getClass())
+  }
+  if (getClass() != obj.getClass()) {
    return false;
+  }
   LoginOutDto other = (LoginOutDto) obj;
   return Objects.equals(empName, other.empName)
    && Objects.equals(empRole, other.empRole)
@@ -123,7 +132,8 @@ public class LoginOutDto {
   */
  @Override
  public String toString() {
-     return "LoginOutDto [empRole=" + empRole + ", message=" + message + ", empName=" + empName + "]";
+  return "LoginOutDto [empRole=" + empRole + ", message=" + message
+   + ", empName=" + empName + "]";
  }
 
 }

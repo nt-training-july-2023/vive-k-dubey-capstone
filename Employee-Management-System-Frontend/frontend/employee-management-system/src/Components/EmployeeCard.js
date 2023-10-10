@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import Popup from "./Popup";
 import axios from "axios";
 import Button from "./Button";
+import { postRequest, putRequest, putRequestWithoutPayload } from "../Services/Service";
+import { IS_REQUESTED_STATUS, UNASSIGN_PROJECT } from "../Services/url";
 
 function EmployeeCard({ employee, userRole, fetchEmployeeData }) {
   const navigate = useNavigate();
@@ -16,8 +18,8 @@ function EmployeeCard({ employee, userRole, fetchEmployeeData }) {
         empId: employee.empId,
         managerEmail: managerEmail,
       };
-      const res = await axios.post(
-        "http://localhost:8081/requestResource/isRequested",
+      const res = await postRequest(
+        IS_REQUESTED_STATUS,
         reqData
       );
       setIsRequested(res.data.requested);
@@ -46,11 +48,13 @@ function EmployeeCard({ employee, userRole, fetchEmployeeData }) {
 
   async function handleUnassign(empId) {
     try {
-      const response = await axios.put(
-        `http://localhost:8081/employee/unassignProject/${empId}`
+      const response = await putRequestWithoutPayload(
+        UNASSIGN_PROJECT + empId
       );
       fetchEmployeeData();
-    } catch (error) {}
+    } catch (error) {
+        console.log(error);
+    }
   }
 
   const handleUnassignProject = (empId) => {

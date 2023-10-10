@@ -11,6 +11,9 @@ import Designations from "../Assets/Designations";
 import Locations from "../Assets/Locations";
 import Roles from "../Assets/Roles";
 import skillsList from "../Components/skillsList";
+import axios from "axios";
+import { ADD_EMPLOYEE } from "../Services/url";
+import { postRequest } from "../Services/Service";
 
 function AddEmployee({ handleTabChange, handleAddActionClick }) {
   const [name, setName] = useState("");
@@ -27,6 +30,9 @@ function AddEmployee({ handleTabChange, handleAddActionClick }) {
   const [showPopup, setShowPopup] = useState(false);
   const [defaultPassword, setDefaultPassword] = useState("");
   const [selectedSkills, setSelectedSkills] = useState([]);
+  const [locationError, setLocationError] = useState("");
+  const [designationError, setDesignationError] = useState("");
+  const [roleError, setRoleError] = useState("");
 
   const [emailError, setEmailError] = useState("");
   const [employeeIdError, setEmployeeIdError] = useState("");
@@ -76,6 +82,9 @@ function AddEmployee({ handleTabChange, handleAddActionClick }) {
     validateDob();
     validateDoj();
     validateContactNo();
+    validateLocation();
+    validateDesignation();
+    validateRole();
 
     if (
       !nameError &&
@@ -83,10 +92,17 @@ function AddEmployee({ handleTabChange, handleAddActionClick }) {
       !employeeIdError &&
       !dobError &&
       !dojError &&
-      !contactNoError
+      !contactNoError && 
+      !locationError && 
+      !roleError && 
+      !designationError 
     ) {
       if (selectedSkills.length === 0) {
         setSkillsError("Please select at least one skill.");
+        return;
+      }
+
+      if(nameError || emailError || employeeIdError || dobError || dojError || contactNoError || locationError || roleError || designationError){
         return;
       }
 
@@ -105,39 +121,30 @@ function AddEmployee({ handleTabChange, handleAddActionClick }) {
         empSkills: selectedSkills.map((skill) => skill.value),
         empPassword: hashedPassword,
       };
-
-      try {
-        const response = await fetch("http://localhost:8081/employee/add", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(userFormData),
-        });
-
-        if (response.ok) {
-          const responseData = await response.json();
-          setPopupMessage(responseData.message);
+      const resMessage = {};
+      postRequest(ADD_EMPLOYEE, userFormData)
+        .then((response) => {
+          resMessage.message = response.data.message;
+          setPopupMessage(resMessage.message);
           setShowPopup(true);
           setTimeout(() => {
             handleTabChange("employee");
           }, 800);
-        } else {
-          const errorMessage = await response.json();
-          setPopupMessage(errorMessage.message);
+        })
+        .catch((error) => {
+          resMessage.message = error.response.data.message;
+          setPopupMessage(resMessage.message);
           setShowPopup(true);
-        }
-      } catch (error) {
-        setPopupMessage("An error occurred. Please try again later.");
-        setShowPopup(true);
-      }
+        });
     }
   };
 
   const validateName = () => {
-    if (name === "") {
+    const trimmedName = name.trim();
+
+    if (trimmedName === "") {
       setNameError("Name cannot be empty");
-    } else if (name.match(/\d/)) {
+    } else if (trimmedName.match(/\d/)) {
       setNameError("Name cannot contain digits");
     } else {
       setNameError("");
@@ -149,9 +156,13 @@ function AddEmployee({ handleTabChange, handleAddActionClick }) {
   };
 
   const validateEmail = () => {
-    const emailPattern = /@nucleusteq\.com$/;
+    const emailPattern = /^[A-Za-z][A-Za-z0-9._-]*@nucleusteq\.com$/;
 
-    if (!emailPattern.test(email)) {
+    if (/^\d/.test(email)) {
+      setEmailError("Email cannot start with a digit");
+    } else if (email === "@nucleusteq.com") {
+      setEmailError("Must have characters before domain");
+    } else if (!emailPattern.test(email)) {
       setEmailError("Must end with @nucleusteq.com");
     } else {
       setEmailError("");
@@ -183,6 +194,30 @@ function AddEmployee({ handleTabChange, handleAddActionClick }) {
     }
   };
 
+  const validateLocation = () => {
+    if (location === "") {
+      setLocationError("Location is required.");
+    } else {
+      setLocationError("");
+    }
+  };
+
+  const validateDesignation = () => {
+    if (designation === "") {
+      setDesignationError("Designation is required.");
+    } else {
+      setDesignationError("");
+    }
+  };
+
+  const validateRole = () => {
+    if (role === "") {
+      setRoleError("Role is required.");
+    } else {
+      setRoleError("");
+    }
+  };
+
   const validateContactNo = () => {
     const pattern = /^[0-9]+$/;
 
@@ -210,8 +245,15 @@ function AddEmployee({ handleTabChange, handleAddActionClick }) {
     }
 
     const currentYear = new Date().getFullYear();
-    if (year > 2003 || year <= 1980) {
-      setDobError("Should be between 1981 and the 2003");
+    const currentMonth = new Date().getMonth() + 1;
+    const currentDay = new Date().getDate();
+    if (
+      year < 1971 ||
+      year > currentYear ||
+      (year === currentYear && month > currentMonth) ||
+      (year === currentYear && month === currentMonth && day > currentDay)
+    ) {
+      setDobError(" Must be between 1971 and the current date");
       return;
     }
     if (month < 1 || month > 12) {
@@ -245,8 +287,15 @@ function AddEmployee({ handleTabChange, handleAddActionClick }) {
     }
 
     const currentYear = new Date().getFullYear();
-    if (year <= 2018 || year > currentYear) {
-      setDojError("Must be between 2018 and current year");
+    const currentMonth = new Date().getMonth() + 1;
+    const currentDay = new Date().getDate();
+    if (
+      year < 1971 ||
+      year > currentYear ||
+      (year === currentYear && month > currentMonth) ||
+      (year === currentYear && month === currentMonth && day > currentDay)
+    ) {
+      setDojError("Must be between 1981 and current date");
       return;
     }
     if (month < 1 || month > 12) {
@@ -266,13 +315,13 @@ function AddEmployee({ handleTabChange, handleAddActionClick }) {
   return (
     <>
       {showPopup && <Popup message={popupMessage} onClose={closePopup} />}
-      <div className="register-container">
+      <div className="addemployee-container">
         <h1 className="text-center">Add Employee Page</h1>
         <form className="register-form" onSubmit={handleSubmit}>
           <div className="grid-container">
             <div className="grid-item">
-              <label htmlFor="name">Name</label>
-              <input
+              <InputField
+                label="Name"
                 type="text"
                 id="name"
                 value={name}
@@ -281,15 +330,14 @@ function AddEmployee({ handleTabChange, handleAddActionClick }) {
                   setNameError(false);
                 }}
                 onBlur={validateName}
-                required
               />
               <div className="error-message-container-addemployee">
                 {nameError && <div className="error-message">{nameError}</div>}
               </div>
             </div>
             <div className="grid-item">
-              <label htmlFor="email">Email</label>
-              <input
+              <InputField
+                label="Email"
                 type="email"
                 id="email"
                 value={email}
@@ -298,7 +346,6 @@ function AddEmployee({ handleTabChange, handleAddActionClick }) {
                   setEmailError(false);
                 }}
                 onBlur={validateEmail}
-                required
               />
               <div className="error-message-container-addemployee">
                 {emailError && (
@@ -307,8 +354,8 @@ function AddEmployee({ handleTabChange, handleAddActionClick }) {
               </div>
             </div>
             <div className="grid-item">
-              <label htmlFor="employeeId">Employee ID</label>
-              <input
+              <InputField
+                label="Employee ID"
                 type="text"
                 id="employeeId"
                 value={employeeId}
@@ -317,7 +364,6 @@ function AddEmployee({ handleTabChange, handleAddActionClick }) {
                   setEmployeeIdError(false);
                 }}
                 onBlur={validateEmployeeId}
-                required
               />
               <div className="error-message-container-addemployee">
                 {employeeIdError && (
@@ -326,8 +372,8 @@ function AddEmployee({ handleTabChange, handleAddActionClick }) {
               </div>
             </div>
             <div className="grid-item">
-              <label htmlFor="dob">DOB (DD/MM/YYYY)</label>
-              <input
+              <InputField
+                label="DOB (DD/MM/YYYY)"
                 type="text"
                 id="dob"
                 value={dob}
@@ -336,15 +382,14 @@ function AddEmployee({ handleTabChange, handleAddActionClick }) {
                   setDobError(false);
                 }}
                 onBlur={validateDob}
-                required
               />
               <div className="error-message-container-addemployee">
                 {dobError && <div className="error-message">{dobError}</div>}
               </div>
             </div>
             <div className="grid-item">
-              <label htmlFor="doj">DOJ (DD/MM/YYYY)</label>
-              <input
+              <InputField
+                label="DOJ (DD/MM/YYYY)"
                 type="text"
                 id="doj"
                 value={doj}
@@ -353,7 +398,6 @@ function AddEmployee({ handleTabChange, handleAddActionClick }) {
                   setDojError(false);
                 }}
                 onBlur={validateDoj}
-                required
               />
               <div className="error-message-container-addemployee">
                 {dojError && <div className="error-message">{dojError}</div>}
@@ -369,6 +413,8 @@ function AddEmployee({ handleTabChange, handleAddActionClick }) {
               className="grid-dropdown"
               label="Location"
               selectClassname="select-classname"
+              error={locationError} 
+              onBlur={validateLocation} 
             />
 
             <Dropdown
@@ -380,6 +426,8 @@ function AddEmployee({ handleTabChange, handleAddActionClick }) {
               placeholder="Select Designation"
               label="Designation"
               selectClassname="select-classname"
+              error={designationError}
+              onBlur={validateDesignation}
             />
 
             <Dropdown
@@ -391,11 +439,13 @@ function AddEmployee({ handleTabChange, handleAddActionClick }) {
               placeholder="Select Role"
               label="Role"
               selectClassname="select-classname"
+              error={roleError}
+              onBlur={validateRole}
             />
 
             <div className="grid-item">
-              <label htmlFor="contactNo">Contact No</label>
-              <input
+              <InputField
+                label="Contact No"
                 type="text"
                 id="contactNo"
                 value={contactNo}
@@ -404,8 +454,8 @@ function AddEmployee({ handleTabChange, handleAddActionClick }) {
                   setContactNoError(false);
                 }}
                 onBlur={validateContactNo}
-                required
               />
+
               <div className="error-message-container-addemployee">
                 {contactNoError && (
                   <div className="error-message">{contactNoError}</div>
@@ -424,6 +474,8 @@ function AddEmployee({ handleTabChange, handleAddActionClick }) {
                 placeholder="Select skills..."
                 id="skills"
                 customClassName="select-container-addemployee"
+                onBlur={validateSkills}
+                width={true}
               />
               <div className="error-message-container-addemployee">
                 {skillsError && (

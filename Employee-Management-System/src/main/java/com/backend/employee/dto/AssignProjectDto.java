@@ -10,25 +10,36 @@ import jakarta.validation.constraints.NotNull;
  * employee.
  */
 public class AssignProjectDto {
-
+ /**
+  * Hashcode method.
+  */
  @Override
  public int hashCode() {
   return Objects.hash(empId, projectId);
  }
 
+ /**
+  * Equals method.
+  */
  @Override
- public boolean equals(Object obj) {
-  if (this == obj)
+ public boolean equals(final Object obj) {
+  if (this == obj) {
    return true;
-  if (obj == null)
+  }
+  if (obj == null) {
    return false;
-  if (getClass() != obj.getClass())
+  }
+  if (getClass() != obj.getClass()) {
    return false;
+  }
   AssignProjectDto other = (AssignProjectDto) obj;
   return Objects.equals(empId, other.empId)
    && Objects.equals(projectId, other.projectId);
  }
 
+ /**
+  * To string method.
+  */
  @Override
  public String toString() {
   return "AssignProjectDto [projectId=" + projectId + ", empId=" + empId

@@ -2,9 +2,15 @@ import React, { useState, useEffect } from "react";
 import "../CSS/UserProfile.css";
 import Field from "../Components/UserProfileInputField";
 import { useNavigate } from "react-router";
+import axios from "axios";
 import Button from "../Components/Button";
+import { getRequest } from "../Services/Service";
+import { GET_USER_DETAILS } from "../Services/url";
+import Popup from '../Components/Popup';
 
 function UserProfile({ onEmployeeNameChange }) {
+  const [popupMessage, setPopupMessage] = useState('');
+  const [showPopup, setShowPopup] = useState(false);
   const [userData, setUserData] = useState({
     empId: "",
     empName: "",
@@ -17,7 +23,12 @@ function UserProfile({ onEmployeeNameChange }) {
     projectName: "",
     managerName: "",
   });
+  const closePopup = () => {
+    setShowPopup(false);
+  };
   const navigate = useNavigate();
+  const userEmail = localStorage.getItem("userEmail");
+
   const handleUpdateSkills = () => {
     navigate("/userdashboard/upadteskills", {
       state: { currentSkills: userData.empSkills },
@@ -25,20 +36,31 @@ function UserProfile({ onEmployeeNameChange }) {
   };
 
   useEffect(() => {
-    const userEmail = localStorage.getItem("userEmail");
-
     if (userEmail) {
-      fetch(`http://localhost:8081/api/employee/${userEmail}`)
-        .then((response) => response.json())
-        .then((data) => {
-          setUserData(data);
-          onEmployeeNameChange(data.empName);
+        getRequest(GET_USER_DETAILS + userEmail)
+        .then((response) => {
+          setUserData(response.data);
+          onEmployeeNameChange(response.data.empName);
         })
-        .catch((error) => {});
+        .catch((error) => {
+          if (error.response) {
+            const errorMessage = error.response.data;
+            setPopupMessage(errorMessage.message);
+            setShowPopup(true);
+          } else {
+            setPopupMessage("Server is not running.");
+            setShowPopup(true);
+          }
+
+        });
     }
-  }, []);
+  }, [userEmail]);
 
   return (
+    <>
+    {showPopup && (
+      <Popup message={popupMessage} onClose={closePopup} />
+    )}
     <div className="user-profile">
       <div className="user-profile-content">
         <div className="user-profile-left">
@@ -84,6 +106,7 @@ function UserProfile({ onEmployeeNameChange }) {
         onClick={handleUpdateSkills}
       />
     </div>
+    </>
   );
 }
 

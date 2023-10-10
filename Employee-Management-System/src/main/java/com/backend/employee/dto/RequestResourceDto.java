@@ -9,109 +9,118 @@ import jakarta.validation.constraints.NotNull;
  * Represents input dto for request resource.
  */
 public class RequestResourceDto {
-    /**
-     * Employee empId.
-     */
-    @NotBlank(message = "Employee Id can not be null")
-    private String empId;
+ /**
+  * Employee empId.
+  */
+ @NotBlank(message = "Employee Id can not be null")
+ private String empId;
+/**
+ * To string.
+ */
+ @Override
+ public String toString() {
+  return "RequestResourceDto [empId=" + empId + ", managerEmail="
+   + managerEmail + ", projectId=" + projectId + ", comment=" + comment
+   + "]";
+ }
+/**
+ * To string.
+ */
+ @Override
+ public int hashCode() {
+  return Objects.hash(comment, empId, managerEmail, projectId);
+ }
+/**
+ * Equals.
+ */
+ @Override
+ public boolean equals(final Object obj) {
+  if (this == obj) {
+   return true;
+  }
+  if (obj == null) {
+   return false;
+  }
+  if (getClass() != obj.getClass()) {
+   return false;
+  }
+  RequestResourceDto other = (RequestResourceDto) obj;
+  return Objects.equals(comment, other.comment)
+   && Objects.equals(empId, other.empId)
+   && Objects.equals(managerEmail, other.managerEmail)
+   && Objects.equals(projectId, other.projectId);
+ }
 
-    @Override
-    public String toString() {
-     return "RequestResourceDto [empId=" + empId + ", managerEmail="
-      + managerEmail + ", projectId=" + projectId + ", comment=" + comment
-      + "]";
-    }
+ /**
+  * Email of manager.
+  */
+ @NotBlank(message = "Manager email can not be null.")
+ private String managerEmail;
+ /**
+  * Id of project.
+  */
+ @NotNull(message = "Project Id can not be null.")
+ private Long projectId;
+ /**
+  * Comment for request resource.
+  */
+ @NotBlank(message = "Comment can not be empty.")
+ private String comment;
 
-    @Override
-    public int hashCode() {
-     return Objects.hash(comment, empId, managerEmail, projectId);
-    }
+ /**
+  * @return the empId
+  */
+ public String getEmpId() {
+  return empId;
+ }
 
-    @Override
-    public boolean equals(Object obj) {
-     if (this == obj)
-      return true;
-     if (obj == null)
-      return false;
-     if (getClass() != obj.getClass())
-      return false;
-     RequestResourceDto other = (RequestResourceDto) obj;
-     return Objects.equals(comment, other.comment)
-      && Objects.equals(empId, other.empId)
-      && Objects.equals(managerEmail, other.managerEmail)
-      && Objects.equals(projectId, other.projectId);
-    }
+ /**
+  * @param empIdParam the empId to set
+  */
+ public void setEmpId(final String empIdParam) {
+  this.empId = empIdParam;
+ }
 
-    /**
-     * Email of manager.
-     */
-    @NotBlank(message = "Manager email can not be null.")
-    private String managerEmail;
-    /**
-     * Id of project.
-     */
-    @NotNull(message = "Project Id can not be null.")
-    private Long projectId;
-    /**
-     * Comment for request resource.
-     */
-    @NotBlank(message = "Comment can not be empty.")
-    private String comment;
+ /**
+  * @return the managerEmail
+  */
+ public String getManagerEmail() {
+  return managerEmail;
+ }
 
-    /**
-     * @return the empId
-     */
-    public String getEmpId() {
-        return empId;
-    }
+ /**
+  * @param managerEmailParam the managerEmail to set
+  */
+ public void setManagerEmail(final String managerEmailParam) {
+  this.managerEmail = managerEmailParam;
+ }
 
-    /**
-     * @param empIdParam the empId to set
-     */
-    public void setEmpId(final String empIdParam) {
-        this.empId = empIdParam;
-    }
+ /**
+  * @return the projectid
+  */
+ public Long getProjectId() {
+  return projectId;
+ }
 
-    /**
-     * @return the managerEmail
-     */
-    public String getManagerEmail() {
-        return managerEmail;
-    }
+ /**
+  * @param projectIdParam the projectid to set
+  */
+ public void setProjectId(final Long projectIdParam) {
+  this.projectId = projectIdParam;
+ }
 
-    /**
-     * @param managerEmailParam the managerEmail to set
-     */
-    public void setManagerEmail(final String managerEmailParam) {
-        this.managerEmail = managerEmailParam;
-    }
+ /**
+  * @return the comment
+  */
+ public String getComment() {
+  return comment;
+ }
 
-    /**
-     * @return the projectid
-     */
-    public Long getProjectId() {
-        return projectId;
-    }
-
-    /**
-     * @param projectIdParam the projectid to set
-     */
-    public void setProjectId(final Long projectIdParam) {
-        this.projectId = projectIdParam;
-    }
-
-    /**
-     * @return the comment
-     */
-    public String getComment() {
-        return comment;
-    }
-
-    /**
-     * @param commentParam the comment to set
-     */
-    public void setComment(final String commentParam) {
-        this.comment = commentParam;
-    }
+ /**
+  * @param commentParam the comment to set
+  */
+ public void setComment(final String commentParam) {
+  this.comment = commentParam;
+ }
 
 }

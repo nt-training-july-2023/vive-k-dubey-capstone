@@ -13,7 +13,6 @@ public class WrongInputExceptionTest {
 
     @Test
     public void testWrongInputException() {
-        // Test whether the exception is thrown when expected
         assertThrows(WrongInputException.class, () -> {
             throw new WrongInputException("Invalid input");
         });

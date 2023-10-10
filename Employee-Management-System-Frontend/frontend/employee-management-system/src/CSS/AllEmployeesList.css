@@ -15,13 +15,8 @@
   color: #fff;
   border: none;
   padding: 10px 20px;
+  font-size: 0.83rem;
   cursor: pointer;
-  margin-left: 83%;
-  @media (max-width: 768px) {
-    padding: 4px 8px;
-    font-size: 10px;
-    margin-left: 70%;
-  }
 }
 
 .admindashboard-button:hover {
@@ -119,10 +114,11 @@
   background-color: #337ccf;
   color: white;
   border: none;
-  padding: 10px 20px;
+   padding: 0.625rem 1.25rem; 
   cursor: pointer;
   margin-top: 10px;
   transition: background-color 0.3s;
+  font-size: 0.8333rem;
 }
 
 .assign-button:hover {

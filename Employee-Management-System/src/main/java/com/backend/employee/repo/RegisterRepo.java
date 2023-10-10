@@ -40,13 +40,6 @@ public interface RegisterRepo extends JpaRepository<RegisterEntity, Long> {
   * @return An Optional containing the RegisterEntity if found, or an empty
   *         Optional if not found.
   */
- /**
-  * Retrieves an employee entity by its employee ID.
-  *
-  * @param empId The employee ID to search for.
-  * @return An optional containing the employee entity if found, or empty if not
-  *         found.
-  */
  Optional<RegisterEntity> findByEmpId(String empId);
 
  /**

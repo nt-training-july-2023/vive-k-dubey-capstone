@@ -18,6 +18,10 @@ public class ManagerInfoDtoTest {
      assertEquals(1L, managerInfoDto.getId());
      assertEquals("Rajesh Kumar", managerInfoDto.getManagerName());
      assertEquals("EMP002", managerInfoDto.getManagerEmployeeId());
+     
+     assertNotEquals(2L, managerInfoDto.getId());
+     assertNotEquals("Rajesh Kumar Sharma", managerInfoDto.getManagerName());
+     assertNotEquals("EMP0021", managerInfoDto.getManagerEmployeeId());
  }
 
  @Test

@@ -51,24 +51,37 @@ public class RegisterServiceTest {
     	MockitoAnnotations.openMocks(this);
     	 	
     }
-    
     @Test
-    void testAddAdmin() throws WrongInputException  {
-        RegisterDto input = new RegisterDto();
-        
-        input.setEmpName("Vivek");
-        input.setEmpId("N0001");
-        input.setEmpEmail("Vivek@nucleusteq.com");
-        input.setEmpDOB("01/06/2000");
-        input.setEmpDOJ("18/07/2022");
-        input.setEmpLocation("Raipur");
-        input.setEmpDesignation("Engineer");
-        input.setEmpContactNo("1111111111");
-        input.setEmpPassword("12345678");
-        input.setEmpRole("admin");
-        
-        CommonResponseDto response = null;
-        
+    public void testAddAdmin() {
+        RegisterDto validAdminDto = new RegisterDto();
+        validAdminDto.setEmpId("N1234");
+        validAdminDto.setEmpDOB("01/01/1990");
+        validAdminDto.setEmpDOJ("01/01/2022");
+        validAdminDto.setEmpEmail("ankita.sharma@nucleusteq.com"); // Valid admin email
+        validAdminDto.setEmpContactNo("1234567890");
+        validAdminDto.setEmpPassword("password");
+        validAdminDto.setEmpName("Ankita Sharma");
+        validAdminDto.setEmpDesignation("Recruiter");
+        validAdminDto.setEmpLocation("Indore");
+
+        when(registerRepo.save(any(RegisterEntity.class))).thenReturn(new RegisterEntity());
+
+        CommonResponseDto responseDto = registerService.addAdmin(validAdminDto);
+        assertEquals("Admin added successfully", responseDto.getMessage());
+
+        RegisterDto invalidAdminDto = new RegisterDto();
+        invalidAdminDto.setEmpId("N54321");
+        invalidAdminDto.setEmpDOB("01/01/1990");
+        invalidAdminDto.setEmpDOJ("01/01/2022");
+        invalidAdminDto.setEmpEmail("different@admin.com");
+        invalidAdminDto.setEmpContactNo("1234567890");
+        invalidAdminDto.setEmpPassword("password");
+        invalidAdminDto.setEmpName("Jane Doe");
+        invalidAdminDto.setEmpDesignation("Software Engineer");
+        invalidAdminDto.setEmpLocation("Indore");
+
+        registerService.addAdmin(invalidAdminDto);
+        assertNotEquals("admin", invalidAdminDto.getEmpRole());
     }
     
     @Test
@@ -92,14 +105,11 @@ public class RegisterServiceTest {
         
         Optional<RegisterEntity> employee = Optional.of(employeeEntity);
         
-        //doNothing().when(inputFieldChecks).loginValidation(input.getEmpEmail(), input.getEmpPassword());
 
         when(registerRepo.findByEmpEmail(input.getEmpEmail()))
                 .thenReturn(employee);
         
         LoginOutDto output = registerService.authenticate(input);
-        
-        //verify(inputFieldChecks, times(1)).loginValidation(input.getEmpEmail(), input.getEmpPassword());
         verify(registerRepo, times(1)).findByEmpEmail(input.getEmpEmail());
 
         LoginOutDto expectedOutput = new LoginOutDto();

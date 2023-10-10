@@ -29,22 +29,21 @@ import jakarta.validation.Valid;
 @RequestMapping("/api/employee")
 public class EmployeeController {
  /**
-  * Object.
-  */
- private EmployeeService employeeService;
-
- 
- private static Logger LOGGER = LoggerFactory
-  .getLogger(EmployeeController.class);
- /**
-  *
-  * @param employeeServiceLocal employeeServiceLocal.
+  * Object of employee service.
   */
  @Autowired
- public EmployeeController(final EmployeeService employeeServiceLocal) {
-  this.employeeService = employeeServiceLocal;
- }
+ private EmployeeService employeeService;
 
+ /**
+  * Logger for logging the status.
+  */
+ private static Logger logger = LoggerFactory
+  .getLogger(EmployeeController.class);
+
+
+ /**
+  * Instance of the validation service.
+  */
  @Autowired
  private ValidationService validationService;
 
@@ -57,10 +56,10 @@ public class EmployeeController {
  @GetMapping("/{email}")
  public RegisterDto getEmployeeByEmail(@PathVariable final String email)
   throws WrongInputException {
-  LOGGER.info("Started getEmployeeByEmail controller");
+  logger.info("Started getEmployeeByEmail controller");
   validationService.validateUserEmail(email);
   RegisterDto registerDto = employeeService.getEmployee(email);
-  LOGGER.info("Finished getEmployeeByEmail controller");
+  logger.info("Finished getEmployeeByEmail controller");
   return registerDto;
  }
 
@@ -75,10 +74,11 @@ public class EmployeeController {
  public CommonResponseDto updateSkillsOfEmployee(
   @Valid @RequestBody final UpdateSkillsDto updateSkillsDto)
   throws DataNotFoundException, WrongInputException {
-  LOGGER.info("Started updateSkillsOfEmployee controller");
+  logger.info("Started updateSkillsOfEmployee controller");
   validationService.validateUpdateSkillsDto(updateSkillsDto);
-  CommonResponseDto commonResponseDto = employeeService.updateSkills(updateSkillsDto);
-  LOGGER.info("Finished updateSkillsOfEmployee controller");
+  CommonResponseDto commonResponseDto = employeeService
+   .updateSkills(updateSkillsDto);
+  logger.info("Finished updateSkillsOfEmployee controller");
   return commonResponseDto;
  }
 }

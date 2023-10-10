@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from "react";
 import "../CSS/AllManagersList.css";
-import ManagerCard from "./ManagerCard.js";
+import ManagerCard from "../Components/ManagerCard.js";
 import axios from "axios";
+import { getRequest } from "../Services/Service";
+import { ALL_MANAGER } from "../Services/url";
+import Unauthorized from "../Components/Unauthorized";
 
 function AllManagersList() {
   const [managerList, setmanagerList] = useState([]);
   async function apicall() {
     try {
-      const res = await axios.get(
-        "http://localhost:8081/employee/getAllManagers"
+      const res = await getRequest(
+        ALL_MANAGER
       );
       setmanagerList(res.data);
     } catch (error) {}
@@ -17,7 +20,10 @@ function AllManagersList() {
   useEffect(() => {
     apicall();
   }, []);
-
+  const userRole=localStorage.getItem('role');
+  if (!userRole) {
+    return <Unauthorized/>;
+  }
   return (
     <div className="content-all-managers">
       <div className="card-container">

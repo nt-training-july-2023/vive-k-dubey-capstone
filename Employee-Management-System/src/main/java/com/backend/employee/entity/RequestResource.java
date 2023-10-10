@@ -50,7 +50,7 @@ public class RequestResource {
  /**
   * @param idParam the id to set
   */
- public void setId(Long idParam) {
+ public void setId(final Long idParam) {
   this.id = idParam;
  }
 
@@ -64,7 +64,7 @@ public class RequestResource {
  /**
   * @param long1 the employeeId to set
   */
- public void setEmployeeId(Long long1) {
+ public void setEmployeeId(final Long long1) {
   this.employeeId = long1;
  }
 
@@ -78,7 +78,7 @@ public class RequestResource {
  /**
   * @param managerIdParam the managerId to set
   */
- public void setManagerId(Long managerIdParam) {
+ public void setManagerId(final Long managerIdParam) {
   this.managerId = managerIdParam;
  }
 
@@ -92,7 +92,7 @@ public class RequestResource {
  /**
   * @param projectIdParam the projectId to set
   */
- public void setProjectId(Long projectIdParam) {
+ public void setProjectId(final Long projectIdParam) {
   this.projectId = projectIdParam;
  }
 
@@ -106,7 +106,7 @@ public class RequestResource {
  /**
   * @param commentParam the comment to set
   */
- public void setComment(String commentParam) {
+ public void setComment(final String commentParam) {
   this.comment = commentParam;
  }
 }

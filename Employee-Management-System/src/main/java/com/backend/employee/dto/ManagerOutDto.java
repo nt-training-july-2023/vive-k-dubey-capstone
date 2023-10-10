@@ -206,7 +206,10 @@ public class ManagerOutDto {
  public void setProjectNames(final List<String> projectNamesLocal) {
   this.projectNames = new ArrayList<>(projectNamesLocal);
  }
- 
+
+ /**
+  * To string method.
+  */
  @Override
  public String toString() {
   return "ManagerDto [id=" + id + ", empName=" + empName

@@ -3,6 +3,8 @@ package com.backend.employee.validations;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
@@ -15,6 +17,7 @@ import com.backend.employee.exception.DataAlreadyExistsException;
 import com.backend.employee.exception.WrongInputException;
 import com.backend.employee.dto.RegisterDto;
 import com.backend.employee.entity.RegisterEntity;
+import com.backend.employee.errormessages.ValidationMessages;
 import com.backend.employee.repo.RegisterRepo;
 
 /**
@@ -59,21 +62,17 @@ public class RegisterValidationService {
   * @throws WrongInputException throw an exception.
   */
  public void checkEmpId(final String empId) throws WrongInputException {
-  if (empId == null) {
-   throw new WrongInputException("Employee Id should not be null");
+  if (empId == null || empId.trim().isEmpty()) {
+   throw new WrongInputException(ValidationMessages.NOT_NULL_EMPLOYEE_ID);
   }
   String empIdPattern = "^N\\d{4}$";
-  if (empId.equals("")) {
-   throw new WrongInputException("Employee Id should not be empty");
-  }
   if (empId.equals("N0000")) {
-   throw new WrongInputException("Employee Id should not be N0000");
+   throw new WrongInputException(ValidationMessages.NOT_N0000_EMPLOYEE_ID);
   }
 
   if (!Pattern.matches(empIdPattern, empId)) {
-   String s = "Not a valid employee id. "
-    + "Employee Id should be in the form of N0000";
-   throw new WrongInputException(s);
+   String message = ValidationMessages.EMPID_FORMAT;
+   throw new WrongInputException(message);
   }
  }
 
@@ -84,17 +83,13 @@ public class RegisterValidationService {
   * @throws WrongInputException throw exception if not a valid DOB.
   */
  public void checkDob(final String date) throws WrongInputException {
-  if (date == null) {
-   throw new WrongInputException("DOB should not be null");
-}
+  if (date == null || date.equals("")) {
+   throw new WrongInputException(ValidationMessages.INVALID_DOB);
+  }
   String datePattern = "^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/"
    + "(19|20)\\d\\d$";
-  if (date.equals("")) {
-   throw new WrongInputException("Employee DOB should not be empty");
-  }
   if (!Pattern.matches(datePattern, date)) {
-   String message = "not a valid DOB. "
-    + "DOB should be in the form of \"DD/MM/YYYY\"";
+   String message = ValidationMessages.INVALID_DOB_PATTERN;
    throw new WrongInputException(message);
   }
  }
@@ -106,17 +101,13 @@ public class RegisterValidationService {
   * @throws WrongInputException throw exception if date is not in valid format.
   */
  public void checkDoj(final String date) throws WrongInputException {
-  if (date == null) {
-   throw new WrongInputException("DOJ should not be null");
-}
+  if (date == null || date.trim().isEmpty()) {
+   throw new WrongInputException(ValidationMessages.NOT_NULL_DOJ);
+  }
   String datePattern = "^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/"
    + "(19|20)\\d\\d$";
-  if (date.equals("")) {
-   throw new WrongInputException("Employee DOJ should not be empty");
-  }
   if (!Pattern.matches(datePattern, date)) {
-   String message = "not a valid DOJ. "
-    + "DOJ should be in the form of \"DD/MM/YYYY\"";
+   String message = ValidationMessages.INVALID_DOJ_PATTERN;
    throw new WrongInputException(message);
   }
  }
@@ -142,8 +133,8 @@ public class RegisterValidationService {
 
   if (yearsDiff < AGE_DIFFERENCE || (yearsDiff == AGE_DIFFERENCE
    && (monthsDiff < 0 || (monthsDiff == 0 && daysDiff < 0)))) {
-   String s = "DOB should be at least 18 years older than DOJ.";
-   throw new WrongInputException(s);
+   String message = ValidationMessages.JOINING_GAP;
+   throw new WrongInputException(message);
   }
  }
 
@@ -155,17 +146,13 @@ public class RegisterValidationService {
   */
  public void checkEmpEmail(final String empEmail)
   throws WrongInputException {
-  if (empEmail == null) {
-   throw new WrongInputException("Email should not be null");
-}
-  String empEmailPattern = "^[a-zA-Z0-9._%+-]+@nucleusteq\\.com$";
-  if (empEmail.equals("")) {
-   throw new WrongInputException("Employee Email should not be empty");
+  if (empEmail == null || empEmail.trim().isEmpty()) {
+   throw new WrongInputException(ValidationMessages.NOT_EMPTY_EMAIL);
   }
+  String empEmailPattern = "^[a-zA-Z0-9._%+-]+@nucleusteq\\.com$";
   if (!Pattern.matches(empEmailPattern, empEmail)) {
-   String s = "Incorrect email. Admin must have email as "
-    + "ankita.sharma@nucleusteq.com";
-   throw new WrongInputException(s);
+   String message = ValidationMessages.EMAIL_DOMAIN;
+   throw new WrongInputException(message);
   }
  }
 
@@ -179,7 +166,7 @@ public class RegisterValidationService {
   throws DataAlreadyExistsException {
   String validEmail = "ankita.sharma@nucleusteq.com";
   if (!empEmail.equals(validEmail)) {
-   String message = "Admin should have email id as " + validEmail;
+   String message = ValidationMessages.VALID_ADMIN_EMAIL;
    throw new DataAlreadyExistsException(message);
   }
  }
@@ -192,17 +179,12 @@ public class RegisterValidationService {
   */
  public void checkEmpContactNo(final String empContactNo)
   throws WrongInputException {
-  if (empContactNo == null) {
-   throw new WrongInputException("Contact number should not be null");
-}
-  String empContactNoPattern = "^\\d{10}$";
-  if (empContactNo.equals("")) {
-   throw new WrongInputException(
-    "Employee Contact number should not be empty");
+  if (empContactNo == null || empContactNo.trim().isEmpty()) {
+   throw new WrongInputException(ValidationMessages.CONTACT_EMPTY);
   }
-  if (!Pattern.matches(empContactNoPattern, empContactNo)) {
-   String message = "Not a valid Valid Contact Number. "
-    + "Contact Number should have only 10 digits.";
+  String empContactNoPattern = "^\\d{10}$";
+  if (!Pattern.matches(empContactNoPattern, empContactNo.trim())) {
+   String message = ValidationMessages.CONTACT_LENGTH;
    throw new WrongInputException(message);
   }
  }
@@ -215,15 +197,11 @@ public class RegisterValidationService {
   */
  public void checkEmpPassword(final String empPassword)
   throws WrongInputException {
-  if (empPassword == null) {
-   throw new WrongInputException("Password should not be null");
-}
-  if (empPassword.equals("")) {
-   throw new WrongInputException("Password should not be empty");
+  if (empPassword == null || empPassword.trim().isEmpty()) {
+   throw new WrongInputException(ValidationMessages.NOT_NULL_PASSWORD);
   }
-  if (empPassword.length() <= MIN_PASSWORD_LENGTH) {
-   String message = "Password should contain atleast "
-    + "8 digit numbers or letters or both.";
+  if (empPassword.length() < MIN_PASSWORD_LENGTH) {
+   String message = ValidationMessages.INVALID_PASSWORD_LENGTH;
    throw new WrongInputException(message);
   }
  }
@@ -235,18 +213,13 @@ public class RegisterValidationService {
   * @throws WrongInputException throw exception for wrong name.
   */
  public void checkEmpName(final String name) throws WrongInputException {
-  if (name == null) {
-   throw new WrongInputException("Name should not be null");
-}
-  String namePattern = "^[A-Za-z\\s]+$";
-  if (name.equals("")) {
-   throw new WrongInputException("Employee name should not be empty");
+  if (name == null || name.trim().isEmpty()) {
+   throw new WrongInputException(ValidationMessages.EMPTY_NAME);
   }
+  String namePattern = "^[A-Za-z\\s]+$";
   if (!Pattern.matches(namePattern, name)) {
-   String s = "Invalid employee name. "
-    + "Employee name should not be empty "
-    + "and should contains only characters not number.";
-   throw new WrongInputException(s);
+   String message = ValidationMessages.ONLY_LETTER_NAME;
+   throw new WrongInputException(message);
   }
  }
 
@@ -262,7 +235,7 @@ public class RegisterValidationService {
   Optional<RegisterEntity> registerEntity = registerRepo
    .findByEmpEmail(email);
   if (registerEntity.isPresent()) {
-   String message = "Employee with email id " + email + " already exist.";
+   String message = ValidationMessages.EMAIL_EXISTS;
    throw new DataAlreadyExistsException(message);
   }
  }
@@ -277,8 +250,7 @@ public class RegisterValidationService {
   throws DataAlreadyExistsException {
   Optional<RegisterEntity> registerEntity = registerRepo.findByEmpId(empId);
   if (registerEntity.isPresent()) {
-   String message = "Employee with employee Id " + empId
-    + " already exist.";
+   String message = ValidationMessages.EMPID_EXISTS;
    throw new DataAlreadyExistsException(message);
   }
  }
@@ -294,34 +266,103 @@ public class RegisterValidationService {
   Optional<RegisterEntity> registerEntity = registerRepo
    .findByEmpContactNo(empContact);
   if (registerEntity.isPresent()) {
-   String message = "Employee with contact number " + empContact
-    + " already exist.";
+   String message = ValidationMessages.CONTACT_EXISTS;
    throw new DataAlreadyExistsException(message);
   }
  }
 
+ /**
+  *
+  * @param empLocation empLocation.
+  * @throws WrongInputException WrongInputException.
+  */
  public void checkEmpLocation(final String empLocation)
   throws WrongInputException {
   if (empLocation == null || empLocation.trim().isEmpty()) {
-   throw new WrongInputException("Employee Location should not be empty");
+   throw new WrongInputException(ValidationMessages.EMPTY_LOCATION);
+  }
+  List<String> validLocations = Arrays.asList("Indore", "Raipur",
+   "Bangalore", "Phoenix", "Canada");
+  if (!validLocations.contains(empLocation.trim())) {
+   throw new WrongInputException(ValidationMessages.INVALID_LOCATION);
   }
  }
 
+ /**
+  *
+  * @param empDesignation empDesignation.
+  * @throws WrongInputException WrongInputException.
+  */
  public void checkEmpDesignation(final String empDesignation)
   throws WrongInputException {
   if (empDesignation == null || empDesignation.trim().isEmpty()) {
-   throw new WrongInputException(
-    "Employee Designation should not be empty");
+   throw new WrongInputException(ValidationMessages.DESIGNATION_EMPTY);
+  }
+
+  String[] validDesignations = {"Software Engineer", "Data Engineer",
+   "Senior Engineer", "Architect", "Technical Lead", "Senior Architect",
+   "Recruiter", "Operation Analyst" };
+
+  boolean isValidDesignation = false;
+  for (String validDesignation : validDesignations) {
+   if (empDesignation.trim().equals(validDesignation)) {
+    isValidDesignation = true;
+    break;
+   }
+  }
+
+  if (!isValidDesignation) {
+   throw new WrongInputException(ValidationMessages.INVALID_DESIGNATION);
   }
  }
 
+ /**
+  *
+  * @param empSkills Skills of the employee.
+  * @throws WrongInputException Throws wrong input exception.
+  */
+ public void checkEmpSkills(final List<String> empSkills)
+  throws WrongInputException {
+  if (empSkills == null || empSkills.isEmpty()) {
+   throw new WrongInputException(ValidationMessages.EMPTY_SKILLS);
+  }
+
+  List<String> validSkills = Arrays.asList("JavaScript", "React", "Node.js",
+   "Python", "Java", "HTML", "CSS", "SQL", "Machine Learning",
+   "Data Analysis", "Spark", "Big data", "SpringBoot", "Postgres",
+   "Snowflake", "Airflow");
+
+  for (String skill : empSkills) {
+   if (!validSkills.contains(skill)) {
+    throw new WrongInputException(ValidationMessages.INVALID_SKILL + skill);
+   }
+  }
+ }
+
+ /**
+  *
+  * @param empRole empRole.
+  * @throws WrongInputException WrongInputException.
+  */
  public void checkEmpRole(final String empRole) throws WrongInputException {
   if (empRole == null || empRole.trim().isEmpty()) {
-   throw new WrongInputException("Employee Role should not be empty");
+   throw new WrongInputException(ValidationMessages.EMPTY_ROLE);
+  }
+  String lowercaseEmpRole = empRole.trim().toLowerCase();
+
+  if (!lowercaseEmpRole.equals("employee")
+   && !lowercaseEmpRole.equals("manager")) {
+   throw new WrongInputException(ValidationMessages.INVALID_ROLE);
   }
  }
 
- public void validateRegisterDto(RegisterDto registerDto)
+ /**
+  *
+  * @param registerDto registerDto.
+  * @throws WrongInputException        WrongInputException.
+  * @throws DataAlreadyExistsException DataAlreadyExistsException.
+  */
+ public void validateRegisterDto(final RegisterDto registerDto)
   throws WrongInputException, DataAlreadyExistsException {
   checkEmpId(registerDto.getEmpId());
   checkDob(registerDto.getEmpDOB());
@@ -329,6 +370,7 @@ public class RegisterValidationService {
   checkEmpEmail(registerDto.getEmpEmail());
   checkEmpContactNo(registerDto.getEmpContactNo());
   checkEmpPassword(registerDto.getEmpPassword());
+  checkEmpSkills(registerDto.getEmpSkills());
   checkEmpName(registerDto.getEmpName());
   checkDatesDifference(registerDto.getEmpDOB(), registerDto.getEmpDOJ());
   checkEmailExistence(registerDto.getEmpEmail());
@@ -339,17 +381,23 @@ public class RegisterValidationService {
   checkEmpLocation(registerDto.getEmpLocation());
  }
 
- public void validateRegisterDtoAdmin(RegisterDto registerDto)
+ /**
+  *
+  * @param registerDto registerDto.
+  * @throws WrongInputException        WrongInputException.
+  * @throws DataAlreadyExistsException DataAlreadyExistsException.
+  */
+ public void validateRegisterDtoAdmin(final RegisterDto registerDto)
   throws WrongInputException, DataAlreadyExistsException {
   checkEmpId(registerDto.getEmpId());
   checkDob(registerDto.getEmpDOB());
   checkDoj(registerDto.getEmpDOJ());
+  checkDatesDifference(registerDto.getEmpDOB(), registerDto.getEmpDOJ());
   checkEmpEmail(registerDto.getEmpEmail());
   checkValidAdminEmail(registerDto.getEmpEmail());
   checkEmpContactNo(registerDto.getEmpContactNo());
   checkEmpPassword(registerDto.getEmpPassword());
   checkEmpName(registerDto.getEmpName());
-  checkDatesDifference(registerDto.getEmpDOB(), registerDto.getEmpDOJ());
   checkEmailExistence(registerDto.getEmpEmail());
   checkEmpIdExistence(registerDto.getEmpId());
   checkEmpContactExistence(registerDto.getEmpContactNo());

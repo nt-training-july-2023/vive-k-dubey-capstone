@@ -12,19 +12,26 @@ import com.backend.employee.entity.RequestResource;
  */
 @Repository
 public interface RequestResourceRepo
-        extends JpaRepository<RequestResource, Long> {
-    /**
-     * Repository method to find reqsource request.
-     *
-     * @param employeeId
-     * @param managerId
-     * @param projectId
-     * @return RequestResource.
-     */
-    RequestResource findByEmployeeIdAndManagerId(Long employeeId,
-            Long managerId);
+ extends JpaRepository<RequestResource, Long> {
+ /**
+  * Repository method to find reqsource request.
+  *
+  * @param employeeId employeeId.
+  * @param managerId managerId.
+  * @return RequestResource.
+  */
+ RequestResource findByEmployeeIdAndManagerId(Long employeeId,
+  Long managerId);
+/**
+ *
+ * @param employeeId employeeId.
+ */
+ void deleteByEmployeeId(Long employeeId);
 
-    void deleteByEmployeeId(Long employeeId);
-    
-    List<RequestResource> findByEmployeeId(Long id);
+ /**
+  *
+  * @param id id.
+  * @return List of RequestResource.
+  */
+ List<RequestResource> findByEmployeeId(Long id);
 }

@@ -21,8 +21,8 @@ public class ProjectEntityTest {
         projectEntity1.setName("Project1");
 
         ProjectDto projectDto = new ProjectDto();
-        projectDto.setProjectId(2L); // Different project ID
-        projectDto.setName("Project2"); // Different project name
+        projectDto.setProjectId(2L); 
+        projectDto.setName("Project2"); 
  
         ProjectEntity projectEntity2 = new ProjectEntity(projectDto);
 
@@ -32,7 +32,7 @@ public class ProjectEntityTest {
     @Test
     void testEqualsDifferentClasses() {
         ProjectEntity projectEntity = new ProjectEntity();
-        Object otherObject = new Object(); // Different class
+        Object otherObject = new Object(); 
 
         assertFalse(projectEntity.equals(otherObject));
     }

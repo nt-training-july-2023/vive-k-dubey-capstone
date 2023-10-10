@@ -20,29 +20,42 @@ public class RequestResourceManagerProjectDto {
   * @return The project's identifier.
   */
  public Long getId() {
-     return id;
+  return id;
  }
 
+ /**
+  * To string method.
+  */
  @Override
  public String toString() {
   return "RequestResourceManagerProjectDto [id=" + id + ", projectName="
    + projectName + "]";
  }
 
+ /**
+  * HashCode.
+  */
  @Override
  public int hashCode() {
   return Objects.hash(id, projectName);
  }
 
+ /**
+  * Equals.
+  */
  @Override
- public boolean equals(Object obj) {
-  if (this == obj)
+ public boolean equals(final Object obj) {
+  if (this == obj) {
    return true;
-  if (obj == null)
+  }
+  if (obj == null) {
    return false;
-  if (getClass() != obj.getClass())
+  }
+  if (getClass() != obj.getClass()) {
    return false;
-  RequestResourceManagerProjectDto other = (RequestResourceManagerProjectDto) obj;
+  }
+  RequestResourceManagerProjectDto other =
+   (RequestResourceManagerProjectDto) obj;
   return Objects.equals(id, other.id)
    && Objects.equals(projectName, other.projectName);
  }
@@ -53,7 +66,7 @@ public class RequestResourceManagerProjectDto {
   * @param idParam The project's identifier.
   */
  public void setId(final Long idParam) {
-     this.id = idParam;
+  this.id = idParam;
  }
 
  /**
@@ -62,7 +75,7 @@ public class RequestResourceManagerProjectDto {
   * @return The project's name.
   */
  public String getProjectName() {
-     return projectName;
+  return projectName;
  }
 
  /**
@@ -71,6 +84,6 @@ public class RequestResourceManagerProjectDto {
   * @param projectNameParam The project's name.
   */
  public void setProjectName(final String projectNameParam) {
-     this.projectName = projectNameParam;
+  this.projectName = projectNameParam;
  }
 }

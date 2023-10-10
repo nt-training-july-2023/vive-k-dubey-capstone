@@ -157,7 +157,7 @@ public class ProjectEntity {
  /**
   * The description of the project.
   */
- @Column(name = "description",columnDefinition = "TEXT", nullable = false)
+ @Column(name = "description", columnDefinition = "TEXT", nullable = false)
  private String description;
 
  /**

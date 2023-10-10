@@ -7,6 +7,8 @@ import Button from "../Components/Button";
 import Designations from "../Assets/Designations";
 import Locations from "../Assets/Locations";
 import Dropdown from "../Components/Dropdown";
+import InputField from "../Components/InputField";
+import axios from "axios";
 
 function RegisterForm() {
   const [name, setName] = useState("");
@@ -24,13 +26,26 @@ function RegisterForm() {
   const [nameError, setNameError] = useState("");
   const [popupMessage, setPopupMessage] = useState("");
   const [showPopup, setShowPopup] = useState(false);
+  const [locationError, setLocationError] = useState("");
+  const [designationError, setDesignationError] = useState("");
 
   const [emailError, setEmailError] = useState("");
   const [employeeIdError, setEmployeeIdError] = useState("");
   const [contactNoError, setContactNoError] = useState("");
   const [dobError, setDobError] = useState("");
   const [dojError, setDojError] = useState("");
+  const userRole = localStorage.getItem("role");
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (userRole === "admin") {
+      navigate("/admin-dashboard");
+    } else if (userRole === "manager") {
+      navigate("/managerdashboard");
+    } else if (userRole === "employee") {
+      navigate("/userdashboard");
+    }
+  }, [navigate]);
 
   const userFormData = {
     empName: name,
@@ -53,6 +68,8 @@ function RegisterForm() {
     validateDob();
     validateDoj();
     validateContactNo();
+    validateLocation();
+    validateDesignation();
     const isPasswordValid = validatePassword();
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -64,8 +81,14 @@ function RegisterForm() {
       !dobError &&
       !dojError &&
       !contactNoError &&
+      !locationError &&
+      !designationError &&
       isPasswordValid
     ) {
+
+      if(nameError || emailError || employeeIdError || dobError || dojError || contactNoError || locationError || designationError){
+        return;
+      }
       const userFormData = {
         empName: name,
         empEmail: email,
@@ -76,34 +99,22 @@ function RegisterForm() {
         empDesignation: designation,
         empContactNo: contactNo,
         empPassword: hashedPassword,
-        // empRole: role,
       };
 
-      console.log(hashedPassword);
-
       try {
-        const response = await fetch("http://localhost:8081/admin", {
-          method: "POST",
+        const response = await axios.post("http://localhost:8081/admin", userFormData, {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(userFormData),
         });
-
-        console.log("message of status", response.status);
+      
         if (response.status === 200) {
           setPopupMessage("Registration successful!");
           setShowPopup(true);
-        } else if (response.status === 400) {
-          const errorMessage = await response.text();
-          setPopupMessage(errorMessage);
-          setShowPopup(true);
-        } else {
-          setPopupMessage("Registration failed. Please try again.");
-          setShowPopup(true);
-        }
+        } 
       } catch (error) {
-        setPopupMessage("An error occurred. Please try again later.");
+        const errorMessage = error.response.data.message;
+        setPopupMessage(errorMessage);
         setShowPopup(true);
       }
     }
@@ -146,6 +157,23 @@ function RegisterForm() {
     }
   };
 
+  const validateLocation = () => {
+    if (location === "") {
+      setLocationError("Location is required.");
+    } else {
+      setLocationError("");
+    }
+  };
+
+  const validateDesignation = () => {
+    if (designation === "") {
+      setDesignationError("Designation is required.");
+    } else {
+      setDesignationError("");
+    }
+  };
+
+
   const validateContactNo = () => {
     const pattern = /^[0-9]+$/;
 
@@ -185,8 +213,8 @@ function RegisterForm() {
     }
 
     const currentYear = new Date().getFullYear();
-    if (year > 2003 || year <= 1980) {
-      setDobError("Year should be between 1981 and the 2003");
+    if (year > currentYear || year <= 1970) {
+      setDobError("Must be between 1971 and current year");
       return;
     }
     if (month < 1 || month > 12) {
@@ -220,8 +248,8 @@ function RegisterForm() {
     }
 
     const currentYear = new Date().getFullYear();
-    if (year <= 2018 || year > currentYear) {
-      setDojError("Year should be between 2018 and the current year");
+    if (year <= 1980 || year > currentYear) {
+      setDojError("Must be between 1981 and current year");
       return;
     }
     if (month < 1 || month > 12) {
@@ -243,14 +271,11 @@ function RegisterForm() {
       {showPopup && <Popup message={popupMessage} onClose={closePopup} />}
       <div className="register-container">
         <h1 className="text-center">Admin Register Form</h1>
-        <div className="top-right-text">
-          <h3>Register Page</h3>
-        </div>
         <form className="register-form" onSubmit={handleSubmit}>
           <div className="grid-container">
             <div className="grid-item">
-              <label htmlFor="name">Name</label>
-              <input
+              <InputField
+                label="Name"
                 type="text"
                 id="name"
                 value={name}
@@ -260,14 +285,13 @@ function RegisterForm() {
                 }}
                 onBlur={validateName}
               />
-              {/* {nameError && <div className="error-message">{nameError}</div>} */}
               <div className="error-message-container-addemployee">
                 {nameError && <div className="error-message">{nameError}</div>}
               </div>
             </div>
             <div className="grid-item">
-              <label htmlFor="email">Email</label>
-              <input
+              <InputField
+                label="Email"
                 type="email"
                 id="email"
                 value={email}
@@ -284,8 +308,8 @@ function RegisterForm() {
               </div>
             </div>
             <div className="grid-item">
-              <label htmlFor="employeeId">Employee ID</label>
-              <input
+              <InputField
+                label="Employee ID"
                 type="text"
                 id="employeeId"
                 value={employeeId}
@@ -302,14 +326,13 @@ function RegisterForm() {
               </div>
             </div>
             <div className="grid-item">
-              <label htmlFor="dob">DOB (DD/MM/YYYY)</label>
-              <input
+              <InputField
+                label="DOB (DD/MM/YYYY)"
                 type="text"
                 id="dob"
                 value={dob}
                 onChange={(e) => {
                   setDob(e.target.value);
-                  // validateDob(e.target.value);
                   setDobError("");
                 }}
                 onBlur={validateDob}
@@ -319,8 +342,8 @@ function RegisterForm() {
               </div>
             </div>
             <div className="grid-item">
-              <label htmlFor="doj">DOJ (DD/MM/YYYY)</label>
-              <input
+              <InputField
+                label="DOJ (DD/MM/YYYY)"
                 type="text"
                 id="doj"
                 value={doj}
@@ -334,22 +357,6 @@ function RegisterForm() {
                 {dojError && <div className="error-message">{dojError}</div>}
               </div>
             </div>
-            {/* <div className="grid-item">
-              <label htmlFor="location">Location</label>
-              <select
-                id="location"
-                value={location}
-                onChange={(e) => setLocation(e.target.value)}
-                // required
-              >
-                <option value="">Select Location</option>
-                <option value="indore">Indore</option>
-                <option value="raipur">Raipur</option>
-                <option value="bangalore">Bangalore</option>
-                <option value="phoenix">Phoenix</option>
-                <option value="canada">Canada</option>
-              </select>
-            </div> */}
 
             <Dropdown
               id="location"
@@ -360,26 +367,9 @@ function RegisterForm() {
               className="grid-dropdown"
               label="Location"
               selectClassname="select-classname"
+              error={locationError} 
+              onBlur={validateLocation} 
             />
-            {/* <div className="grid-item">
-              <label htmlFor="designation">Designation</label>
-              <select
-                id="designation"
-                value={designation}
-                onChange={(e) => setDesignation(e.target.value)}
-                // required
-              >
-                <option value="">Select Designation</option>
-                <option value="softwareEngineer">Software Engineer</option>
-                <option value="dataEngineer">Data Engineer</option>
-                <option value="seniorEngineer">Senior Engineer</option>
-                <option value="architect">Architect</option>
-                <option value="technicalLead">Technical Lead</option>
-                <option value="seniorArchitect">Senior Architect</option>
-                <option value="recruiter">Recruiter</option>
-                <option value="operationAnalyst">Operation Analyst</option>
-              </select>
-            </div> */}
 
             <Dropdown
               id="designation"
@@ -390,10 +380,12 @@ function RegisterForm() {
               placeholder="Select Designation"
               label="Designation"
               selectClassname="select-classname"
+              error={designationError}
+              onBlur={validateDesignation}
             />
             <div className="grid-item">
-              <label htmlFor="contactNo">Contact No</label>
-              <input
+              <InputField
+                label="Contact No"
                 type="text"
                 id="contactNo"
                 value={contactNo}
@@ -402,7 +394,6 @@ function RegisterForm() {
                   setContactNoError("");
                 }}
                 onBlur={validateContactNo}
-                // required
               />
               <div className="error-message-container-addemployee">
                 {contactNoError && (
@@ -411,8 +402,8 @@ function RegisterForm() {
               </div>
             </div>
             <div className="grid-item">
-              <label htmlFor="password">Password</label>
-              <input
+              <InputField
+                label="Password"
                 type="password"
                 id="password"
                 value={password}
@@ -421,8 +412,8 @@ function RegisterForm() {
                   setPasswordError("");
                 }}
                 onBlur={validatePassword}
-                // required
               />
+
               <div className="error-message-container-addemployee">
                 {passwordError && (
                   <div className="error-message">{passwordError}</div>
@@ -430,8 +421,8 @@ function RegisterForm() {
               </div>
             </div>
             <div className="grid-item">
-              <label htmlFor="confirmPassword">Confirm Password</label>
-              <input
+              <InputField
+                label="Confirm Password"
                 type="password"
                 id="confirmPassword"
                 value={confirmPassword}
@@ -439,25 +430,15 @@ function RegisterForm() {
                   setConfirmPassword(e.target.value);
                 }}
                 onBlur={validatePassword}
-                // required
               />
+
               {password !== confirmPassword && (
                 <div className="error-message">Passwords do not match</div>
               )}
             </div>
           </div>
           <div className="form-group">
-            {/* <button type="submit" className="register-button">
-              Register
-            </button> */}
             <Button type="submit" className="register-button" text="Register" />
-            {/* <button
-              type="button"
-              className="login-button"
-              onClick={handleLoginClick}
-            >
-              Login
-            </button> */}
             <Button
               type="button"
               className="login-button"

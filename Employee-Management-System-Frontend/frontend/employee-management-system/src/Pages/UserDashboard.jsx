@@ -3,6 +3,7 @@ import Navbar from "../Components/UserNavbar";
 import { useNavigate } from "react-router";
 import UserProfile from "./UserProfile";
 import Organization from "./Organization";
+import Unauthorized from "../Components/Unauthorized";
 
 function UserDashboard() {
   const [activeTab, setActiveTab] = useState("MyProfile");
@@ -47,9 +48,17 @@ function UserDashboard() {
     navigate(`/userdashboard/${tab.toLowerCase()}`);
   };
 
-  if (userRole !== "employee") {
-    return <h1>unauthrized access</h1>;
+  if (!userRole) {
+    navigate("/");
   }
+
+  if (userRole === "admin" || userRole ==="manager") {
+    return <Unauthorized/>;
+  }
+
+  
+
+  
 
   return (
     <div className="user-app">

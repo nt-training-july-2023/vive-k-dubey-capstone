@@ -3,26 +3,33 @@ package com.backend.employee.dto;
 import java.util.Objects;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 
 /**
  * Data Transfer Object (DTO) representing the login credentials of an employe.
  */
 public class LoginDto {
-
+ /**
+  * Hashcode.
+  */
  @Override
  public int hashCode() {
   return Objects.hash(empEmail, empPassword);
  }
 
+ /**
+  * Equals method.
+  */
  @Override
- public boolean equals(Object obj) {
-  if (this == obj)
+ public boolean equals(final Object obj) {
+  if (this == obj) {
    return true;
-  if (obj == null)
+  }
+  if (obj == null) {
    return false;
-  if (getClass() != obj.getClass())
+  }
+  if (getClass() != obj.getClass()) {
    return false;
+  }
   LoginDto other = (LoginDto) obj;
   return Objects.equals(empEmail, other.empEmail)
    && Objects.equals(empPassword, other.empPassword);
@@ -31,14 +38,14 @@ public class LoginDto {
  /**
   * The email of the employee.
   */
- 
- @NotEmpty(message = "Email cannot be blank")
+
+ @NotBlank(message = "Email cannot be blank")
  private String empEmail;
 
  /**
   * The password of the employee.
   */
- @NotEmpty(message = "Password cannot be blank")
+ @NotBlank(message = "Password cannot be blank")
  private String empPassword;
 
  /**

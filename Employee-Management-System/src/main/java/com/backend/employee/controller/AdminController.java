@@ -42,24 +42,22 @@ public class AdminController {
  /**
   * Object.
   */
+ @Autowired
  private AdminService adminService;
-
- private static Logger LOGGER = LoggerFactory
+ /**
+  * Logger instance.
+  */
+ private static Logger logger = LoggerFactory
   .getLogger(AdminController.class);
 
  /**
-  * Object.
-  *
-  * @param adminServiceLocal adminServiceLocal.
+  * Instance of register validation.
   */
  @Autowired
- public AdminController(final AdminService adminServiceLocal) {
-  this.adminService = adminServiceLocal;
- }
-
- @Autowired
  private RegisterValidationService registerValidationService;
-
+ /**
+  * Instance of register validation.
+  */
  @Autowired
  private ValidationService validationService;
 
@@ -75,39 +73,37 @@ public class AdminController {
  public CommonResponseDto addEmployee(
   @RequestBody final RegisterDto registerDto)
   throws DataAlreadyExistsException, WrongInputException {
-  LOGGER.info("Started add employee controller");
+  logger.info("Started add employee controller");
   registerValidationService.validateRegisterDto(registerDto);
   CommonResponseDto result = adminService.addEmployee(registerDto);
-  LOGGER.info("Finished add employee controller");
+  logger.info("Finished add employee controller");
   return result;
+
  }
 
  /**
   * Endpoint to retrieve all employees.
   *
   * @return A list of employee data.
-  * @throws DataNotFoundException If no employee data is found.
   */
  @GetMapping("/getAllEmployees")
- public List<RegisterDto> getAllEmployees() throws DataNotFoundException {
-  LOGGER.info("Started get all employees controller");
+ public List<RegisterDto> getAllEmployees() {
+  logger.info("Started get all employees controller");
   List<RegisterDto> employees = adminService.getAllEmployees();
-  LOGGER.info("Finished get all employees controller");
+  logger.info("Finished get all employees controller");
   return employees;
  }
 
  /**
   *
   * @return getAllEmployeesAndManagers.
-  * @throws DataNotFoundException DataNotFoundException.
   */
  @GetMapping("/getAllEmployeesAndManagers")
- public List<RegisterDto> getAllEmployeesAndManagers()
-  throws DataNotFoundException {
-  LOGGER.info("Started getAllEmployeesAndManagers controller");
+ public List<RegisterDto> getAllEmployeesAndManagers() {
+  logger.info("Started getAllEmployeesAndManagers controller");
   List<RegisterDto> employeesAndManagers = adminService
    .getAllEmployeesAndManagers();
-  LOGGER.info("Finished getAllEmployeesAndManagers controller");
+  logger.info("Finished getAllEmployeesAndManagers controller");
   return employeesAndManagers;
  }
 
@@ -115,13 +111,12 @@ public class AdminController {
   * Endpoint to retrieve all managers.
   *
   * @return A list of manager data.
-  * @throws DataNotFoundException If no manager data is found.
   */
  @GetMapping("/getAllManagers")
- public List<ManagerOutDto> getAllManagers() throws DataNotFoundException {
-  LOGGER.info("Started getAllManagers controller");
+ public List<ManagerOutDto> getAllManagers() {
+  logger.info("Started getAllManagers controller");
   List<ManagerOutDto> allManagers = adminService.getAllManagers();
-  LOGGER.info("Finished getAllManagers controller");
+  logger.info("Finished getAllManagers controller");
   return allManagers;
  }
 
@@ -132,11 +127,10 @@ public class AdminController {
   * @throws DataNotFoundException If no manager information data is found.
   */
  @GetMapping("/getAllManagersInfo")
- public List<ManagerInfoDto> getAllManagersInfo()
-  throws DataNotFoundException {
-  LOGGER.info("Started getAllManagersInfo controller");
+ public List<ManagerInfoDto> getAllManagersInfo() {
+  logger.info("Started getAllManagersInfo controller");
   List<ManagerInfoDto> managerInfoList = adminService.getAllManagersInfo();
-  LOGGER.info("Finished getAllManagersInfo controller");
+  logger.info("Finished getAllManagersInfo controller");
   return managerInfoList;
  }
 
@@ -151,10 +145,10 @@ public class AdminController {
  public CommonResponseDto addProject(
   @Valid @RequestBody final ProjectDto projectDto)
   throws WrongInputException {
-  LOGGER.info("Started addProject controller");
+  logger.info("Started addProject controller");
   validationService.validateProjectDto(projectDto);
   CommonResponseDto result = adminService.addProject(projectDto);
-  LOGGER.info("Finished addProject controller");
+  logger.info("Finished addProject controller");
   return result;
  }
 
@@ -165,20 +159,24 @@ public class AdminController {
   * @return A response containing a list of project data.
   */
  @GetMapping("/getAllProjects")
- public List<ProjectDto> getAllProjects()  {
-  LOGGER.info("Started getAllProjects controller");
+ public List<ProjectDto> getAllProjects() {
+  logger.info("Started getAllProjects controller");
   List<ProjectDto> projectDtoList = adminService.getAllProjects();
-  LOGGER.info("Finished getAllProjects controller");
+  logger.info("Finished getAllProjects controller");
   return projectDtoList;
  }
 
+ /**
+  *
+  * @return The projects for assigning.
+  * @throws DataNotFoundException DataNotFoundException.
+  */
  @GetMapping("/getAllProjectsForAssign")
- public List<AssignProjectOutDto> getAllProjectsForAssign()
-  throws DataNotFoundException {
-  LOGGER.info("Started getAllProjectsForAssign controller");
+ public List<AssignProjectOutDto> getAllProjectsForAssign() {
+  logger.info("Started getAllProjectsForAssign controller");
   List<AssignProjectOutDto> assignProjectOutDtoList = adminService
    .getAllProjectsForAssign();
-  LOGGER.info("Finished getAllProjectsForAssign controller");
+  logger.info("Finished getAllProjectsForAssign controller");
   return assignProjectOutDtoList;
  }
 
@@ -187,15 +185,18 @@ public class AdminController {
   *
   * @param managerId The ID of the manager.
   * @return A list of project data associated with the manager.
+  * @throws WrongInputException wrong input throws.
+  * @throws DataNotFoundException when no projects found.
   */
  @GetMapping("/getAll/project/{managerId}")
  public List<ProjectOutDto> getAllByManagerId(
-  @PathVariable final Long managerId) {
-  LOGGER.info("Started /getAll/project/{managerId} controller");
+  @PathVariable final Long managerId) throws DataNotFoundException,
+ WrongInputException {
+  logger.info("Started /getAll/project/{managerId} controller");
   validationService.validateManagerId(managerId);
   List<ProjectOutDto> projectOutDtoList = adminService
    .getAllByManagerId(managerId);
-  LOGGER.info("Finished /getAll/project/{managerId} controller");
+  logger.info("Finished /getAll/project/{managerId} controller");
   return projectOutDtoList;
  }
 
@@ -209,34 +210,45 @@ public class AdminController {
  public CommonResponseDto assignProejct(
   @Valid @RequestBody final AssignProjectDto assignProjectDto)
   throws WrongInputException {
-  LOGGER.info("Started assignProject controller");
+  logger.info("Started assignProject controller");
   validationService.validateAssignProjectDto(assignProjectDto);
   CommonResponseDto commonResponseDto = adminService
    .assignProject(assignProjectDto);
-  LOGGER.info("Finished assignProject controller");
+  logger.info("Finished assignProject controller");
   return commonResponseDto;
  }
 
+ /**
+  *
+  * @param filterEmployeeDto Dto for filtering.
+  * @return Filtered Employees.
+  */
  @PostMapping("/filter")
  public List<RegisterDto> getFilteredEmployee(
   @Valid @RequestBody final FilterDto filterEmployeeDto) {
-  LOGGER.info("Started filter employee list controller");
+  logger.info("Started filter employee list controller");
   List<RegisterDto> employeeList = adminService
    .getFilteredEmployee(filterEmployeeDto);
-  LOGGER.info("End of filter employee list controller");
+  logger.info("End of filter employee list controller");
   return employeeList;
 
  }
 
+ /**
+  *
+  * @param empId Employee id of the employee.
+  * @return CommonResponseDto.
+  * @throws WrongInputException WrongInputException.
+  */
  @PutMapping("/unassignProject/{empId}")
  public CommonResponseDto unassignProject(@PathVariable final String empId)
   throws WrongInputException {
-  LOGGER.info("Started unassign project controller");
+  logger.info("Started unassign project controller");
   validationService.unassignProjectValidator(empId);
   adminService.unassignProject(empId);
   CommonResponseDto commonResponseDto = new CommonResponseDto();
   commonResponseDto.setMessage("Project unassigned successfully");
-  LOGGER.info("End of unassign projectcontroller");
+  logger.info("End of unassign projectcontroller");
   return commonResponseDto;
 
  }

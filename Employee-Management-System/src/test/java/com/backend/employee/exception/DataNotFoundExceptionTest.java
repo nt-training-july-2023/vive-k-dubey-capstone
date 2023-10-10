@@ -9,13 +9,10 @@ public class DataNotFoundExceptionTest {
 
     @Test
     public void testExceptionCreationWithMessage() {
-        // Arrange
         String errorMessage = "Requested data not found";
 
-        // Act
         DataNotFoundException exception = new DataNotFoundException(errorMessage);
 
-        // Assert
         assertNotNull(exception);
         assertEquals(errorMessage, exception.getMessage());
     } 

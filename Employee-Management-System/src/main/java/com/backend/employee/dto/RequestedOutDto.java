@@ -2,6 +2,9 @@ package com.backend.employee.dto;
 
 import java.util.Objects;
 
+/**
+ * Requested class.
+ */
 public class RequestedOutDto {
  /**
   * Represents check on request resource.
@@ -9,39 +12,51 @@ public class RequestedOutDto {
  private boolean isRequested;
 
  /**
-  * @return the isRequested
+  * @return the isRequested status.
   */
  public boolean isRequested() {
-     return isRequested;
+  return isRequested;
  }
 
+ /**
+  * Hashcode method.
+  */
  @Override
  public int hashCode() {
   return Objects.hash(isRequested);
  }
 
+ /**
+  * Equals method.
+  */
  @Override
- public boolean equals(Object obj) {
-  if (this == obj)
+ public boolean equals(final Object obj) {
+  if (this == obj) {
    return true;
-  if (obj == null)
+  }
+  if (obj == null) {
    return false;
-  if (getClass() != obj.getClass())
+  }
+  if (getClass() != obj.getClass()) {
    return false;
+  }
   RequestedOutDto other = (RequestedOutDto) obj;
   return isRequested == other.isRequested;
  }
 
+ /**
+  * To string.
+  */
  @Override
  public String toString() {
   return "RequestedOutDto [isRequested=" + isRequested + "]";
  }
 
  /**
-  * @param isRequested the isRequested to set
+  * @param isRequestedLocal the isRequested to set
   */
- public void setIsRequested(boolean isRequested) {
-     this.isRequested = isRequested;
+ public void setIsRequested(final boolean isRequestedLocal) {
+  this.isRequested = isRequestedLocal;
  }
- 
+
 }

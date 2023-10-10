@@ -328,9 +328,7 @@ class AdminControllerTest {
  
  @Test
  void testUnassignProject() throws Exception {
-     String empId = "N0001"; // Replace with a valid empId
-
-     // Perform a PUT request to the "/unassignProject/{empId}" endpoint
+     String empId = "N0001";
      mockMvc.perform(put("/employee/unassignProject/{empId}", empId))
              .andExpect(status().isOk())
              .andExpect(content().contentType(MediaType.APPLICATION_JSON))

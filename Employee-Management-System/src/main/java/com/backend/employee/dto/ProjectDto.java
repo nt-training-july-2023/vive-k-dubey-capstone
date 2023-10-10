@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -14,21 +12,29 @@ import jakarta.validation.constraints.NotNull;
  * A data transfer object (DTO) representing information about a project.
  */
 public class ProjectDto {
-
+ /**
+  * Hashcode.
+  */
  @Override
  public int hashCode() {
   return Objects.hash(description, head, managerEmployeeId, name, projectId,
    skills, startDate, teamMembers);
  }
 
+ /**
+  * Equals.
+  */
  @Override
- public boolean equals(Object obj) {
-  if (this == obj)
+ public boolean equals(final Object obj) {
+  if (this == obj) {
    return true;
-  if (obj == null)
+  }
+  if (obj == null) {
    return false;
-  if (getClass() != obj.getClass())
+  }
+  if (getClass() != obj.getClass()) {
    return false;
+  }
   ProjectDto other = (ProjectDto) obj;
   return Objects.equals(description, other.description)
    && Objects.equals(head, other.head)
@@ -109,9 +115,6 @@ public class ProjectDto {
   * Constructs a new ProjectDto with no initial information.
   */
  public ProjectDto() {
-  /**
-   * Default constructor with no initial information.
-   */
  }
 
  /**

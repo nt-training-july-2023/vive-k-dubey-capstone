@@ -1,7 +1,6 @@
 package com.backend.employee.dto;
 
 import java.util.ArrayList;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import java.util.List;
 import java.util.Objects;
 
@@ -86,6 +85,9 @@ public class RegisterDto {
 
  private String projectName;
 
+ /**
+  * Hashcode.
+  */
  @Override
  public int hashCode() {
   return Objects.hash(empContactNo, empDOB, empDOJ, empDesignation,
@@ -93,14 +95,20 @@ public class RegisterDto {
    id, managerName, projectId, projectName);
  }
 
+ /**
+  * Equals method.
+  */
  @Override
- public boolean equals(Object obj) {
-  if (this == obj)
+ public boolean equals(final Object obj) {
+  if (this == obj) {
    return true;
-  if (obj == null)
+  }
+  if (obj == null) {
    return false;
-  if (getClass() != obj.getClass())
+  }
+  if (getClass() != obj.getClass()) {
    return false;
+  }
   RegisterDto other = (RegisterDto) obj;
   return Objects.equals(empContactNo, other.empContactNo)
    && Objects.equals(empDOB, other.empDOB)
@@ -349,7 +357,7 @@ public class RegisterDto {
   if (empSkills != null) {
    return new ArrayList<>(empSkills);
   } else {
-   return new ArrayList<>(); // Or handle it differently based on your use case
+   return new ArrayList<>();
   }
  }
 

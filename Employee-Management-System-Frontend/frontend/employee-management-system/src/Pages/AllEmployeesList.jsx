@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import EmployeeCard from "./EmployeeCard";
+import EmployeeCard from "../Components/EmployeeCard";
 import "../CSS/AllEmployeesList.css";
-import skillsList from "./skillsList";
-import CustomMultipleDropdown from "./CustomMultipleDropdown";
-import Button from "./Button";
-import Popup from "./Popup";
+import skillsList from "../Components/skillsList";
+import CustomMultipleDropdown from "../Components/CustomMultipleDropdown";
+import Button from "../Components/Button";
+import Popup from "../Components/Popup";
+import InputField from "../Components/InputField";
+import { getRequest, postRequest } from "../Services/Service";
+import { ALL_EMPLOYEE, GET_ALL_FILTERED_EMPLOYEE } from "../Services/url";
+import Unauthorized from "../Components/Unauthorized";
 
 function AllEmployeesList() {
   const [employees, setEmployees] = useState([]);
@@ -23,8 +27,8 @@ function AllEmployeesList() {
   useEffect(() => {
     async function fetchEmployeeData() {
       try {
-        const response = await axios.get(
-          "http://localhost:8081/employee/getAllEmployees"
+        const response = await getRequest(
+          ALL_EMPLOYEE
         );
         setEmployees(response.data);
         setFilteredEmployees(response.data);
@@ -36,8 +40,8 @@ function AllEmployeesList() {
 
   async function fetchEmployeeData() {
     try {
-      const response = await axios.get(
-        "http://localhost:8081/employee/getAllEmployees"
+      const response = await getRequest(
+        ALL_EMPLOYEE
       );
       setEmployees(response.data);
       setFilteredEmployees(response.data);
@@ -51,8 +55,8 @@ function AllEmployeesList() {
   };
   async function getFilterEmployee(filterData) {
     try {
-      const res = await axios.post(
-        "http://localhost:8081/employee/filter",
+      const res = await postRequest(
+        GET_ALL_FILTERED_EMPLOYEE,
         filterData,
         config
       );
@@ -87,7 +91,11 @@ function AllEmployeesList() {
   };
 
   if (userRole === "employee") {
-    return <h1>unauthrized access</h1>;
+    return <Unauthorized/>;
+  }
+
+  if (!userRole) {
+    return <Unauthorized/>;
   }
 
   return (
@@ -109,7 +117,7 @@ function AllEmployeesList() {
               placeholder="Select Skills"
             />
           </div>
-          <label className="checkbox-label">
+           <label className="checkbox-label">
             <input
               type="checkbox"
               className="checkbox-input"
@@ -118,6 +126,7 @@ function AllEmployeesList() {
             />
             Show Unassigned Only
           </label>
+          
           <Button
             text="Search"
             onClick={handleSubmit}
@@ -151,7 +160,7 @@ function AllEmployeesList() {
                 />
               ))
           ) : (
-            <p>No results found.</p>
+            <p>No employees found.</p>
           )}
         </div>
       </div>

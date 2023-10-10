@@ -8,14 +8,22 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  */
 @SpringBootApplication
 public class EmployeeManagementSystemApplication {
+ /**
+  *
+  * @param args Arguments parameter.
+  */
+ public final void run(final String[] args) {
+  SpringApplication.run(EmployeeManagementSystemApplication.class, args);
+ }
 
  /**
   * main method.
   *
-  * @param args args.
+  * @param args Arguments parameter.
   */
- public static void main(String[] args) {
-  SpringApplication.run(EmployeeManagementSystemApplication.class, args);
+ public static void main(final String[] args) {
+
+  new EmployeeManagementSystemApplication().run(args);
  }
 
 }

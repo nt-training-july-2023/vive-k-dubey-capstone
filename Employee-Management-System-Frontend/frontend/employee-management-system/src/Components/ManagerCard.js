@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "../CSS/AllManagersList.css";
+import { getRequest } from "../Services/Service";
+import { GET_ALL_PROJECT_BY_MANAGER_ID } from "../Services/url";
 export default function ManagerCard({ manager }) {
   const [projectList, setProjectList] = useState([]);
   const [selectedProject, setSelectedProject] = useState("");
   const [defaultProjectName, setDefaultProjectName] = useState("");
 
   async function apiCall() {
-    const res = await axios.get(
-      `http://localhost:8081/employee/getAll/project/${manager.id}`
+    const res = await getRequest(
+      GET_ALL_PROJECT_BY_MANAGER_ID + manager.id
     );
     setProjectList(res.data);
 

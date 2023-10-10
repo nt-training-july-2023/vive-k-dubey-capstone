@@ -87,7 +87,6 @@ class EmployeeControllerTest {
  
  @Test
  void testUpdateSkills() throws Exception {
-     // Prepare the explicit JSON string
      String json = "{"
              + "\"empEmail\": \"employee@example.com\","
              + "\"empSkills\": [\"Java\", \"Spring\"]"
@@ -95,11 +94,9 @@ class EmployeeControllerTest {
      
      CommonResponseDto commonResponseDto = new CommonResponseDto("Updated Skills Successfully");
 
-     // Configure the Mockito behavior
      when(employeeService.updateSkills(any(UpdateSkillsDto.class)))
              .thenReturn(commonResponseDto);
 
-     // Perform a POST request with the explicit JSON string
      mockMvc.perform(post("/api/employee/updateskills")
              .contentType(MediaType.APPLICATION_JSON)
              .content(json))
@@ -107,7 +104,6 @@ class EmployeeControllerTest {
              .andExpect(content().contentType(MediaType.APPLICATION_JSON))
              .andExpect(jsonPath("$.message").value("Updated Skills Successfully"));
 
-     // Check the URL that was tested
      MvcResult mvcResult = mockMvc.perform(post("/api/employee/updateskills")
              .contentType(MediaType.APPLICATION_JSON)
              .content(json))

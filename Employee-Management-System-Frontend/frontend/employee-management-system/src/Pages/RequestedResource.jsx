@@ -2,9 +2,12 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "../CSS/RequestedResource.css";
 import Button from "../Components/Button";
-import ResourceRequestData from "../Assets/ResourceRequestData.js";
+import ResourceRequestData from "./ResourceRequestData.jsx";
 import { useNavigate } from "react-router-dom";
 import Popup from "../Components/Popup";
+import { getRequest } from "../Services/Service";
+import { GET_ALL_REQUESTS } from "../Services/url";
+import Unauthorized from "../Components/Unauthorized";
 
 function RequestedResources() {
   const [requestedResources, setRequestedResources] = useState([]);
@@ -16,8 +19,8 @@ function RequestedResources() {
 
   async function getResourceRequestData() {
     try {
-      const res = await axios.get(
-        "http://localhost:8081/requestResource/getAll/requests"
+      const res = await getRequest(
+        GET_ALL_REQUESTS
       );
       setRequestedResources(res.data);
     } catch (error) {
@@ -42,8 +45,12 @@ function RequestedResources() {
     await getResourceRequestData();
   };
 
+  if (!userRole) {
+    navigate("/");
+  }
+
   if (userRole !== "admin") {
-    return <h1>unauthrized access</h1>;
+    return <Unauthorized/>;
   }
 
   return (

@@ -9,13 +9,10 @@ public class DataAlreadyExistsExceptionTest {
 
     @Test
     public void testExceptionCreationWithMessage() {
-        // Arrange
         String errorMessage = "Duplicate email detected";
 
-        // Act
         DataAlreadyExistsException exception = new DataAlreadyExistsException(errorMessage);
 
-        // Assert
         assertNotNull(exception);
         assertEquals(errorMessage, exception.getMessage());
     }

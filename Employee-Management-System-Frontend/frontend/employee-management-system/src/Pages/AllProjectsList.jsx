@@ -1,26 +1,25 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "../CSS/AllProjectsList.css";
-import Button from "./Button";
+import Button from "../Components/Button";
+import { getRequest } from "../Services/Service";
+import { GET_ALL_PROJECT } from "../Services/url";
+import Unauthorized from "../Components/Unauthorized";
 
 function ProjectsPage() {
   const [projects, setProjects] = useState([]);
   const [showPopup, setShowPopup] = useState(false);
   const [selectedProject, setSelectedProject] = useState(null);
 
-
   useEffect(() => {
-    axios
-      .get("http://localhost:8081/employee/getAllProjects")
+    getRequest(GET_ALL_PROJECT)
       .then((response) => {
         const responseData = response.data;
         setProjects(responseData);
       })
-      .catch((error) => {
-      });
+      .catch((error) => {});
   }, []);
 
-  
   const handleReadMoreClick = (project) => {
     setSelectedProject(project);
     setShowPopup(true);
@@ -30,6 +29,11 @@ function ProjectsPage() {
     setShowPopup(false);
     setSelectedProject(null);
   };
+
+  const userRole=localStorage.getItem('role');
+  if (!userRole) {
+    return <Unauthorized/>;
+  }
 
   return (
     <div className="projects-container">

@@ -17,7 +17,6 @@ import com.backend.employee.entity.RegisterEntity;
 import com.backend.employee.entity.RequestResource;
 import com.backend.employee.exception.DataAlreadyExistsException;
 import com.backend.employee.exception.DataNotFoundException;
-import com.backend.employee.exception.WrongInputException;
 import com.backend.employee.repo.ProjectRepo;
 import com.backend.employee.repo.RegisterRepo;
 import com.backend.employee.repo.RequestResourceRepo;
@@ -37,7 +36,9 @@ public class RequestResourceService {
   */
  @Autowired
  private RequestResourceRepo requestResourceRepository;
-
+ /**
+  * Instance of projectRepository.
+  */
  @Autowired
  private ProjectRepo projectRepository;
 
@@ -62,6 +63,11 @@ public class RequestResourceService {
   requestResourceRepository.save(requestResource);
  }
 
+ /**
+  *
+  * @param requestedDto requestedDto.
+  * @return RequestedOutDto.
+  */
  public RequestedOutDto isRequested(final RequestedDto requestedDto) {
   RequestedOutDto requestedOutDto = new RequestedOutDto();
   Optional<RegisterEntity> employee = registerRepository
@@ -77,6 +83,11 @@ public class RequestResourceService {
   return requestedOutDto;
  }
 
+ /**
+  *
+  * @param email email.
+  * @return RequestResourceManagerProjectDto.
+  */
  public List<RequestResourceManagerProjectDto> getAllByManagerEmail(
   final String email) {
 
@@ -84,10 +95,12 @@ public class RequestResourceService {
    .findByEmpEmail(email);
   List<ProjectEntity> projectList = projectRepository
    .findAllByManagerEmployeeId(manager.get().getId());
-  List<RequestResourceManagerProjectDto> projectOutList = new ArrayList<RequestResourceManagerProjectDto>();
+  List<RequestResourceManagerProjectDto> projectOutList =
+   new ArrayList<RequestResourceManagerProjectDto>();
 
   for (ProjectEntity project : projectList) {
-   RequestResourceManagerProjectDto projectOutDto = new RequestResourceManagerProjectDto();
+   RequestResourceManagerProjectDto projectOutDto =
+    new RequestResourceManagerProjectDto();
 
    projectOutDto.setId(project.getProjectId());
    projectOutDto.setProjectName(project.getName());
@@ -98,6 +111,10 @@ public class RequestResourceService {
   return projectOutList;
  }
 
+ /**
+  *
+  * @return getAllResourceRequests.
+  */
  public List<ResourceRequestsAdminOutDto> getAllResourceRequests() {
 
   List<RequestResource> requestList = requestResourceRepository.findAll();
@@ -105,9 +122,11 @@ public class RequestResourceService {
    throw new DataNotFoundException(
     "Currently, there are no resource requests to be entertained.");
   }
-  List<ResourceRequestsAdminOutDto> outRequestList = new ArrayList<ResourceRequestsAdminOutDto>();
+  List<ResourceRequestsAdminOutDto> outRequestList =
+   new ArrayList<ResourceRequestsAdminOutDto>();
   for (RequestResource requestResource : requestList) {
-   ResourceRequestsAdminOutDto resourceRequestsAdminOutDto = new ResourceRequestsAdminOutDto();
+   ResourceRequestsAdminOutDto resourceRequestsAdminOutDto =
+    new ResourceRequestsAdminOutDto();
 
    RegisterEntity employee = registerRepository
     .findById(requestResource.getEmployeeId()).orElse(null);
@@ -132,13 +151,26 @@ public class RequestResourceService {
   return outRequestList;
  }
 
- public CommonResponseDto acceptRequest(Long id) {
+ /**
+  *
+  * @param id id.
+  * @return CommonResponseDto.
+  * @throws WrongInputException
+  */
+ public CommonResponseDto acceptRequest(final Long id) {
   RequestResource request = requestResourceRepository.findById(id)
    .orElse(null);
+  if (request == null) {
+   throw new DataNotFoundException("Request with ID " + id + " not found");
+}
   RegisterEntity employee = registerRepository
    .findById(request.getEmployeeId()).orElse(null);
+  if (employee == null) {
+   throw new DataNotFoundException("Employee with ID "
+  + request.getEmployeeId() + " not found");
+}
 
-  if (employee != null && employee.getProjectId() != null) {
+  if (employee.getProjectId() != null) {
    throw new DataAlreadyExistsException("Employee already has a project");
   }
   System.out.println(request.toString());
@@ -159,7 +191,11 @@ public class RequestResourceService {
   return response;
  }
 
- public void rejectResourceRequest(Long id) {
+ /**
+  *
+  * @param id id.
+  */
+ public void rejectResourceRequest(final Long id) {
 
   requestResourceRepository.deleteById(id);
 

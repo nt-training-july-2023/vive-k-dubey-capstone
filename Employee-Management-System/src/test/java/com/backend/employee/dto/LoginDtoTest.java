@@ -52,9 +52,17 @@ public class LoginDtoTest {
 
       Set<ConstraintViolation<LoginDto>> violations = validator.validate(loginDto);
 
-      // Check if 'empEmail' has a violation message
       assertTrue(violations.stream()
               .anyMatch(violation -> "Email cannot be blank".equals(violation.getMessage())));
+      
+      LoginDto loginDto2 = new LoginDto();
+      loginDto2.setEmpPassword("testPassword");
+      loginDto2.setEmpEmail("testEmail");
+      
+      Set<ConstraintViolation<LoginDto>> violationsTwo = validator.validate(loginDto2);
+      assertFalse(violationsTwo.stream()
+       .anyMatch(violation -> "Email cannot be blank".equals(violation.getMessage())));
+      
   }
 
   @Test
@@ -64,7 +72,6 @@ public class LoginDtoTest {
 
       Set<ConstraintViolation<LoginDto>> violations = validator.validate(loginDto);
 
-      // Check if 'empPassword' has a violation message
       assertTrue(violations.stream()
               .anyMatch(violation -> "Password cannot be blank".equals(violation.getMessage())));
   }

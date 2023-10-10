@@ -13,7 +13,6 @@ import com.backend.employee.dto.RegisterDto;
 import com.backend.employee.entity.ProjectEntity;
 import com.backend.employee.entity.RegisterEntity;
 import com.backend.employee.exception.DataAlreadyExistsException;
-import com.backend.employee.exception.DataNotFoundException;
 import com.backend.employee.exception.WrongInputException;
 import com.backend.employee.repo.ProjectRepo;
 import com.backend.employee.repo.RegisterRepo;
@@ -22,10 +21,9 @@ import com.backend.employee.validations.RegisterValidationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
 
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -57,6 +55,24 @@ public class AdminService {
  private RegisterValidationService inputFieldChecksUpdated;
 
  /**
+  *
+  * @param password Password of user.
+  * @return Whether encoded or not.
+  */
+ public boolean isEncodedPassword(final String password) {
+  try {
+   byte[] decodedBytes = Base64.getDecoder().decode(password);
+   String decodedPassword = new String(decodedBytes,
+    java.nio.charset.StandardCharsets.UTF_8);
+   String validPasswordPattern =
+    "^[a-zA-Z0-9!@#$%^&*()_+\\-=\\[\\]{}|;:'\",.<>/?]*$";
+   return decodedPassword.matches(validPasswordPattern);
+  } catch (IllegalArgumentException e) {
+   return false;
+  }
+ }
+
+ /**
   * Adds a new employee based on the provided RegisterDto.
   *
   * @param registerDto The RegisterDto containing employee information.
@@ -68,24 +84,14 @@ public class AdminService {
  public CommonResponseDto addEmployee(final RegisterDto registerDto)
   throws WrongInputException, DataAlreadyExistsException {
 
-  /*
-   * Create a new RegisterEntity from the RegisterDto
-   */
   RegisterEntity registerEntity = new RegisterEntity(registerDto);
 
-  /*
-   * Set employee skills
-   */
   registerEntity.setEmpSkills(registerDto.getEmpSkills());
 
-  /**
-   * Encrypt the employee password
-   */
-  registerEntity.setEmpPassword(registerDto.getEmpPassword());
+  String empPassword = registerDto.getEmpPassword();
 
-  /*
-   * Determine and set the manager for the employee based on their role
-   */
+  registerEntity.setEmpPassword(empPassword);
+
   RegisterEntity managerEntity = registerRepository.findByEmpRole("admin");
   if (managerEntity != null) {
    registerEntity.setManagerId(managerEntity.getId());
@@ -93,9 +99,6 @@ public class AdminService {
    registerEntity.setManagerId(null);
   }
 
-  /*
-   * Save the new employee entity to the repository
-   */
   registerRepository.save(registerEntity);
 
   return new CommonResponseDto("Employee added successfully");
@@ -105,25 +108,11 @@ public class AdminService {
   * Retrieves a list of all employees.
   *
   * @return A list of RegisterDto objects representing employees.
-  * @throws DataNotFoundException If no employee data is found.
   */
  public List<RegisterDto> getAllEmployees() {
-  /*
-   * Retrieve all employee entities
-   */
   List<RegisterEntity> managerEntities = registerRepository
    .findAllByEmpRole("employee");
-
-  if (!managerEntities.isEmpty()) {
-   /*
-    * Convert employee entities to RegisterDto objects
-    */
-   List<RegisterDto> managerDtos = convertToRegisterDtoList(
-    managerEntities);
-   return managerDtos;
-  } else {
-   throw new DataNotFoundException("No employees found");
-  }
+  return convertToRegisterDtoList(managerEntities);
  }
 
  /**
@@ -132,22 +121,9 @@ public class AdminService {
   * @return List of entities.
   */
  public List<RegisterDto> getAllEmployeesAndManagers() {
-  /*
-   * Retrieve all employee and manager entities except admin
-   */
   List<RegisterEntity> employeeAndManagerEntities = registerRepository
    .findAllByEmpRoleNot("admin");
-
-  if (!employeeAndManagerEntities.isEmpty()) {
-   /*
-    * Convert employee and manager entities to RegisterDto objects
-    */
-   List<RegisterDto> employeeAndManagerDtos = convertToRegisterDtoList(
-    employeeAndManagerEntities);
-   return employeeAndManagerDtos;
-  } else {
-   throw new DataNotFoundException("No employees and managers found");
-  }
+  return convertToRegisterDtoList(employeeAndManagerEntities);
  }
 
  /**
@@ -199,24 +175,11 @@ public class AdminService {
   * Retrieves a list of all managers.
   *
   * @return A list of ManagerDto objects representing managers.
-  * @throws DataNotFoundException If no manager data is found.
   */
  public List<ManagerOutDto> getAllManagers() {
-  /*
-   * Retrieve all manager entities
-   */
   List<RegisterEntity> managerEntities = registerRepository
    .findAllByEmpRole("manager");
-
-  if (!managerEntities.isEmpty()) {
-   /*
-    * Convert manager entities to ManagerDto objects
-    */
-   List<ManagerOutDto> managerDtos = convertToManagerDtoList(managerEntities);
-   return managerDtos;
-  } else {
-   throw new DataNotFoundException("No managers found");
-  }
+  return convertToManagerDtoList(managerEntities);
  }
 
  /**
@@ -246,27 +209,13 @@ public class AdminService {
   * Retrieves a list of manager information.
   *
   * @return A list of ManagerInfoDto objects representing manager information.
-  * @throws DataNotFoundException If no manager information data is found.
   */
- public List<ManagerInfoDto> getAllManagersInfo()
-  throws DataNotFoundException {
-  /*
-   * Retrieve all manager entities
-   */
+ public List<ManagerInfoDto> getAllManagersInfo() {
   List<RegisterEntity> managerEntities = registerRepository
    .findAllByEmpRole("manager");
 
-  if (!managerEntities.isEmpty()) {
-   /*
-    * Convert manager entities to ManagerInfoDto objects
-    */
-   List<ManagerInfoDto> managerInfoList = managerEntities.stream()
-    .map(this::convertToManagerInfoDto).collect(Collectors.toList());
-
-   return managerInfoList;
-  } else {
-   throw new DataNotFoundException("Manager information not found");
-  }
+  return managerEntities.stream().map(this::convertToManagerInfoDto)
+   .collect(Collectors.toList());
  }
 
  /**
@@ -297,19 +246,10 @@ public class AdminService {
  public CommonResponseDto addProject(final ProjectDto projectDto)
   throws WrongInputException {
 
-  /*
-   * Create a ProjectEntity from the ProjectDto
-   */
   ProjectEntity projectEntity = new ProjectEntity(projectDto);
 
-  /*
-   * Save the project to the database
-   */
   projectRepository.save(projectEntity);
 
-  /*
-   * Return a success response
-   */
   return new CommonResponseDto("Project added successfully");
  }
 
@@ -322,21 +262,9 @@ public class AdminService {
   */
 
  public List<ProjectDto> getAllProjects() {
-  /**
-   * Retrieve all project entities
-   */
+
   List<ProjectEntity> projects = projectRepository.findAll();
 
-  /**
-   * Check if projects list is empty and throw DataNotFoundException if it is.
-   */
-//  if (projects.isEmpty()) {
-//   throw new DataNotFoundException("No projects found");
-//  }
-
-  /**
-   * Convert project entities to a list of ProjectDto objects
-   */
   List<ProjectDto> projectDtos = convertToProjectDtoList(projects);
 
   return projectDtos;
@@ -354,9 +282,6 @@ public class AdminService {
   for (ProjectEntity entity : entities) {
    ProjectDto dto = new ProjectDto();
 
-   /*
-    * Map entity fields to dto fields
-    */
    dto.setProjectId(entity.getProjectId());
    dto.setName(entity.getName());
    dto.setDescription(entity.getDescription());
@@ -366,9 +291,6 @@ public class AdminService {
    List<RegisterEntity> teamMembers = registerRepository
     .findAllByProjectId(entity.getProjectId());
 
-   /*
-    * optional
-    */
    Optional<RegisterEntity> headEntity = registerRepository
     .findById(entity.getManagerEmployeeId());
    if (headEntity.isPresent()) {
@@ -387,31 +309,20 @@ public class AdminService {
   }
   return dtos;
  }
- 
- public List<AssignProjectOutDto> getAllProjectsForAssign() throws DataNotFoundException {
-  /**
-   * Retrieve all project entities
-   */
+
+ /**
+  *
+  * @return getAllProjectsForAssign.
+  */
+ public List<AssignProjectOutDto> getAllProjectsForAssign() {
   List<ProjectEntity> projects = projectRepository.findAll();
 
-  /**
-   * Check if projects list is empty and throw DataNotFoundException if it is.
-   */
-  if (projects.isEmpty()) {
-    throw new DataNotFoundException("No projects found");
-  }
-
-  /**
-   * Convert project entities to a list of AssignProjectOutDto objects
-   */
-  List<AssignProjectOutDto> projectDtos = projects.stream()
-    .map(project -> {
-      AssignProjectOutDto dto = new AssignProjectOutDto();
-      dto.setProjectId(project.getProjectId());
-      dto.setName(project.getName());
-      return dto;
-    })
-    .collect(Collectors.toList());
+  List<AssignProjectOutDto> projectDtos = projects.stream().map(project -> {
+    AssignProjectOutDto dto = new AssignProjectOutDto();
+    dto.setProjectId(project.getProjectId());
+    dto.setName(project.getName());
+    return dto;
+  }).collect(Collectors.toList());
 
   return projectDtos;
 }
@@ -424,23 +335,15 @@ public class AdminService {
   *         the manager.
   */
  public List<ProjectOutDto> getAllByManagerId(final Long managerId) {
-  /*
-   * Retrieve a list of project entities managed by the manager
-   */
+
   List<ProjectEntity> projectList = projectRepository
    .findAllByManagerEmployeeId(managerId);
 
-  /*
-   * Create a list to store the output DTOs
-   */
   List<ProjectOutDto> projectOutList = new ArrayList<ProjectOutDto>();
 
   for (ProjectEntity project : projectList) {
    ProjectOutDto projectOutDto = new ProjectOutDto();
 
-   /*
-    * Map entity fields to DTO fields
-    */
    projectOutDto.setId(project.getProjectId());
    projectOutDto.setProjectName(project.getName());
    projectOutDto.setManagerId(project.getManagerEmployeeId() + "");
@@ -488,6 +391,11 @@ public class AdminService {
 
  }
 
+ /**
+  *
+  * @param filterEmployeeDto filterEmployeeDto.
+  * @return getFilteredEmployee.
+  */
  public List<RegisterDto> getFilteredEmployee(
   final FilterDto filterEmployeeDto) {
   List<RegisterEntity> employeeList = registerRepository
@@ -542,7 +450,7 @@ public class AdminService {
     }
    }
   }
-  
+
   return employeeDtoList;
  }
 

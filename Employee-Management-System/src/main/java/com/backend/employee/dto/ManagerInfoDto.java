@@ -100,19 +100,28 @@ public class ManagerInfoDto {
   return managerEmployeeId;
  }
 
+ /**
+  * Hashcode.
+  */
  @Override
  public int hashCode() {
   return Objects.hash(id, managerEmployeeId, managerName);
  }
 
+ /**
+  * Equals method.
+  */
  @Override
- public boolean equals(Object obj) {
-  if (this == obj)
+ public boolean equals(final Object obj) {
+  if (this == obj) {
    return true;
-  if (obj == null)
+  }
+  if (obj == null) {
    return false;
-  if (getClass() != obj.getClass())
+  }
+  if (getClass() != obj.getClass()) {
    return false;
+  }
   ManagerInfoDto other = (ManagerInfoDto) obj;
   return Objects.equals(id, other.id)
    && Objects.equals(managerEmployeeId, other.managerEmployeeId)

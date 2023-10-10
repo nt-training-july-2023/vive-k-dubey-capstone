@@ -6,6 +6,9 @@ import "../CSS/RequestResource.css";
 import Popup from "../Components/Popup.js";
 import Button from "../Components/Button.js";
 import Dropdown from "../Components/Dropdown.js";
+import { getRequest, postRequest } from "../Services/Service.jsx";
+import { CREATE_REQUEST, GET_ALL_PROJECT_BY_MANAGER_EMAIL } from "../Services/url.jsx";
+import Unauthorized from "../Components/Unauthorized.js";
 
 function AssignProject() {
   const [selectedProject, setSelectedProject] = useState("");
@@ -24,11 +27,22 @@ function AssignProject() {
   const [showPopUp, setShowPopUp] = useState(false);
 
   async function getProjectList() {
-    const res = await axios.get(
-      `http://localhost:8081/getAll/project/byManager/${managerEmail}`
+    try{
+    const res = await getRequest(
+      GET_ALL_PROJECT_BY_MANAGER_EMAIL + managerEmail
     );
-    setProjectList(res.data);
+    setProjectList(res.data);}
+    catch(error){
+
+      const resMessage = {};
+      resMessage.message = error.response.data.message;
+      setShowPopUp(true);
+      setPopUpMessage(resMessage);
+
+    }
   }
+
+
   useEffect(() => {
     getProjectList();
   }, []);
@@ -84,8 +98,8 @@ function AssignProject() {
         managerEmail: managerEmail,
         comment: comment,
       };
-      const res = await axios.post(
-        "http://localhost:8081/requestResource/create",
+      const res = await postRequest(
+        CREATE_REQUEST,
         reqData
       );
       navigate("/managerdashboard");
@@ -112,8 +126,12 @@ function AssignProject() {
     setShowPopUp(false);
   };
 
+  if (!userRole) {
+    navigate("/");
+  }
+
   if (userRole !== "manager") {
-    return <h1>unauthrized access</h1>;
+    return <Unauthorized/>;
   }
 
   return (
@@ -123,7 +141,7 @@ function AssignProject() {
       )}
       <div className="assign-project-container">
         <div className="assign-project-header">Request Resource</div>
-        <div className="manager-name">{empData.empName}</div>
+        <div className="manager-name">{empData && empData.empName}</div>
         <div className="project-dropdown-container">
           <label htmlFor="project-select" className="project-label">
             Project:
@@ -135,7 +153,9 @@ function AssignProject() {
             onChange={handleChange}
           >
             <option value="">Select Project</option>
-            {projectList.map((project) => {
+            {projectList &&
+            projectList.length > 0 &&  
+            projectList.map((project) => {
               return (
                 <option key={project.id} value={project.id}>
                   {project.id}-{project.projectName}

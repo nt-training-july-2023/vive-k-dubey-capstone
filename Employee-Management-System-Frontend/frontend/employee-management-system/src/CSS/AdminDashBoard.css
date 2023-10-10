@@ -13,13 +13,18 @@
   display: flex;
   align-items: center;
 }
+.right-container{
+  width: 30%;
+  /* border: 1px solid red; */
+  justify-content: right;
+}
 
 .tab-button {
   border: none;
   background-color: #337ccf;
   color: white;
-  padding: 10px 40px;
-  font-size: 15px;
+   padding: 10px 40px;
+  font-size: 15px; 
   cursor: pointer;
   transition: background-color 0.3s;
 }
@@ -31,7 +36,7 @@
 }
 
 .welcome-message {
-  font-size: 24px;
+   font-size: 24px; 
   color: white;
 }
 
@@ -40,11 +45,12 @@
   background-color: #337ccf;
   border: 1px solid white;
   color: white;
-  padding: 10px 20px;
-  margin-right: 20px;
+   padding: 10px 20px;
+  margin-right: 20px; 
   cursor: pointer;
   transition: background-color 0.3s;
-  font-size: 15px;
+   font-size: 15px; 
+
 }
 
 .add-button:hover {
@@ -55,10 +61,10 @@
   border: none;
   background-color: red;
   color: white;
-  padding: 10px 20px;
+   padding: 10px 20px; 
   cursor: pointer;
   transition: background-color 0.3s;
-  font-size: 15px;
+   font-size: 15px; 
 }
 
 .logout-button:hover {
@@ -82,23 +88,31 @@
     align-items: center;
   }
 
-  .tab-button {
-    font-size: 12px;
-    padding: 6px 6px;
+   .tab-button {
+     font-size: 12px;
+    padding: 6px 6px; 
   }
 
   .welcome-message {
-    font-size: 12px;
+     font-size: 14px; 
     color: white;
   }
 
   .add-button {
-    font-size: 12px;
-    padding: 6px 6px;
+     font-size: 12px;
+    padding: 6px 6px; 
   }
 
   .logout-button {
     font-size: 12px;
-    padding: 6px 6px;
+    padding: 6px 6px; 
+    
   }
+  .right-container{
+    width: 35%;
+    /* border: 1px solid red; */
+    justify-content: right;
+  } 
+
+  
 }

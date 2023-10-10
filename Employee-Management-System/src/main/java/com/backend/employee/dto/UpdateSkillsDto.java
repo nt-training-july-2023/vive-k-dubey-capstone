@@ -24,25 +24,37 @@ public class UpdateSkillsDto {
  @NotEmpty(message = "Employee skills should not be empty.")
  private List<@NotBlank String> empSkills;
 
+ /**
+  * To String method.
+  */
  @Override
  public String toString() {
   return "UpdateSkillsDto [empEmail=" + empEmail + ", empSkills="
    + empSkills + "]";
  }
 
+ /**
+  * hashCode method.
+  */
  @Override
  public int hashCode() {
   return Objects.hash(empEmail, empSkills);
  }
 
+ /**
+  * Equals method.
+  */
  @Override
- public boolean equals(Object obj) {
-  if (this == obj)
+ public boolean equals(final Object obj) {
+  if (this == obj) {
    return true;
-  if (obj == null)
+  }
+  if (obj == null) {
    return false;
-  if (getClass() != obj.getClass())
+  }
+  if (getClass() != obj.getClass()) {
    return false;
+  }
   UpdateSkillsDto other = (UpdateSkillsDto) obj;
   return Objects.equals(empEmail, other.empEmail)
    && Objects.equals(empSkills, other.empSkills);

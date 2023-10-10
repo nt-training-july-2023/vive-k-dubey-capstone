@@ -12,10 +12,8 @@ public class ProjectOutDtoTest {
 
     @Test
     public void testGetterSetter() {
-        // Create a ProjectOutDto object
         ProjectOutDto projectOutDto = new ProjectOutDto();
-
-        // Set values using the setter methods
+        
         projectOutDto.setId(1L);
         projectOutDto.setProjectName("ProjectA");
         projectOutDto.setManagerId("Manager1");
@@ -25,7 +23,6 @@ public class ProjectOutDtoTest {
         projectOutDto.setSkillsRequired(skillsRequired);
         projectOutDto.setDescription("Description of ProjectA");
 
-        // Get values using the getter methods and assert their correctness
         assertEquals(1L, projectOutDto.getId());
         assertEquals("ProjectA", projectOutDto.getProjectName());
         assertEquals("Manager1", projectOutDto.getManagerId());
@@ -84,7 +81,7 @@ public class ProjectOutDtoTest {
         projectDto3.setStartDate("2023-01-02");
         projectDto3.setManagerId("102");
         projectDto3.setSkillsRequired(List.of("Python"));
-        projectDto3.setTeamMembers(List.of("Alice", "Bob"));
+        projectDto3.setTeamMembers(List.of("Vivek", "Ashish"));
 
         assertTrue(projectDto1.equals(projectDto2));
         assertFalse(projectDto1.equals(projectDto3));
